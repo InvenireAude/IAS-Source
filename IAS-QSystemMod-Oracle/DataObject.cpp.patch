@@ -1,0 +1,44 @@
+Index: src/ds/Impl/Oracle/holder/DataObject.cpp
+===================================================================
+--- src/ds/Impl/Oracle/holder/DataObject.cpp	(revision 267)
++++ src/ds/Impl/Oracle/holder/DataObject.cpp	(working copy)
+@@ -26,8 +26,8 @@
+ 
+ /*************************************************************************/
+ DataObject::DataObject(Statement* pStatement,  DM::Tools::Setter* pSetter, bool bOptional):
+-//	 Base(pStatement, pSetter, bOptional, CBufferLen, SQLT_LBI){
+-		Base(pStatement, pSetter, bOptional, CBufferLen, SQLT_STR){
++ 	 Base(pStatement, pSetter, bOptional, CBufferLen, SQLT_LVC){
++//		Base(pStatement, pSetter, bOptional, CBufferLen, SQLT_STR){
+ 	IAS_TRACER;
+ }
+ /*************************************************************************/
+@@ -49,11 +49,14 @@
+ 
+ 		DM::DataObjectPtr dmValue;
+ 		QS::Fmt::Formatter *pFormatter=pStatement->getSession()->getFormatter();
+-		StringStream ssValue((char*)bufData);
+ 
+-		IAS_LOG(LogLevel::INSTANCE.isDetailedInfo(),"value="<<(char*)bufData);
+-		IAS_LOG(LogLevel::INSTANCE.isDetailedInfo(),"value="<<iLen);
++		int iLen = *((int*)bufData);
+ 
++		StringStream ssValue(String((char*)bufData+sizeof(int),iLen));
++
++		IAS_LOG(LogLevel::INSTANCE.isDetailedInfo()||true,"value="<<String((char*)bufData+sizeof(int),iLen));
++		IAS_LOG(LogLevel::INSTANCE.isDetailedInfo()||true,"value="<<iLen);
++
+ 		pFormatter->read(dmValue,ssValue);
+ 		pSetter->setDataObject(dm,dmValue);
+ 	}
+@@ -84,8 +87,8 @@
+ 
+ 		iLen = iSize -1 ;
+ 
+-		IAS_LOG(LogLevel::INSTANCE.isDetailedInfo(),"value="<<(char*)bufData);
+-		IAS_LOG(LogLevel::INSTANCE.isDetailedInfo(),"value="<<iLen);
++		IAS_LOG(LogLevel::INSTANCE.isDetailedInfo()||true,"value="<<(char*)bufData);
++		IAS_LOG(LogLevel::INSTANCE.isDetailedInfo()||true,"value="<<iLen);
+ 
+ 		bNull=0;
+ 

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsi:schema 
+ xmlns:xsi="http://www.w3.org/2001/XMLSchema" 
+ targetNamespace="http://www.invenireaude.com/qsystem/fmt/pcf/common">
+  	
+	
+	<xsi:complexType name="Base">
+		<xsi:sequence>
+			<xsi:element name="MsgSeqNumber"  type="xsi:integer" minOccurs="1" maxOccurs="1"/>
+			<xsi:element name="ControlLast"   type="xsi:boolean" minOccurs="1" maxOccurs="1"/>
+			<xsi:element name="CompCode"      type="xsi:string" minOccurs="1" maxOccurs="1"/>
+			<xsi:element name="Reason"        type="xsi:string" minOccurs="1" maxOccurs="1"/>
+		</xsi:sequence>
+	</xsi:complexType>
+
+</xsi:schema>

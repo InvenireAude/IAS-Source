@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsi:schema 
+ xmlns:xsi="http://www.w3.org/2001/XMLSchema" 
+ targetNamespace="http://www.invenireaude.com/qsystem/fmt/pcf/event/cmd"
+ xmlns="http://www.invenireaude.com/qsystem/fmt/pcf"
+ xmlns:cmd="http://www.invenireaude.com/qsystem/fmt/pcf/event/cmd"
+ xmlns:event="http://www.invenireaude.com/qsystem/fmt/pcf/event"
+ xmlns:common="http://www.invenireaude.com/qsystem/fmt/pcf/common">
+ 		
+   <xsi:import namespace="http://www.invenireaude.com/qsystem/fmt/pcf/event" 
+ 		schemaLocation="pcf.event.xsd"/> 
+
+
+  <xsi:import namespace="http://www.invenireaude.com/qsystem/fmt/pcf/common" 
+ 		schemaLocation="pcf.common.xsd"/> 
+
+   <xsi:complexType name="CommandEvent">  		
+    <xsi:complexContent>
+       <xsi:extension base="common:Base">	
+    	<xsi:sequence>
+   			<xsi:element name="CommandContext" type="event:CommandContext"  minOccurs="1" maxOccurs="1" />
+  			<xsi:element name="CommandData"    type="event:CommandData"  minOccurs="1" maxOccurs="1" />
+  		</xsi:sequence>
+  	   </xsi:extension>
+  	</xsi:complexContent>
+   </xsi:complexType>
+  
+    
+</xsi:schema>

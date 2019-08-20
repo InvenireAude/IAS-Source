@@ -1,0 +1,5 @@
+{
+  "ChannelName"  : "MQA.TO.MQB",
+  "MsgSequenceNumber" : "1",
+  "_dmType"      : "http://www.invenireaude.com/qsystem/fmt/pcf/admin/cmd#ResetChannel"
+}

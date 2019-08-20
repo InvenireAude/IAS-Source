@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsi:schema 
+ xmlns:xsi="http://www.w3.org/2001/XMLSchema" 
+ targetNamespace="http://www.invenireaude.com/qsystem/fmt/pcf/statistics/cmd"
+ xmlns="http://www.invenireaude.com/qsystem/fmt/pcf"
+ xmlns:cmd="http://www.invenireaude.com/qsystem/fmt/pcf/statistics/cmd"
+ xmlns:stats="http://www.invenireaude.com/qsystem/fmt/pcf/statistics">
+ 		
+   <xsi:import namespace="http://www.invenireaude.com/qsystem/fmt/pcf/statistics" 
+ 		schemaLocation="pcf.statistics.xsd"/> 
+
+   <xsi:complexType name="StatisticsQueue">  		
+  		<xsi:complexContent>
+  		   <xsi:extension base="stats:Statistics">
+  		    	<xsi:sequence>
+  		   			<xsi:element name="QueueStatistics" type="stats:QueueStatistics"  minOccurs="1" maxOccurs="unbounded" />
+  		   		</xsi:sequence>
+  		   </xsi:extension>   		    
+  		</xsi:complexContent>
+   </xsi:complexType>
+  
+    <xsi:complexType name="StatisticsChannel">  		
+  		<xsi:complexContent>
+  		   <xsi:extension base="stats:Statistics">
+  		    	<xsi:sequence>
+  		   			<xsi:element name="ChlStatisticsData" type="stats:ChannelStatistics"  minOccurs="1" maxOccurs="unbounded" />
+  		   		</xsi:sequence>
+  		   </xsi:extension>   		    
+  		</xsi:complexContent>
+   </xsi:complexType>
+    
+</xsi:schema>

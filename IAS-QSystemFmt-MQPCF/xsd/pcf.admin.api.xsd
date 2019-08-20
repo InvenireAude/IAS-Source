@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsi:schema 
+ xmlns:xsi="http://www.w3.org/2001/XMLSchema" 
+ targetNamespace="http://www.invenireaude.com/qsystem/fmt/pcf/admin/api"
+ xmlns="http://www.invenireaude.com/qsystem/fmt/pcf"
+ xmlns:cmd="http://www.invenireaude.com/qsystem/fmt/pcf/admin/cmd"
+ xmlns:api="http://www.invenireaude.com/qsystem/fmt/pcf/admin/api"
+ xmlns:resp="http://www.invenireaude.com/qsystem/fmt/pcf/adminresp/cmd">
+ 
+   <xsi:import namespace="http://www.invenireaude.com/qsystem/fmt/pcf/admin/cmd" 
+ 		schemaLocation="pcf.admin.cmd.xsd"/> 
+
+   <xsi:import namespace="http://www.invenireaude.com/qsystem/fmt/pcf/adminresp/cmd" 
+ 		schemaLocation="pcf.adminresp.cmd.xsd"/> 
+
+  <xsi:complexType name="Header">  		
+     	<xsi:sequence>
+  			<xsi:element name="qmgr"   type="xsi:string"  minOccurs="0" maxOccurs="1" />
+ 		</xsi:sequence>
+  </xsi:complexType>
+
+  <xsi:complexType name="InquireQ">  		
+     	<xsi:sequence>
+  			<xsi:element name="header"   type="api:Header"  minOccurs="0" maxOccurs="1" />
+  			<xsi:element name="request"   type="cmd:InquireQ"  minOccurs="0" maxOccurs="1" />
+			<xsi:element name="responses" type="resp:InquireQ" minOccurs="0" maxOccurs="unbounded" />
+ 		</xsi:sequence>
+  </xsi:complexType>
+
+  <xsi:complexType name="InquireQMgr">  		
+     	<xsi:sequence>
+  			<xsi:element name="header"   type="api:Header"  minOccurs="0" maxOccurs="1" />
+  			<xsi:element name="request"   type="cmd:InquireQMgr"  minOccurs="0" maxOccurs="1" />
+			<xsi:element name="responses" type="resp:InquireQMgr" minOccurs="0" maxOccurs="unbounded" />
+ 		</xsi:sequence>
+  </xsi:complexType>
+  
+  <xsi:complexType name="InquireQMgrStatus">  		
+     	<xsi:sequence>
+     	  	<xsi:element name="header"   type="api:Header"  minOccurs="0" maxOccurs="1" />
+  			<xsi:element name="request"   type="cmd:InquireQMgrStatus"  minOccurs="0" maxOccurs="1" />
+			<xsi:element name="responses" type="resp:InquireQMgrStatus" minOccurs="0" maxOccurs="unbounded" />
+ 		</xsi:sequence>
+  </xsi:complexType>
+  
+ <xsi:complexType name="InquireChannel">  		
+     	<xsi:sequence>
+     	    <xsi:element name="header"   type="api:Header"  minOccurs="0" maxOccurs="1" />
+  			<xsi:element name="request"   type="cmd:InquireChannel"  minOccurs="0" maxOccurs="1" />
+			<xsi:element name="responses" type="resp:InquireChannel" minOccurs="0" maxOccurs="unbounded" />
+ 		</xsi:sequence>
+  </xsi:complexType>
+ 
+ <xsi:complexType name="InquireChannelStatus">  		
+     	<xsi:sequence>
+     	  	<xsi:element name="header"   type="api:Header"  minOccurs="0" maxOccurs="1" />
+  			<xsi:element name="request"   type="cmd:InquireChannelStatus"  minOccurs="0" maxOccurs="1" />
+			<xsi:element name="responses" type="resp:InquireChannelStatus" minOccurs="0" maxOccurs="unbounded" />
+ 		</xsi:sequence>
+  </xsi:complexType>
+   
+ <xsi:complexType name="ChangeQMgr">  		
+     	<xsi:sequence>
+     	  	<xsi:element name="header"   type="api:Header"  minOccurs="0" maxOccurs="1" />
+  			<xsi:element name="request"   type="cmd:ChangeQMgr"  minOccurs="0" maxOccurs="1" />
+			<xsi:element name="response"  type="resp:ChangeQMgr" minOccurs="0" maxOccurs="1" />
+ 		</xsi:sequence>
+  </xsi:complexType>
+
+ <xsi:complexType name="ClearQ">  		
+     	<xsi:sequence>
+     	  	<xsi:element name="header"   type="api:Header"  minOccurs="0" maxOccurs="1" />
+  			<xsi:element name="request"  type="cmd:ClearQ"  minOccurs="0" maxOccurs="1" />
+			<xsi:element name="response" type="resp:ClearQ" minOccurs="0" maxOccurs="1" />
+ 		</xsi:sequence>
+  </xsi:complexType>
+	
+ <xsi:complexType name="PingChannel">  		
+     	<xsi:sequence>
+     	  	<xsi:element name="header"   type="api:Header"  minOccurs="0" maxOccurs="1" />
+  			<xsi:element name="request"  type="cmd:PingChannel"  minOccurs="0" maxOccurs="1" />
+			<xsi:element name="responses" type="resp:PingChannel" minOccurs="0" maxOccurs="unbounded" />
+ 		</xsi:sequence>
+  </xsi:complexType>
+	
+ <xsi:complexType name="ResolveChannel">  		
+     	<xsi:sequence>
+     	  	<xsi:element name="header"   type="api:Header"  minOccurs="0" maxOccurs="1" />
+  			<xsi:element name="request"  type="cmd:ResolveChannel"  minOccurs="0" maxOccurs="1" />
+			<xsi:element name="responses" type="resp:ResolveChannel" minOccurs="0" maxOccurs="unbounded" />
+ 		</xsi:sequence>
+  </xsi:complexType>
+
+ <xsi:complexType name="ResetChannel">  		
+     	<xsi:sequence>
+     	  	<xsi:element name="header"   type="api:Header"  minOccurs="0" maxOccurs="1" />
+  			<xsi:element name="request"  type="cmd:ResetChannel"  minOccurs="0" maxOccurs="1" />
+			<xsi:element name="responses" type="resp:ResetChannel" minOccurs="0" maxOccurs="unbounded" />
+ 		</xsi:sequence>
+  </xsi:complexType>
+	
+ <xsi:complexType name="StartChannel">  		
+     	<xsi:sequence>
+     	  	<xsi:element name="header"    type="api:Header"  minOccurs="0" maxOccurs="1" />
+  			<xsi:element name="request"   type="cmd:StartChannel"  minOccurs="0" maxOccurs="1" />
+			<xsi:element name="responses" type="resp:StartChannel" minOccurs="0" maxOccurs="unbounded" />
+ 		</xsi:sequence>
+  </xsi:complexType>
+	
+ <xsi:complexType name="StopChannel">  		
+     	<xsi:sequence>
+     	  	<xsi:element name="header"   type="api:Header"  minOccurs="0" maxOccurs="1" />
+  			<xsi:element name="request"  type="cmd:StopChannel"  minOccurs="0" maxOccurs="1" />
+			<xsi:element name="responses" type="resp:StopChannel" minOccurs="0" maxOccurs="unbounded" />
+ 		</xsi:sequence>
+  </xsi:complexType>
+	
+</xsi:schema>	

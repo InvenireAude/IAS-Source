@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsi:schema 
+ xmlns:xsi="http://www.w3.org/2001/XMLSchema" 
+ targetNamespace="http://www.invenireaude.com/qsystem/fmt/pcf/accounting/cmd"
+ xmlns="http://www.invenireaude.com/qsystem/fmt/pcf"
+ xmlns:cmd="http://www.invenireaude.com/qsystem/fmt/pcf/accounting/cmd"
+ xmlns:acc="http://www.invenireaude.com/qsystem/fmt/pcf/accounting">
+ 		
+   <xsi:import namespace="http://www.invenireaude.com/qsystem/fmt/pcf/accounting" 
+ 		schemaLocation="pcf.accounting.xsd"/> 
+  
+   <xsi:complexType name="AccountingQueue">  		
+  		<xsi:complexContent>
+  		   <xsi:extension base="acc:Accounting">
+  		    	<xsi:sequence>
+  		   			<xsi:element name="AccountingData" type="acc:QueueAccounting"  minOccurs="1" maxOccurs="unbounded" />
+  		   		</xsi:sequence>
+  		   </xsi:extension>   		    
+  		</xsi:complexContent>
+   </xsi:complexType>
+    
+</xsi:schema>

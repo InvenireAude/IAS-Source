@@ -1,0 +1,12 @@
+{
+   "datasources" : {
+      "name"       : "db",
+         "connection" : {
+          	"protocol" : "odbc",
+       	  	"location" : "test",
+            "username" : "albert",
+            "password" : "alamakota"
+       		}
+       	}
+}
+

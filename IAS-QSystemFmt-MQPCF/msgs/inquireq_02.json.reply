@@ -1,0 +1,7 @@
+{
+   "QName" : "SYSTEM.ADMIN.CHANNEL.EVENT",
+   "CurrentQDepth" : 0,
+   "MaxQDepth" : 3000,
+   "QType" : 1,
+"_dmType" : "http://www.invenireaude.com/qsystem/fmt/pcf/adminresp/cmd#InquireQ"
+}

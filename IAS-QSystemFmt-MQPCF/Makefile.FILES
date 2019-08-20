@@ -1,0 +1,5 @@
+#Sat Aug 29 17:54:54 CEST 2015
+FILES+=qs/fmt/pcf/Dictionary
+FILES+=qs/fmt/PCFFormatter
+FILES+=qs/fmt/pcf/Reader
+FILES+=qs/fmt/pcf/Writer

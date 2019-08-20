@@ -1,0 +1,7 @@
+{
+   "MsgSeqNumber" : 1,
+   "ControlLast" : true,
+   "CompCode" : "OK",
+   "Reason" : "None",
+"_dmType" : "http://www.invenireaude.com/qsystem/fmt/pcf/adminresp/cmd#PingChannel"
+}

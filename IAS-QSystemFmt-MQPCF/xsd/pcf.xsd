@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsi:schema 
+ xmlns:xsi="http://www.w3.org/2001/XMLSchema" 
+ targetNamespace="http://www.invenireaude.com/qsystem/fmt/pcf"
+ xmlns="http://www.invenireaude.com/qsystem/fmt/pcf">
+
+  <xsi:import namespace="http://www.invenireaude.com/qsystem/fmt/pcf/admin/cmd" 
+ 		schemaLocation="pcf.admin.cmd.xsd"/> 
+
+  <xsi:import namespace="http://www.invenireaude.com/qsystem/fmt/pcf/adminresp/cmd" 
+ 		schemaLocation="pcf.adminresp.cmd.xsd"/> 
+
+  <xsi:import namespace="http://www.invenireaude.com/qsystem/fmt/pcf/admin/api" 
+ 		schemaLocation="pcf.admin.api.xsd"/> 
+   
+   <xsi:import namespace="http://www.invenireaude.com/qsystem/fmt/pcf/event/cmd" 
+ 		schemaLocation="pcf.event.cmd.xsd"/> 
+ 		
+   <xsi:import namespace="http://www.invenireaude.com/qsystem/fmt/pcf/accounting/cmd" 
+ 		schemaLocation="pcf.accounting.cmd.xsd"/> 
+  
+   <xsi:import namespace="http://www.invenireaude.com/qsystem/fmt/pcf/statistics/cmd" 
+ 		schemaLocation="pcf.statistics.cmd.xsd"/> 
+  
+</xsi:schema>

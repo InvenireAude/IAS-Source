@@ -1,0 +1,252 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsi:schema 
+ xmlns:xsi="http://www.w3.org/2001/XMLSchema" 
+ targetNamespace="http://www.invenireaude.com/qsystem/fmt/pcf/admin/cmd"
+ xmlns="http://www.invenireaude.com/qsystem/fmt/pcf"
+ xmlns:cmd="http://www.invenireaude.com/qsystem/fmt/pcf/admin/cmd"
+ xmlns:admin="http://www.invenireaude.com/qsystem/fmt/pcf/admin"
+ xmlns:common="http://www.invenireaude.com/qsystem/fmt/pcf/common">
+ 
+  <xsi:import namespace="http://www.invenireaude.com/qsystem/fmt/pcf/common" 
+ 		schemaLocation="pcf.common.xsd"/> 
+
+   <xsi:import namespace="http://www.invenireaude.com/qsystem/fmt/pcf/admin" 
+ 		schemaLocation="pcf.admin.xsd"/> 
+
+  <xsi:complexType name="InquireQ">  		
+    <xsi:complexContent>
+       <xsi:extension base="common:Base">	
+     	<xsi:sequence>
+  			<xsi:element name="QName"  type="xsi:string"  minOccurs="0" maxOccurs="1" />
+			<xsi:element name="QType"  type="xsi:string" minOccurs="0" maxOccurs="1" />
+			<xsi:element name="QAttrs" type="xsi:string"  minOccurs="0" maxOccurs="unbounded" />
+ 		</xsi:sequence>
+	  </xsi:extension>
+	</xsi:complexContent>
+  </xsi:complexType>
+  
+   <xsi:complexType name="InquireQMgr">  		
+    <xsi:complexContent>
+       <xsi:extension base="common:Base">	
+     	<xsi:sequence>
+			<xsi:element name="QMgrAttrs" type="xsi:string"  minOccurs="0" maxOccurs="unbounded" />
+ 		</xsi:sequence>
+	  </xsi:extension>
+	</xsi:complexContent>
+  </xsi:complexType>
+
+ <xsi:complexType name="InquireQMgrStatus">  		
+    <xsi:complexContent>
+       <xsi:extension base="common:Base">	
+     	<xsi:sequence>
+			<xsi:element name="QMgrStatusAttrs" type="xsi:string"  minOccurs="0" maxOccurs="unbounded" />
+ 		</xsi:sequence>
+	  </xsi:extension>
+	</xsi:complexContent>
+  </xsi:complexType>
+  
+   <xsi:complexType name="InquireChannel">  		
+    <xsi:complexContent>
+       <xsi:extension base="common:Base">	
+     	<xsi:sequence>
+  			<xsi:element name="ChannelName"  type="xsi:string"  minOccurs="0" maxOccurs="1" />
+ 			<xsi:element name="ChannelType"  type="xsi:string" minOccurs="0" maxOccurs="1" />
+			<xsi:element name="ChannelAttrs" type="xsi:string"  minOccurs="0" maxOccurs="unbounded" />
+ 		</xsi:sequence>
+	  </xsi:extension>
+	</xsi:complexContent>
+  </xsi:complexType>
+   
+   <xsi:complexType name="InquireChannelStatus">  		
+    <xsi:complexContent>
+       <xsi:extension base="common:Base">	
+     	<xsi:sequence>
+  			<xsi:element name="ChannelName"  type="xsi:string"  minOccurs="1" maxOccurs="1" />
+  			<xsi:element name="MaxResponses" type="xsi:integer"  minOccurs="0" maxOccurs="1" />
+  			<xsi:element name="ResponseRestartPoint" type="xsi:integer"  minOccurs="0" maxOccurs="1" />
+  			<xsi:element name="ChannelInstanceAttrs"  type="xsi:string"  minOccurs="0" maxOccurs="unbounded" />
+ 		</xsi:sequence>
+	  </xsi:extension>
+	</xsi:complexContent>
+  </xsi:complexType>
+
+   <xsi:complexType name="ChangeQMgr">  		
+     <xsi:complexContent>
+       <xsi:extension base="common:Base">	
+     	<xsi:sequence>
+   		<xsi:element name="AccountingConnOverride" type="xsi:integer" minOccurs="0" maxOccurs="1" />
+			<xsi:element name="AccountingInterval" type="xsi:integer" minOccurs="0" maxOccurs="1" />
+			<xsi:element name="ActivityRecording" type="xsi:integer" minOccurs="0" maxOccurs="1" />
+			<xsi:element name="AdoptnewmcaCheck" type="xsi:integer" minOccurs="0" maxOccurs="1" />
+			<xsi:element name="AdoptnewmcaType" type="xsi:integer" minOccurs="0" maxOccurs="1" />
+			<xsi:element name="AuthorityEvent" type="xsi:integer" minOccurs="0" maxOccurs="1" />
+			<xsi:element name="BridgeEvent" type="xsi:integer" minOccurs="0" maxOccurs="1" />
+			<xsi:element name="CertLabel"     type="xsi:string" minOccurs="0" maxOccurs="1" />
+			<xsi:element name="CertValPolicy" type="xsi:integer" minOccurs="0" maxOccurs="1" />
+			<xsi:element name="CFConlos"       type="xsi:integer" minOccurs="0" maxOccurs="1" />
+			<xsi:element name="ChannelAutoDef" type="xsi:integer" minOccurs="0" maxOccurs="1" />
+			<xsi:element name="ChannelAutoDefEvent" type="xsi:integer" minOccurs="0" maxOccurs="1" />
+			<xsi:element name="ChannelAutoDefExit" type="xsi:string" minOccurs="0" maxOccurs="1" />
+			<xsi:element name="ChlauthRecords" type="xsi:integer" minOccurs="0" maxOccurs="1" />
+			<xsi:element name="ChannelEvent" type="xsi:integer" minOccurs="0" maxOccurs="1" />
+			<xsi:element name="ChinitControl" type="xsi:integer" minOccurs="0" maxOccurs="1" />
+			<xsi:element name="MonitoringChannel" type="xsi:integer" minOccurs="0" maxOccurs="1" />
+			<xsi:element name="StatisticsChannel" type="xsi:integer" minOccurs="0" maxOccurs="1" />
+			<xsi:element name="ChinitAdapters" type="xsi:integer" minOccurs="0" maxOccurs="1" />
+			<xsi:element name="ChinitDispatchers" type="xsi:integer" minOccurs="0" maxOccurs="1" />
+			<xsi:element name="ChinitServiceParm" type="xsi:string" minOccurs="0" maxOccurs="1" />
+			<xsi:element name="ChinitTraceAutoStart" type="xsi:integer" minOccurs="0" maxOccurs="1" />
+			<xsi:element name="ChinitTraceTableSize" type="xsi:integer" minOccurs="0" maxOccurs="1" />
+			<xsi:element name="MonitoringAutoClussdr" type="xsi:integer" minOccurs="0" maxOccurs="1" />
+			<xsi:element name="StatisticsAutoClussdr" type="xsi:integer" minOccurs="0" maxOccurs="1" />
+			<xsi:element name="ClusterWorkloadData" type="xsi:string" minOccurs="0" maxOccurs="1" />
+			<xsi:element name="ClusterWorkloadExit" type="xsi:string" minOccurs="0" maxOccurs="1" />
+			<xsi:element name="ClusterWorkloadLength" type="xsi:integer" minOccurs="0" maxOccurs="1" />
+			<xsi:element name="ClwlMruChannels" type="xsi:integer" minOccurs="0" maxOccurs="1" />
+			<xsi:element name="ClwlUseq" type="xsi:integer" minOccurs="0" maxOccurs="1" />
+			<xsi:element name="CodedCharSetId" type="xsi:integer" minOccurs="0" maxOccurs="1" />
+			<xsi:element name="CommandEvent" type="xsi:integer" minOccurs="0" maxOccurs="1" />
+			<xsi:element name="CommandScope" type="xsi:string" minOccurs="0" maxOccurs="1" />
+			<xsi:element name="CmdServerControl" type="xsi:integer" minOccurs="0" maxOccurs="1" />
+			<xsi:element name="ConfigurationEvent" type="xsi:integer" minOccurs="0" maxOccurs="1" />
+			<xsi:element name="ConnAuth" type="xsi:string" minOccurs="0" maxOccurs="1" />
+			<xsi:element name="DeadLetterQName" type="xsi:string" minOccurs="0" maxOccurs="1" />
+			<xsi:element name="DefXmitQName" type="xsi:string" minOccurs="0" maxOccurs="1" />
+			<xsi:element name="DnsGroup" type="xsi:string" minOccurs="0" maxOccurs="1" />
+			<xsi:element name="DnsWlm" type="xsi:integer" minOccurs="0" maxOccurs="1" />
+			<xsi:element name="ExpiryInterval" type="xsi:integer" minOccurs="0" maxOccurs="1" />
+			<xsi:element name="Force" type="xsi:string" minOccurs="0" maxOccurs="1" />
+			<xsi:element name="IgqPutAuthority" type="xsi:integer" minOccurs="0" maxOccurs="1" />
+			<xsi:element name="IgqUserId" type="xsi:string" minOccurs="0" maxOccurs="1" />
+			<xsi:element name="InhibitEvent" type="xsi:integer" minOccurs="0" maxOccurs="1" />
+			<xsi:element name="IntraGroupQueuing" type="xsi:integer" minOccurs="0" maxOccurs="1" />
+			<xsi:element name="IpAddressVersion" type="xsi:integer" minOccurs="0" maxOccurs="1" />
+			<xsi:element name="ListenerTimer" type="xsi:integer" minOccurs="0" maxOccurs="1" />
+			<xsi:element name="LocalEvent" type="xsi:integer" minOccurs="0" maxOccurs="1" />
+			<xsi:element name="LoggerEvent" type="xsi:integer" minOccurs="0" maxOccurs="1" />
+			<xsi:element name="LuGroupName" type="xsi:string" minOccurs="0" maxOccurs="1" />
+			<xsi:element name="LuName" type="xsi:string" minOccurs="0" maxOccurs="1" />
+			<xsi:element name="Lu62ArmSuffix" type="xsi:string" minOccurs="0" maxOccurs="1" />
+			<xsi:element name="Lu62Channels" type="xsi:integer" minOccurs="0" maxOccurs="1" />
+			<xsi:element name="ActiveChannels" type="xsi:integer" minOccurs="0" maxOccurs="1" />
+			<xsi:element name="MaxChannels" type="xsi:integer" minOccurs="0" maxOccurs="1" />
+			<xsi:element name="MaxHandles" type="xsi:integer" minOccurs="0" maxOccurs="1" />
+			<xsi:element name="MaxMsgLength" type="xsi:integer" minOccurs="0" maxOccurs="1" />
+			<xsi:element name="MaxPropertiesLength" type="xsi:integer" minOccurs="0" maxOccurs="1" />
+			<xsi:element name="MaxUncommittedMsgs" type="xsi:integer" minOccurs="0" maxOccurs="1" />
+			<xsi:element name="AccountingMqi" type="xsi:integer" minOccurs="0" maxOccurs="1" />
+			<xsi:element name="StatisticsMqi" type="xsi:integer" minOccurs="0" maxOccurs="1" />
+			<xsi:element name="MsgMarkBrowseInterval" type="xsi:integer" minOccurs="0" maxOccurs="1" />
+			<xsi:element name="OutboundPortMax" type="xsi:integer" minOccurs="0" maxOccurs="1" />
+			<xsi:element name="OutboundPortMin" type="xsi:integer" minOccurs="0" maxOccurs="1" />
+			<xsi:element name="Parent" type="xsi:string" minOccurs="0" maxOccurs="1" />
+			<xsi:element name="PerformanceEvent" type="xsi:integer" minOccurs="0" maxOccurs="1" />
+			<xsi:element name="PubsubCluster" type="xsi:integer" minOccurs="0" maxOccurs="1" />
+			<xsi:element name="PubsubMaxmsgRetryCount" type="xsi:integer" minOccurs="0" maxOccurs="1" />
+			<xsi:element name="PubsubMode" type="xsi:integer" minOccurs="0" maxOccurs="1" />
+			<xsi:element name="PubsubNpMsg" type="xsi:integer" minOccurs="0" maxOccurs="1" />
+			<xsi:element name="PubsubNpResp" type="xsi:integer" minOccurs="0" maxOccurs="1" />
+			<xsi:element name="PubsubSyncPt" type="xsi:integer" minOccurs="0" maxOccurs="1" />
+			<xsi:element name="QMgrDesc" type="xsi:string" minOccurs="0" maxOccurs="1" />
+			<xsi:element name="QsgCertLabel" type="xsi:string" minOccurs="0" maxOccurs="1" />
+			<xsi:element name="AccountingQ" type="xsi:integer" minOccurs="0" maxOccurs="1" />
+			<xsi:element name="MonitoringQ" type="xsi:integer" minOccurs="0" maxOccurs="1" />
+			<xsi:element name="StatisticsQ" type="xsi:integer" minOccurs="0" maxOccurs="1" />
+			<xsi:element name="ReceiveTimeout" type="xsi:integer" minOccurs="0" maxOccurs="1" />
+			<xsi:element name="ReceiveTimeoutMin" type="xsi:integer" minOccurs="0" maxOccurs="1" />
+			<xsi:element name="ReceiveTimeoutType" type="xsi:integer" minOccurs="0" maxOccurs="1" />
+			<xsi:element name="RemoteEvent" type="xsi:integer" minOccurs="0" maxOccurs="1" />
+			<xsi:element name="RepositoryName" type="xsi:string" minOccurs="0" maxOccurs="1" />
+			<xsi:element name="RepositoryNamelist" type="xsi:string" minOccurs="0" maxOccurs="1" />
+			<xsi:element name="ReverseDnsLookup" type="xsi:integer" minOccurs="0" maxOccurs="1" />
+			<xsi:element name="SecurityCase" type="xsi:integer" minOccurs="0" maxOccurs="1" />
+			<xsi:element name="SharedQQMgrName" type="xsi:integer" minOccurs="0" maxOccurs="1" />
+			<xsi:element name="SslCrlNamelist" type="xsi:string" minOccurs="0" maxOccurs="1" />
+			<xsi:element name="SslCryptoHardware" type="xsi:string" minOccurs="0" maxOccurs="1" />
+			<xsi:element name="SslEvent" type="xsi:integer" minOccurs="0" maxOccurs="1" />
+			<xsi:element name="SslFipsRequired" type="xsi:integer" minOccurs="0" maxOccurs="1" />
+			<xsi:element name="SslKeyRepository" type="xsi:string" minOccurs="0" maxOccurs="1" />
+			<xsi:element name="SslResetCount" type="xsi:integer" minOccurs="0" maxOccurs="1" />
+			<xsi:element name="SslTasks" type="xsi:integer" minOccurs="0" maxOccurs="1" />
+			<xsi:element name="StartStopEvent" type="xsi:integer" minOccurs="0" maxOccurs="1" />
+			<xsi:element name="StatisticsInterval" type="xsi:integer" minOccurs="0" maxOccurs="1" />
+			<xsi:element name="TcpChannels" type="xsi:integer" minOccurs="0" maxOccurs="1" />
+			<xsi:element name="TcpKeepAlive" type="xsi:integer" minOccurs="0" maxOccurs="1" />
+			<xsi:element name="TcpName" type="xsi:integer" minOccurs="0" maxOccurs="1" />
+			<xsi:element name="TcpStackType" type="xsi:integer" minOccurs="0" maxOccurs="1" />
+			<xsi:element name="TraceRouteRecording" type="xsi:integer" minOccurs="0" maxOccurs="1" />
+			<xsi:element name="TreeLifeTime" type="xsi:integer" minOccurs="0" maxOccurs="1" />
+			<xsi:element name="TriggerInterval" type="xsi:integer" minOccurs="0" maxOccurs="1" />
+		</xsi:sequence>
+	  </xsi:extension>
+	</xsi:complexContent>
+	</xsi:complexType>
+	
+	 <xsi:complexType name="ClearQ">  		
+      <xsi:complexContent>
+       <xsi:extension base="common:Base">	
+     	<xsi:sequence>
+    		<xsi:element name="QName" type="xsi:string" minOccurs="1" maxOccurs="1" />
+		</xsi:sequence>
+	  </xsi:extension>
+	</xsi:complexContent>
+	</xsi:complexType>
+	
+	<xsi:complexType name="PingChannel">  		
+      <xsi:complexContent>
+       <xsi:extension base="common:Base">	
+     	<xsi:sequence>
+    		<xsi:element name="ChannelName" type="xsi:string" minOccurs="1" maxOccurs="1" />
+    		<xsi:element name="DataCount"   type="xsi:integer" minOccurs="0" maxOccurs="1" />
+		</xsi:sequence>
+	  </xsi:extension>
+	</xsi:complexContent>
+	</xsi:complexType>
+
+	<xsi:complexType name="ResolveChannel">  		
+      <xsi:complexContent>
+       <xsi:extension base="common:Base">	
+     	<xsi:sequence>
+    		<xsi:element name="ChannelName" type="xsi:string" minOccurs="1" maxOccurs="1" />
+    		<xsi:element name="InDoubt"     type="xsi:string" minOccurs="0" maxOccurs="1" /> <!-- TODO Dictionary InDoubt-->
+		</xsi:sequence>
+	  </xsi:extension>
+	</xsi:complexContent>
+	</xsi:complexType>
+	
+		<xsi:complexType name="ResetChannel">  		
+      <xsi:complexContent>
+       <xsi:extension base="common:Base">	
+     	<xsi:sequence>
+    		<xsi:element name="ChannelName"   type="xsi:string" minOccurs="1" maxOccurs="1" />
+    		<xsi:element name="MsgSequenceNumber"  type="xsi:integer" minOccurs="0" maxOccurs="1" />
+		</xsi:sequence>
+	  </xsi:extension>
+	</xsi:complexContent>
+	</xsi:complexType>	
+	
+	<xsi:complexType name="StartChannel">  		
+      <xsi:complexContent>
+       <xsi:extension base="common:Base">	
+     	<xsi:sequence>
+    		<xsi:element name="ChannelName" type="xsi:string" minOccurs="1" maxOccurs="1" />
+		</xsi:sequence>
+	  </xsi:extension>
+	</xsi:complexContent>
+	</xsi:complexType>	
+	
+     <xsi:complexType name="StopChannel">  		
+      <xsi:complexContent>
+       <xsi:extension base="common:Base">	
+     	<xsi:sequence>
+    		<xsi:element name="ChannelName"      type="xsi:string" minOccurs="1" maxOccurs="1" />
+    		<xsi:element name="ChannelStatus"    type="xsi:string" minOccurs="0" maxOccurs="1" /> 
+    		<xsi:element name="ConnectionName"   type="xsi:string" minOccurs="0" maxOccurs="1" /> 		
+	   		<xsi:element name="Mode"             type="xsi:string" minOccurs="0" maxOccurs="1" /> 
+  		    <xsi:element name="QMgrName"         type="xsi:string" minOccurs="0" maxOccurs="1" /> 		
+		</xsi:sequence>
+	  </xsi:extension>
+	</xsi:complexContent>
+	</xsi:complexType>
+	
+</xsi:schema>	

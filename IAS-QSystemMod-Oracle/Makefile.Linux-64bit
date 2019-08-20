@@ -1,0 +1,2 @@
+CPPFLAGS+= -I${ORACLE_HOME}/rdbms/public
+LNFLAGS+= -L${ORACLE_HOME}/lib -lclntsh -locci

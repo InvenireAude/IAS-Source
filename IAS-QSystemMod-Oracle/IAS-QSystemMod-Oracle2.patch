@@ -1,0 +1,378 @@
+Index: DataObject.cpp.patch
+===================================================================
+--- DataObject.cpp.patch	(revision 0)
++++ DataObject.cpp.patch	(revision 0)
+@@ -0,0 +1,44 @@
++Index: src/ds/Impl/Oracle/holder/DataObject.cpp
++===================================================================
++--- src/ds/Impl/Oracle/holder/DataObject.cpp	(revision 267)
+++++ src/ds/Impl/Oracle/holder/DataObject.cpp	(working copy)
++@@ -26,8 +26,8 @@
++ 
++ /*************************************************************************/
++ DataObject::DataObject(Statement* pStatement,  DM::Tools::Setter* pSetter, bool bOptional):
++-//	 Base(pStatement, pSetter, bOptional, CBufferLen, SQLT_LBI){
++-		Base(pStatement, pSetter, bOptional, CBufferLen, SQLT_STR){
+++ 	 Base(pStatement, pSetter, bOptional, CBufferLen, SQLT_LVC){
+++//		Base(pStatement, pSetter, bOptional, CBufferLen, SQLT_STR){
++ 	IAS_TRACER;
++ }
++ /*************************************************************************/
++@@ -49,11 +49,14 @@
++ 
++ 		DM::DataObjectPtr dmValue;
++ 		QS::Fmt::Formatter *pFormatter=pStatement->getSession()->getFormatter();
++-		StringStream ssValue((char*)bufData);
++ 
++-		IAS_LOG(LogLevel::INSTANCE.isDetailedInfo(),"value="<<(char*)bufData);
++-		IAS_LOG(LogLevel::INSTANCE.isDetailedInfo(),"value="<<iLen);
+++		int iLen = *((int*)bufData);
++ 
+++		StringStream ssValue(String((char*)bufData+sizeof(int),iLen));
+++
+++		IAS_LOG(LogLevel::INSTANCE.isDetailedInfo()||true,"value="<<String((char*)bufData+sizeof(int),iLen));
+++		IAS_LOG(LogLevel::INSTANCE.isDetailedInfo()||true,"value="<<iLen);
+++
++ 		pFormatter->read(dmValue,ssValue);
++ 		pSetter->setDataObject(dm,dmValue);
++ 	}
++@@ -84,8 +87,8 @@
++ 
++ 		iLen = iSize -1 ;
++ 
++-		IAS_LOG(LogLevel::INSTANCE.isDetailedInfo(),"value="<<(char*)bufData);
++-		IAS_LOG(LogLevel::INSTANCE.isDetailedInfo(),"value="<<iLen);
+++		IAS_LOG(LogLevel::INSTANCE.isDetailedInfo()||true,"value="<<(char*)bufData);
+++		IAS_LOG(LogLevel::INSTANCE.isDetailedInfo()||true,"value="<<iLen);
++ 
++ 		bNull=0;
++ 
+Index: Makefile.FILES
+===================================================================
+--- Makefile.FILES	(revision 265)
++++ Makefile.FILES	(working copy)
+@@ -1,4 +1,4 @@
+-#Mon Jan  2 17:00:47 CET 2017
++#Tue Apr  4 18:03:21 CEST 2017
+ FILES+=ds/Impl/Oracle/Connection
+ FILES+=ds/Impl/Oracle/exception/OracleException
+ FILES+=ds/Impl/Oracle/holder/Base
+@@ -27,3 +27,4 @@
+ FILES+=ds/Impl/Oracle/StatementSelect
+ FILES+=ds/Impl/Oracle/StatementUpdate
+ FILES+=ds/Impl/Oracle/System
++FILES+=ds/Impl/Oracle/tools/LobOpener
+Index: src/ds/Impl/Oracle/holder/Base.cpp
+===================================================================
+--- src/ds/Impl/Oracle/holder/Base.cpp	(revision 265)
++++ src/ds/Impl/Oracle/holder/Base.cpp	(working copy)
+@@ -115,7 +115,7 @@
+ 							   pStatement->getSession()->getErrorHandle(),
+ 							   iPos,
+ 							   bufData.getBuffer<void>(),
+-							   (sb4)(bufData.getSize()),
++							   (iOCIType != SQLT_CLOB ? (sb4)(bufData.getSize()) : 0),
+ 							   (ub2)iOCIType,
+ 							   (void *) &bNull,
+ 							   (ub2 *) &iLen,
+@@ -122,6 +122,7 @@
+ 							   0,
+ 							   OCI_DEFAULT);
+ 
++
+ 	OracleException::ThrowOnError(pStatement->getSQLText()+", def="+TypeTools::IntToString(iPos),
+ 				pStatement->getSession()->getErrorHandle(),
+ 				rc);
+Index: src/ds/Impl/Oracle/holder/DataObject.cpp
+===================================================================
+--- src/ds/Impl/Oracle/holder/DataObject.cpp	(revision 267)
++++ src/ds/Impl/Oracle/holder/DataObject.cpp	(working copy)
+@@ -17,6 +17,7 @@
+ 
+ #include <qs/fmt/FmtFactory.h>
+ #include "../Session.h"
++#include "../tools/LobOpener.h"
+ 
+ namespace IAS {
+ namespace DS {
+@@ -27,13 +28,31 @@
+ /*************************************************************************/
+ DataObject::DataObject(Statement* pStatement,  DM::Tools::Setter* pSetter, bool bOptional):
+ //	 Base(pStatement, pSetter, bOptional, CBufferLen, SQLT_LBI){
+-		Base(pStatement, pSetter, bOptional, CBufferLen, SQLT_STR){
++//		Base(pStatement, pSetter, bOptional, CBufferLen, SQLT_STR){
++	Base(pStatement, pSetter, bOptional, CBufferLen, SQLT_CLOB){
+ 	IAS_TRACER;
++
++
++	*bufData.getBuffer<OCILobLocator*>() = 0;
++
++	sword rc =  OCIDescriptorAlloc(pStatement->getSession()->getEnvHandle(),
++								   bufData.getBuffer<void*>(),
++	                               (ub4)OCI_DTYPE_LOB,
++								   (size_t)0,
++							       (dvoid **)0);
++
++	OracleException::ThrowOnError(pStatement->getSQLText()+", clob allocation.",
++				pStatement->getSession()->getErrorHandle(),
++				rc);
++
+ }
+ /*************************************************************************/
+ DataObject::~DataObject() throw(){
+ 	IAS_TRACER;
++	if(bufData.getBuffer<OCILobLocator*>() != 0)
++		OCIDescriptorFree( bufData.getBuffer<void*>(), (ub4) OCI_DTYPE_LOB);
+ }
++
+ /*************************************************************************/
+ void DataObject::fetch(DM::DataObjectPtr& dm){
+ 	IAS_TRACER;
+@@ -47,15 +66,52 @@
+ 
+ 	}else{
+ 
++		 Tools::LobOpener clobOpener(pStatement->getSession(), *bufData.getBuffer<OCILobLocator*>(), OCI_LOB_READONLY);
++
++		 sword rc = OCI_NEED_DATA;
++
++		 Buffer       bufCLobData(32000);
++		 StringStream ssValue;
++
++		 while(rc == OCI_NEED_DATA){
++
++			 ub4 iCLobDataLen = 0;
++
++			 rc = OCILobRead(pStatement->getSession()->getSvcCtxHandle(),
++                 	 	 	 pStatement->getSession()->getErrorHandle(),
++							 clobOpener,
++							 &iCLobDataLen,
++							 1,
++							 bufCLobData.getBuffer<void>(),
++							 (ub4)bufCLobData.getSize(),
++							 NULL,
++							 NULL,
++							 0,
++							 SQLCS_IMPLICIT);
++
++
++				if(rc != OCI_NEED_DATA)
++						OracleException::ThrowOnError(pStatement->getSQLText()+", error when reading the clob.",
++						 				pStatement->getSession()->getErrorHandle(),
++						 				rc);
++
++				IAS_LOG(LogLevel::INSTANCE.isDetailedInfo(),"value="<<String((char*)bufCLobData,iCLobDataLen));
++				IAS_LOG(LogLevel::INSTANCE.isDetailedInfo(),"len="<<iCLobDataLen);
++
++				if(iCLobDataLen)
++					ssValue.write((char*)bufCLobData,iCLobDataLen);
++
++
++		 }
++
++
+ 		DM::DataObjectPtr dmValue;
+ 		QS::Fmt::Formatter *pFormatter=pStatement->getSession()->getFormatter();
+-		StringStream ssValue((char*)bufData);
+ 
+-		IAS_LOG(LogLevel::INSTANCE.isDetailedInfo(),"value="<<(char*)bufData);
+-		IAS_LOG(LogLevel::INSTANCE.isDetailedInfo(),"value="<<iLen);
+-
+ 		pFormatter->read(dmValue,ssValue);
+ 		pSetter->setDataObject(dm,dmValue);
++
++
+ 	}
+ 
+ }
+@@ -65,7 +121,6 @@
+ 
+ 	IAS_LOG(LogLevel::INSTANCE.isDetailedInfo(),pSetter->getXPath());
+ 
+-
+ 	if(pSetter->isSet(dm)){
+ 
+ 		DM::DataObjectPtr dmValue;
+@@ -74,19 +129,35 @@
+ 		StringStream ssValue;
+ 		pFormatter->write(pSetter->getValue(dm),ssValue);
+ 
+-		//TODO avoid this coping.
+-		String strValue(ssValue.str());
+-		String::size_type iSize(strValue.length()+1);
++		OCIDescriptorAlloc()
++		 *bufData.getBuffer<OCILobLocator*>()
+ 
+-		assureBufferSize(iSize);
++		Tools::LobOpener clobOpener(pStatement->getSession(), *bufData.getBuffer<OCILobLocator*>(), OCI_LOB_WRITEONLY);
+ 
+-		memcpy((char*)bufData,strValue.c_str(),iSize);
++		String strData(ssValue.str());
++		ub4    iCLobDataLen = strData.length();
+ 
+-		iLen = iSize -1 ;
+ 
+-		IAS_LOG(LogLevel::INSTANCE.isDetailedInfo(),"value="<<(char*)bufData);
+-		IAS_LOG(LogLevel::INSTANCE.isDetailedInfo(),"value="<<iLen);
++		sword rc = OCILobWrite(pStatement->getSession()->getSvcCtxHandle(),
++		           	 	 	   pStatement->getSession()->getErrorHandle(),
++							   clobOpener,
++							   &iCLobDataLen,
++							   1,
++							   (void*)strData.c_str(),
++							   iCLobDataLen,
++							   OCI_ONE_PIECE,
++							   NULL,
++							   NULL,
++							   0,
++							   SQLCS_IMPLICIT);
+ 
++
++
++				OracleException::ThrowOnError(pStatement->getSQLText()+", error when writing to the clob.",
++						 				pStatement->getSession()->getErrorHandle(),
++						 				rc);
++
++
+ 		bNull=0;
+ 
+ 	}else{
+Index: src/ds/Impl/Oracle/holder/DataObject.h
+===================================================================
+--- src/ds/Impl/Oracle/holder/DataObject.h	(revision 265)
++++ src/ds/Impl/Oracle/holder/DataObject.h	(working copy)
+@@ -41,9 +41,10 @@
+ protected:
+ 	DataObject(Statement* pStatement,  DM::Tools::Setter* pSetter, bool bOptional);
+ 
+-	static const size_t CBufferLen=4000000;
++	static const size_t CBufferLen=sizeof(OCILobLocator*);
+ 
+ 	friend class ::IAS::Factory<DataObject>;
++
+ };
+ 
+ /*************************************************************************/
+Index: src/ds/Impl/Oracle/tools/LobOpener.cpp
+===================================================================
+--- src/ds/Impl/Oracle/tools/LobOpener.cpp	(revision 0)
++++ src/ds/Impl/Oracle/tools/LobOpener.cpp	(revision 0)
+@@ -0,0 +1,59 @@
++/*
++ * Copyright (C) 2015, Albert Krzymowski
++ * Copyright (C) 2015, Invenire Aude Limited
++ *
++ * File: IAS-QSystemMod-Oracle/src/ds/Impl/Oracle/LobOpener.cpp 
++ *
++ * Licensed under the Invenire Aude Commercial License (the "License");
++ * you may not use this file except in compliance with the License. 
++ * You may find the license terms and conditions in the LICENSE.txt file.
++ * or at http://www.invenireaude.com/licenses/license.txt
++ * 
++ * This file and any derived form, including but not limited to object
++ * executable, represents the Confidential Materials.
++ * 
++ */
++#include "LobOpener.h"
++
++#include <commonlib/commonlib.h>
++
++#include "../Session.h"
++
++namespace IAS {
++namespace DS {
++namespace Impl {
++namespace Oracle {
++namespace Tools {
++
++/*************************************************************************/
++LobOpener::LobOpener(Session* pSession, OCILobLocator* pOCILobLocator, ub1 iMode):
++	pOCILobLocator(pOCILobLocator),
++	pSession(pSession){
++
++	 IAS_TRACER;
++
++	 sword rc = OCILobOpen(pSession->getSvcCtxHandle(),
++			 	 	 	   pSession->getErrorHandle(),
++			               pOCILobLocator,
++						   iMode);
++
++	 OracleException::ThrowOnError("Error when opening clob",
++			                       pSession->getErrorHandle(),
++	 				               rc);
++}
++/*************************************************************************/
++LobOpener::~LobOpener() throw(){
++	IAS_TRACER;
++
++	OCILobClose(pSession->getSvcCtxHandle(),
++	 	 	    pSession->getErrorHandle(),
++                pOCILobLocator);
++
++}
++/*************************************************************************/
++}
++}
++}
++}
++}
++
+Index: src/ds/Impl/Oracle/tools/LobOpener.h
+===================================================================
+--- src/ds/Impl/Oracle/tools/LobOpener.h	(revision 0)
++++ src/ds/Impl/Oracle/tools/LobOpener.h	(revision 0)
+@@ -0,0 +1,54 @@
++/*
++ * Copyright (C) 2015, Albert Krzymowski
++ * Copyright (C) 2015, Invenire Aude Limited
++ *
++ * File: IAS-QSystemMod-Oracle/src/ds/Impl/Oracle/LobOpener.h 
++ *
++ * Licensed under the Invenire Aude Commercial License (the "License");
++ * you may not use this file except in compliance with the License. 
++ * You may find the license terms and conditions in the LICENSE.txt file.
++ * or at http://www.invenireaude.com/licenses/license.txt
++ * 
++ * This file and any derived form, including but not limited to object
++ * executable, represents the Confidential Materials.
++ * 
++ */
++#ifndef _IAS_DS_Oracle_LobOpener_H_
++#define _IAS_DS_Oracle_LobOpener_H_
++
++#include <oci.h>
++
++namespace IAS {
++namespace DS {
++namespace Impl {
++namespace Oracle {
++class Session;
++namespace Tools {
++
++class Connection;
++
++/*************************************************************************/
++/** The LobOpener class.
++ *
++ */
++class LobOpener {
++
++public:
++
++
++	LobOpener(Session* pSession, OCILobLocator* pOCILobLocator, ub1 iMode);
++	virtual ~LobOpener() throw();
++
++	operator OCILobLocator*(){ return pOCILobLocator; }
++
++	OCILobLocator* pOCILobLocator;
++	Session*       pSession;
++};
++
++/*************************************************************************/
++}
++}
++}
++}
++}
++#endif /* _IAS_DS_Oracle_LobOpener_H_ */

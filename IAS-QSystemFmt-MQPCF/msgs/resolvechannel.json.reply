@@ -1,0 +1,7 @@
+{
+   "MsgSeqNumber" : 1,
+   "ControlLast" : false,
+   "CompCode" : "FAILED",
+   "Reason" : "ChannelInUse",
+"_dmType" : "http://www.invenireaude.com/qsystem/fmt/pcf/adminresp/cmd#ResolveChannel"
+}

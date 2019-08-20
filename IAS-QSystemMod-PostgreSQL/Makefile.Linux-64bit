@@ -1,0 +1,2 @@
+CPPFLAGS+=-I/usr/pgsql-11/include
+LNLIBS+=-lpq

@@ -1,0 +1,7 @@
+{
+   "QName" : "SYSTEM.ADMIN.ACTIVITY.QUEUE",
+   "CurrentQDepth" : 0,
+   "MaxQDepth" : 5000,
+   "QType" : 1,
+"_dmType" : "http://www.invenireaude.com/qsystem/fmt/pcf/adminresp/cmd#InquireQ"
+}

@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsi:schema 
+ xmlns:xsi="http://www.w3.org/2001/XMLSchema" 
+ targetNamespace="http://www.invenireaude.com/qsystem/fmt/pcf/statistics"
+ xmlns:common="http://www.invenireaude.com/qsystem/fmt/pcf/common">
+ 
+  <xsi:import namespace="http://www.invenireaude.com/qsystem/fmt/pcf/common" 
+ 		schemaLocation="pcf.common.xsd"/> 
+ 
+ 	
+  <xsi:complexType name="Statistics">  		 
+ 	<xsi:complexContent>
+ 	  <xsi:extension base="common:Base">
+    	<xsi:sequence>
+			<xsi:element name="QueueManager"      type="xsi:string" minOccurs="1" maxOccurs="1" />
+			<xsi:element name="QMgrName"          type="xsi:string" minOccurs="1" maxOccurs="1" />	
+			<xsi:element name="IntervalStartDate" type="xsi:date" minOccurs="1" maxOccurs="1" />
+			<xsi:element name="IntervalStartTime" type="xsi:time" minOccurs="1" maxOccurs="1" />
+			<xsi:element name="IntervalEndDate"   type="xsi:date" minOccurs="1" maxOccurs="1" />
+			<xsi:element name="IntervalEndTime"   type="xsi:time" minOccurs="1" maxOccurs="1" />
+			<xsi:element name="CommandLevel"      type="xsi:integer" minOccurs="1" maxOccurs="1" />
+  		</xsi:sequence>
+  	  </xsi:extension>
+  	</xsi:complexContent>
+  </xsi:complexType>
+  
+   <xsi:complexType name="QueueStatistics">  		
+ 	<xsi:sequence>
+ 			<xsi:element name="QName" type="xsi:string" minOccurs="0" maxOccurs="1" />
+			<xsi:element name="CreationDate" type="xsi:date" minOccurs="0" maxOccurs="1" />
+			<xsi:element name="CreationTime" type="xsi:string" minOccurs="0" maxOccurs="1" />
+			<xsi:element name="QType" type="xsi:string" minOccurs="0" maxOccurs="1" />
+			<xsi:element name="DefinitionType" type="xsi:integer" minOccurs="0" maxOccurs="1" />
+			<xsi:element name="MinQDepthDetected" type="xsi:integer" minOccurs="0" maxOccurs="1" />
+			<xsi:element name="MaxQDepthDetected" type="xsi:integer" minOccurs="0" maxOccurs="1" />
+			<xsi:element name="AvgQTime" type="xsi:integer" minOccurs="0" maxOccurs="unbounded" /> 	
+			<xsi:element name="ConnCount" type="xsi:integer" minOccurs="0" maxOccurs="1" />
+			<xsi:element name="ConnFailCount" type="xsi:integer" minOccurs="0" maxOccurs="1" />
+			<xsi:element name="ConnsMax" type="xsi:integer" minOccurs="0" maxOccurs="1" />
+			<xsi:element name="DiscCount" type="xsi:integer" minOccurs="0" maxOccurs="unbounded" />
+			<xsi:element name="OpenCount" type="xsi:integer" minOccurs="0" maxOccurs="unbounded" />
+			<xsi:element name="OpenFailCount" type="xsi:integer" minOccurs="0" maxOccurs="unbounded" />
+			<xsi:element name="CloseCount" type="xsi:integer" minOccurs="0" maxOccurs="unbounded" />
+			<xsi:element name="CloseFailCount" type="xsi:integer" minOccurs="0" maxOccurs="unbounded" />
+			<xsi:element name="InqCount" type="xsi:integer" minOccurs="0" maxOccurs="unbounded" />
+			<xsi:element name="InqFailCount" type="xsi:integer" minOccurs="0" maxOccurs="unbounded" />
+			<xsi:element name="SetCount" type="xsi:integer" minOccurs="0" maxOccurs="unbounded" />
+			<xsi:element name="SetFailCount" type="xsi:integer" minOccurs="0" maxOccurs="unbounded" />
+			<xsi:element name="PutCount" type="xsi:integer" minOccurs="0" maxOccurs="unbounded" />
+			<xsi:element name="PutFailCount" type="xsi:integer" minOccurs="0" maxOccurs="1" />
+			<xsi:element name="Put1Count" type="xsi:integer" minOccurs="0" maxOccurs="unbounded" />
+			<xsi:element name="Put1FailCount" type="xsi:integer" minOccurs="0" maxOccurs="1" />
+			<xsi:element name="PutBytes" type="xsi:integer" minOccurs="0" maxOccurs="unbounded" />
+			<xsi:element name="GetCount" type="xsi:integer" minOccurs="0" maxOccurs="unbounded" />
+			<xsi:element name="GetFailCount" type="xsi:integer" minOccurs="0" maxOccurs="1" />
+			<xsi:element name="GetBytes" type="xsi:integer" minOccurs="0" maxOccurs="unbounded" />
+			<xsi:element name="BrowseCount" type="xsi:integer" minOccurs="0" maxOccurs="unbounded" />
+			<xsi:element name="BrowseFailCount" type="xsi:integer" minOccurs="0" maxOccurs="1" />
+			<xsi:element name="BrowseBytes" type="xsi:integer" minOccurs="0" maxOccurs="unbounded" />
+			<xsi:element name="CommitCount" type="xsi:integer" minOccurs="0" maxOccurs="1" />
+			<xsi:element name="CommitFailCount" type="xsi:integer" minOccurs="0" maxOccurs="1" />
+			<xsi:element name="BackCount" type="xsi:integer" minOccurs="0" maxOccurs="1" />
+			<xsi:element name="ExpiredMsgCount" type="xsi:integer" minOccurs="0" maxOccurs="1" />
+			<xsi:element name="PurgeCount" type="xsi:integer" minOccurs="0" maxOccurs="1" />
+			<xsi:element name="SubCountDur" type="xsi:integer" minOccurs="0" maxOccurs="unbounded" />
+			<xsi:element name="SubCountNDur" type="xsi:integer" minOccurs="0" maxOccurs="unbounded" />
+			<xsi:element name="SubFailCount" type="xsi:integer" minOccurs="0" maxOccurs="1" />
+			<xsi:element name="UnsubCountDur" type="xsi:integer" minOccurs="0" maxOccurs="unbounded" />
+			<xsi:element name="UnsubCountNDur" type="xsi:integer" minOccurs="0" maxOccurs="unbounded" />
+			<xsi:element name="UnsubFailCount" type="xsi:integer" minOccurs="0" maxOccurs="1" />
+			<xsi:element name="SubRqCount" type="xsi:integer" minOccurs="0" maxOccurs="1" />
+			<xsi:element name="SubRqFailCount" type="xsi:integer" minOccurs="0" maxOccurs="1" />
+			<xsi:element name="CBCount" type="xsi:integer" minOccurs="0" maxOccurs="unbounded" />
+			<xsi:element name="CBFailCount" type="xsi:integer" minOccurs="0" maxOccurs="1" />
+			<xsi:element name="CtlCount" type="xsi:integer" minOccurs="0" maxOccurs="unbounded" />
+			<xsi:element name="CtlFailCount" type="xsi:integer" minOccurs="0" maxOccurs="1" />
+			<xsi:element name="StatCount" type="xsi:integer" minOccurs="0" maxOccurs="1" />
+			<xsi:element name="StatFailCount" type="xsi:integer" minOccurs="0" maxOccurs="1" />
+			<xsi:element name="SubCountDurHighWater" type="xsi:integer" minOccurs="0" maxOccurs="unbounded" />
+			<xsi:element name="SubCountDurLowWater" type="xsi:integer" minOccurs="0" maxOccurs="unbounded" />
+			<xsi:element name="SubCountNDurHighWater" type="xsi:integer" minOccurs="0" maxOccurs="unbounded" />
+			<xsi:element name="SubCountNDurLowWater" type="xsi:integer" minOccurs="0" maxOccurs="unbounded" />
+			<xsi:element name="PutTopicCount" type="xsi:integer" minOccurs="0" maxOccurs="unbounded" />
+			<xsi:element name="PutTopicFailCount" type="xsi:integer" minOccurs="0" maxOccurs="1" />
+			<xsi:element name="Put1TopicCount" type="xsi:integer" minOccurs="0" maxOccurs="unbounded" />
+			<xsi:element name="Put1TopicFailCount" type="xsi:integer" minOccurs="0" maxOccurs="1" />
+			<xsi:element name="PutTopicBytes" type="xsi:integer" minOccurs="0" maxOccurs="unbounded" />
+			<xsi:element name="PublishMsgCount" type="xsi:integer" minOccurs="0" maxOccurs="unbounded" />
+			<xsi:element name="PublishMsgBytes" type="xsi:integer" minOccurs="0" maxOccurs="unbounded" />
+			<xsi:element name="MsgNotQueued"    type="xsi:integer" minOccurs="0" maxOccurs="1" />
+ 	   </xsi:sequence>   		    
+    </xsi:complexType>
+    
+ <xsi:complexType name="ChannelStatistics">  		
+ 	<xsi:sequence>
+			<xsi:element name="ChannelName" type="xsi:string" minOccurs="1" maxOccurs="1" />
+			<xsi:element name="ChannelType" type="xsi:string" minOccurs="1" maxOccurs="1" />
+			<xsi:element name="RemoteQMgrName" type="xsi:string" minOccurs="0" maxOccurs="1" />
+			<xsi:element name="ConnectionName" type="xsi:string" minOccurs="0" maxOccurs="1" />
+			<xsi:element name="MsgCount" type="xsi:integer" minOccurs="0" maxOccurs="1" />
+			<xsi:element name="TotalBytes" type="xsi:integer" minOccurs="0" maxOccurs="1" />
+			<xsi:element name="NetTimeMin" type="xsi:integer" minOccurs="0" maxOccurs="1" />
+			<xsi:element name="NetTimeAvg" type="xsi:integer" minOccurs="0" maxOccurs="1" />
+			<xsi:element name="NetTimeMax" type="xsi:integer" minOccurs="0" maxOccurs="1" />
+			<xsi:element name="ExitTimeMin" type="xsi:integer" minOccurs="0" maxOccurs="1" />
+			<xsi:element name="ExitTimeAvg" type="xsi:integer" minOccurs="0" maxOccurs="1" />
+			<xsi:element name="ExitTimeMax" type="xsi:integer" minOccurs="0" maxOccurs="1" />
+			<xsi:element name="FullBatchCount" type="xsi:integer" minOccurs="0" maxOccurs="1" />
+			<xsi:element name="IncmplBatchCount" type="xsi:integer" minOccurs="0" maxOccurs="1" />
+			<xsi:element name="AverageBatchSize" type="xsi:integer" minOccurs="0" maxOccurs="1" />
+			<xsi:element name="PutRetryCount" type="xsi:integer" minOccurs="0" maxOccurs="1" />
+ 	   </xsi:sequence>   		    
+    </xsi:complexType>
+
+ <xsi:complexType name="MQIStatistics">  		
+ 	<xsi:sequence>
+			<xsi:element name="ConnCount" type="xsi:integer" minOccurs="0" maxOccurs="1" />
+			<xsi:element name="ConnFailCount" type="xsi:integer" minOccurs="0" maxOccurs="1" />
+			<xsi:element name="ConnsMax" type="xsi:integer" minOccurs="0" maxOccurs="1" />
+			<xsi:element name="DiscCount" type="xsi:integer" minOccurs="0" maxOccurs="unbounded" />
+			<xsi:element name="OpenCount" type="xsi:integer" minOccurs="0" maxOccurs="unbounded" />
+			<xsi:element name="OpenFailCount" type="xsi:integer" minOccurs="0" maxOccurs="unbounded" />
+			<xsi:element name="CloseCount" type="xsi:integer" minOccurs="0" maxOccurs="unbounded" />
+			<xsi:element name="CloseFailCount" type="xsi:integer" minOccurs="0" maxOccurs="unbounded" />
+			<xsi:element name="InqCount" type="xsi:integer" minOccurs="0" maxOccurs="unbounded" />
+			<xsi:element name="InqFailCount" type="xsi:integer" minOccurs="0" maxOccurs="unbounded" />
+			<xsi:element name="SetCount" type="xsi:integer" minOccurs="0" maxOccurs="unbounded" />
+			<xsi:element name="SetFailCount" type="xsi:integer" minOccurs="0" maxOccurs="unbounded" />
+			<xsi:element name="PutCount" type="xsi:integer" minOccurs="0" maxOccurs="unbounded" />
+			<xsi:element name="PutFailCount" type="xsi:integer" minOccurs="0" maxOccurs="1" />
+			<xsi:element name="Put1Count" type="xsi:integer" minOccurs="0" maxOccurs="unbounded" />
+			<xsi:element name="Put1FailCount" type="xsi:integer" minOccurs="0" maxOccurs="unbounded" />
+			<xsi:element name="PutBytes" type="xsi:integer" minOccurs="0" maxOccurs="unbounded" />
+			<xsi:element name="GetCount" type="xsi:integer" minOccurs="0" maxOccurs="unbounded" />
+			<xsi:element name="GetFailCount" type="xsi:integer" minOccurs="0" maxOccurs="1" />
+			<xsi:element name="GetBytes" type="xsi:integer" minOccurs="0" maxOccurs="unbounded" />
+			<xsi:element name="BrowseCount" type="xsi:integer" minOccurs="0" maxOccurs="unbounded" />
+			<xsi:element name="BrowseFailCount" type="xsi:integer" minOccurs="0" maxOccurs="1" />
+			<xsi:element name="BrowseBytes" type="xsi:integer" minOccurs="0" maxOccurs="unbounded" />
+			<xsi:element name="CommitCount" type="xsi:integer" minOccurs="0" maxOccurs="1" />
+			<xsi:element name="CommitFailCount" type="xsi:integer" minOccurs="0" maxOccurs="1" />
+			<xsi:element name="BackCount" type="xsi:integer" minOccurs="0" maxOccurs="1" />
+			<xsi:element name="ExpiredMsgCount" type="xsi:integer" minOccurs="0" maxOccurs="1" />
+			<xsi:element name="PurgeCount" type="xsi:integer" minOccurs="0" maxOccurs="1" />
+			<xsi:element name="SubCountDur" type="xsi:integer" minOccurs="0" maxOccurs="unbounded" />
+			<xsi:element name="SubCountNDur" type="xsi:integer" minOccurs="0" maxOccurs="unbounded" />
+			<xsi:element name="SubFailCount" type="xsi:integer" minOccurs="0" maxOccurs="1" />
+			<xsi:element name="UnsubCountDur" type="xsi:integer" minOccurs="0" maxOccurs="unbounded" />
+			<xsi:element name="UnsubCountNDur" type="xsi:integer" minOccurs="0" maxOccurs="unbounded" />
+			<xsi:element name="UnsubFailCount" type="xsi:integer" minOccurs="0" maxOccurs="1" />
+			<xsi:element name="SubRqCount" type="xsi:integer" minOccurs="0" maxOccurs="1" />
+			<xsi:element name="SubRqFailCount" type="xsi:integer" minOccurs="0" maxOccurs="1" />
+			<xsi:element name="CBCount" type="xsi:integer" minOccurs="0" maxOccurs="unbounded" />
+			<xsi:element name="CBFailCount" type="xsi:integer" minOccurs="0" maxOccurs="1" />
+			<xsi:element name="CtlCount" type="xsi:integer" minOccurs="0" maxOccurs="unbounded" />
+			<xsi:element name="CtlFailCount" type="xsi:integer" minOccurs="0" maxOccurs="1" />
+			<xsi:element name="StatCount" type="xsi:integer" minOccurs="0" maxOccurs="1" />
+			<xsi:element name="StatFailCount" type="xsi:integer" minOccurs="0" maxOccurs="1" />
+			<xsi:element name="SubCountDurHighWater" type="xsi:integer" minOccurs="0" maxOccurs="unbounded" />
+			<xsi:element name="SubCountDurLowWater" type="xsi:integer" minOccurs="0" maxOccurs="unbounded" />
+			<xsi:element name="SubCountNDurHighWater" type="xsi:integer" minOccurs="0" maxOccurs="unbounded" />
+			<xsi:element name="SubCountNDurLowWater" type="xsi:integer" minOccurs="0" maxOccurs="unbounded" />
+			<xsi:element name="PutTopicCount" type="xsi:integer" minOccurs="0" maxOccurs="unbounded" />
+			<xsi:element name="PutTopicFailCount" type="xsi:integer" minOccurs="0" maxOccurs="1" />
+			<xsi:element name="Put1TopicCount" type="xsi:integer" minOccurs="0" maxOccurs="unbounded" />
+			<xsi:element name="Put1TopicFailCount" type="xsi:integer" minOccurs="0" maxOccurs="1" />
+			<xsi:element name="PutTopicBytes" type="xsi:integer" minOccurs="0" maxOccurs="unbounded" />
+			<xsi:element name="PublishMsgCount" type="xsi:integer" minOccurs="0" maxOccurs="unbounded" />
+			<xsi:element name="PublishMsgBytes" type="xsi:integer" minOccurs="0" maxOccurs="unbounded" />
+ 	   </xsi:sequence>   		    
+    </xsi:complexType>
+  
+</xsi:schema>

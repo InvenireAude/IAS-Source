@@ -1,0 +1,6 @@
+{
+  "QName"   : "TEST",
+  "QType"   : "1",
+  "QAttrs"  : ["CurrentQDepth", "MaxQDepth"],
+  "_dmType" : "http://www.invenireaude.com/qsystem/fmt/pcf/admin/cmd#InquireQ"
+}
