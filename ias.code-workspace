@@ -1,0 +1,161 @@
+{
+  "folders": [
+    {
+      "path": "IAS-BuilderTools"
+    },
+    {
+      "path": "IAS-CommonLib"
+    },
+    {
+      "path": "IAS-CommonLib-TestCases"
+    },
+    {
+      "path": "IAS-DataModelLib"
+    },
+    {
+      "path": "IAS-DataModelLib-CodeGen"
+    },
+    {
+      "path": "IAS-DataModelLib-TestCases"
+    },
+    {
+      "path": "IAS-LangLib"
+    },
+    {
+      "path": "IAS-LangLib-TestCases"
+    },
+    {
+      "path": "IAS-LangMod-SysMon"
+    },
+    {
+      "path": "IAS-QSystemExe"
+    },
+    {
+      "path": "IAS-QSystemFmt-MFBIK"
+    },
+    {
+      "path": "IAS-QSystemFmt-MQPCF"
+    },
+    {
+      "path": "IAS-QSystemFmt-SOAP"
+    },
+    {
+      "path": "IAS-QSystemLib"
+    },
+    {
+      "path": "IAS-QSystemLib-TestCases"
+    },
+    {
+      "path": "IAS-QSystemDS-TestCases"
+    },
+    {
+      "path": "IAS-QSystemMod-DB2"
+    },
+    {
+      "path": "IAS-QSystemMod-FCGI"
+    },
+    {
+      "path": "IAS-QSystemMod-JavaScript"
+    },
+    {
+      "path": "IAS-QSystemMod-LDAP"
+    },
+    {
+      "path": "IAS-QSystemMod-LMDB"
+    },
+    {
+      "path": "IAS-QSystemMod-Oracle"
+    },
+    {
+      "path": "IAS-QSystemMod-PostgreSQL"
+    },
+    {
+      "path": "IAS-QSystemMod-ODBC"
+    },
+    {
+      "path": "IAS-QSystemMod-ServiceManager"
+    },
+    {
+      "path": "IAS-QSystemMod-SPS"
+    },
+    {
+      "path": "IAS-QSystemMod-SPS-oriig"
+    },
+    {
+      "path": "IAS-QSystemMod-SQLite"
+    },
+    {
+      "path": "IAS-QSystemMod-WMQ"
+    },
+    {
+      "path": "IAS-ServiceManagerExe"
+    },
+    {
+      "path": "IAS-ServiceManagerLib"
+    }
+  ],
+	"settings": {
+		"terminal.integrated.env.linux": {
+			"IAS_PLATFORM": "Linux-64bitO3"
+		},
+		"search.exclude": {
+			"**/out": true,
+			"${workspaceFolder}/out": true
+		},
+		"files.exclude": {
+			"**/out": true
+    },
+    "files.associations": {
+      "iosfwd": "cpp",
+      "iostream": "cpp",
+      "cctype": "cpp",
+      "clocale": "cpp",
+      "cmath": "cpp",
+      "cstdarg": "cpp",
+      "cstddef": "cpp",
+      "cstdio": "cpp",
+      "cstdlib": "cpp",
+      "cstring": "cpp",
+      "ctime": "cpp",
+      "cwchar": "cpp",
+      "cwctype": "cpp",
+      "array": "cpp",
+      "atomic": "cpp",
+      "*.tcc": "cpp",
+      "bitset": "cpp",
+      "chrono": "cpp",
+      "cstdint": "cpp",
+      "deque": "cpp",
+      "list": "cpp",
+      "unordered_map": "cpp",
+      "unordered_set": "cpp",
+      "vector": "cpp",
+      "exception": "cpp",
+      "hash_map": "cpp",
+      "hash_set": "cpp",
+      "fstream": "cpp",
+      "functional": "cpp",
+      "initializer_list": "cpp",
+      "iomanip": "cpp",
+      "istream": "cpp",
+      "limits": "cpp",
+      "memory": "cpp",
+      "optional": "cpp",
+      "ostream": "cpp",
+      "ratio": "cpp",
+      "sstream": "cpp",
+      "stdexcept": "cpp",
+      "streambuf": "cpp",
+      "string_view": "cpp",
+      "system_error": "cpp",
+      "thread": "cpp",
+      "cinttypes": "cpp",
+      "type_traits": "cpp",
+      "tuple": "cpp",
+      "typeindex": "cpp",
+      "typeinfo": "cpp",
+      "utility": "cpp",
+      "algorithm": "cpp"
+    }
+  }
+}
