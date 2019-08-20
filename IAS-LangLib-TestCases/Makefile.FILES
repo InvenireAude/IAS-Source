@@ -1,0 +1,5 @@
+#Mon Oct 17 18:18:27 CEST 2016
+FILES+=testcases/TCProgramExecution
+FILES+=testcases/TCProgramPrinting
+FILES+=testcases/TCTypePrinting
+MAINFILES+=ias_lang_testcases
