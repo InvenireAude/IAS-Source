@@ -42,9 +42,13 @@ SubString2::~SubString2() throw(){
 void SubString2::executeExternal(Exe::Context *pCtx) const{
 	IAS_TRACER;
 	DM::DataObject* pParameters = pCtx->getBlockVariables(0);
-	const String strArgument = pParameters->getString("strArgument");
+
+  const WString strArgument = TypeTools::ToWString(pParameters->getString("strArgument"));
 	int iStart  = pParameters->getInteger("iStart");
-	pParameters->setString(Model::Dec::ResultDeclarationNode::CStrResultVariable, strArgument.substr(iStart));
+
+	pParameters->setString(Model::Dec::ResultDeclarationNode::CStrResultVariable,
+    TypeTools::FromWString(strArgument.substr(iStart))
+    );
 }
 /*************************************************************************/
 Statement* SubString2::Create(const DM::Type* pType, const StringList& lstParamaters, const ModuleProxy* pModuleProxy){

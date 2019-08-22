@@ -1,14 +1,14 @@
 /*
  * File: IAS-DataModelLib/src/dm/Type.h
- * 
+ *
  * Copyright (C) 2015, Albert Krzymowski
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  * http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -56,12 +56,13 @@ public:
 	    BooleanType,
 	    FloatType,
 	    IntegerType,
+      DecimalType,
 	    DateTimeType,
 	    DateType,
 	    TimeType,
 	    DataObjectType,
 	    TextType,
-		RawType,
+		  RawType,
 	    AnyType
 	   };
 
@@ -93,6 +94,9 @@ public:
 
 	/** Creates a data object and initializes it to a given value. */
 	virtual DataObject* createDataObject(const IAS::DateTime& tValue) const = 0;
+
+	/** Creates a data object and initializes it to a given value. */
+	virtual DataObject* createDataObject(const IAS::Decimal& aValue) const = 0;
 
 	/** Creates a data object and initializes it to a given value. */
 	virtual DataObject* createDataObject(const DataObject* pDataObject) const = 0;

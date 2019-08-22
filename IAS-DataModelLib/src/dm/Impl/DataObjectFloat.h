@@ -1,14 +1,14 @@
 /*
  * File: IAS-DataModelLib/src/dm/Impl/DataObjectFloat.h
- * 
+ *
  * Copyright (C) 2015, Albert Krzymowski
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  * http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -37,6 +37,8 @@ public:
 	virtual void setInteger(int iValue);
 	virtual void setBoolean(bool bValue);
 	virtual void setFloat(Float fValue);
+  virtual void setDecimal(const Decimal& dValue);
+
 	virtual void setDataObject(const IAS::DM::DataObject* pDataObject);
 
 
@@ -44,6 +46,7 @@ public:
 	virtual bool    toBoolean()const;
 	virtual int     toInteger()const;
 	virtual Float    toFloat()const;
+  virtual Decimal toDecimal()const;
 
 	virtual bool    equals(const IAS::DM::DataObject* dmValue)const;
 

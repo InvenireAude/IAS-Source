@@ -1,14 +1,14 @@
 /*
  * File: IAS-DataModelLib/src/dm/Impl/DataObject.h
- * 
+ *
  * Copyright (C) 2015, Albert Krzymowski
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  * http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -60,6 +60,7 @@ public:
 	virtual IAS::Time  getTime(const String& strXPath)const;
 	virtual String  getString(const String& strXPath)const;
 	virtual void    getRaw(const String& strXPath, RawContent* pRawContent)const;
+  virtual Decimal getDecimal(const String& strXPath)const;
 
 	virtual bool    getBoolean(const IAS::DM::Property* pProperty) const;
 	virtual int     getInteger(const IAS::DM::Property* pProperty) const;
@@ -69,6 +70,7 @@ public:
 	virtual IAS::Time  getTime(const IAS::DM::Property* pProperty) const;
 	virtual String  getString(const IAS::DM::Property* pProperty)const;
 	virtual void    getRaw(const Property* pProperty, RawContent* pRawContent)const;
+  virtual Decimal getDecimal(const Property* pProperty)const;
 
 	virtual String  toString() const;
 	virtual bool    toBoolean() const;
@@ -78,6 +80,7 @@ public:
 	virtual IAS::Date  toDate() const;
 	virtual IAS::Time  toTime() const;
 	virtual void toRaw(RawContent* pRawContent)const;
+  virtual Decimal toDecimal() const;
 
 	virtual const ::IAS::DM::Type*   getType() const;
 
@@ -94,6 +97,7 @@ public:
 	virtual void  setBoolean(const String& strXPath, bool bValue);
 	virtual void  setString(const String& strXPath, const String& strValue);
 	virtual void  setRaw(const String& strXPath, const RawContent* pRawContent);
+  virtual void  setDecimal(const String& strXPath, const Decimal& d);
 
 	virtual void setDataObject(const IAS::DM::Property* pProperty, ::IAS::DM::DataObject *pDataObject);
 
@@ -105,6 +109,7 @@ public:
 	virtual void  setBoolean(const IAS::DM::Property* pProperty, bool bValue);
 	virtual void  setString(const IAS::DM::Property* pProperty, const String& strValue);
 	virtual void  setRaw(const IAS::DM::Property* pProperty, const RawContent* pRawContent);
+  virtual void  setDecimal(const Property* pProperty, const Decimal& d);
 
 	virtual void unset(const String& strXPath);
 	virtual void unset(const ::IAS::DM::Property* pProperty);
@@ -118,6 +123,7 @@ public:
 
 	virtual void setString(const String& strValue);
 	virtual void setRaw(const RawContent* pRawContent);
+  virtual void setDecimal(const Decimal& d);
 	virtual void setInteger(int iValue);
 	virtual void setBoolean(bool bValue);
 	virtual void setFloat(Float fValue);

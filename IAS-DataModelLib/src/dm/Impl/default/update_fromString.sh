@@ -6,7 +6,7 @@ sedfile.sh "${1}" ${2}.h
 sedfile.sh "${1}" ${2}.cpp
 }
 
-for i in Boolean Float Integer DateTime Date Time
+for i in Boolean Float Integer DateTime Date Time Decimal
 do
 
 cp String.h ${i}.h

@@ -1,14 +1,14 @@
 /*
  * File: IAS-DataModelLib/src/dm/Impl/DataFactory.cpp
- * 
+ *
  * Copyright (C) 2015, Albert Krzymowski
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  * http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -27,6 +27,7 @@
 #include "../../dm/Impl/default/String.h"
 #include "../../dm/Impl/default/Time.h"
 #include "../../dm/Impl/default/Raw.h"
+#include "../../dm/Impl/default/Decimal.h"
 #include "../../dm/Impl/MemoryManager.h"
 #include "../../dm/Impl/Type.h"
 #include "../../dm/Impl/TypeAny.h"
@@ -63,6 +64,7 @@ DataFactory::DataFactory(const DM::DataFactory* pParentFactory)
 		declareDefaultType(Impl::Default::Ext::DateType::GetInstance());
 		declareDefaultType(Impl::Default::Ext::TimeType::GetInstance());
 		declareDefaultType(Impl::Default::Ext::RawType::GetInstance());
+		declareDefaultType(Impl::Default::Ext::DecimalType::GetInstance());
 
 		declareDefaultType(Impl::TypeAny::GetInstance());
 
@@ -75,6 +77,7 @@ DataFactory::DataFactory(const DM::DataFactory* pParentFactory)
 		declareXSDType(Impl::Default::Ext::DateType::GetInstance(),    "date");
 		declareXSDType(Impl::Default::Ext::TimeType::GetInstance(),    "time");
 		declareXSDType(Impl::Default::Ext::RawType::GetInstance(),     "binary");
+		declareXSDType(Impl::Default::Ext::DecimalType::GetInstance(), "decimal");
 
 		IAS_LOG(IAS::DM::LogLevel::INSTANCE.isInfo(),"Initialized:"<<(void*)this);
 	}

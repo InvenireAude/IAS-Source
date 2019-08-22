@@ -1,14 +1,14 @@
 /*
  * File: IAS-DataModelLib/src/dm/xml/XMLSerializer.cpp
- * 
+ *
  * Copyright (C) 2015, Albert Krzymowski
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  * http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -174,7 +174,7 @@ void XMLSerializer::serializeElement(const DataObject* pDataObject,
 
 	/* xsi:type */
 	if(bXSIType){
-		String typeURI(pType->getURI()); 
+		String typeURI(pType->getURI());
 		if(typeURI.empty()) {
 			pWriter->writeAttributeNS(String("xsi"),String("type"),pType->getName(),String(""));
 		} else {
@@ -194,6 +194,7 @@ void XMLSerializer::serializeElement(const DataObject* pDataObject,
 		case ::IAS::DM::Type::BooleanType:
 		case ::IAS::DM::Type::TextType:
 		case ::IAS::DM::Type::IntegerType:
+    case ::IAS::DM::Type::DecimalType:
 		case ::IAS::DM::Type::FloatType:
 		case ::IAS::DM::Type::DateTimeType:
 		case ::IAS::DM::Type::DateType:

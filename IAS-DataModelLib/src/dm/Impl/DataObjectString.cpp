@@ -1,14 +1,14 @@
 /*
  * File: IAS-DataModelLib/src/dm/Impl/DataObjectString.cpp
- * 
+ *
  * Copyright (C) 2015, Albert Krzymowski
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  * http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -75,6 +75,11 @@ IAS::DateTime DataObjectString::toDateTime()const{
 	return IAS::DateTime(strValue);
 }
 /*************************************************************************/
+Decimal DataObjectString::toDecimal()const{
+	IAS_TRACER;
+	return Decimal(strValue);
+}
+/*************************************************************************/
 void DataObjectString::setString(const ::IAS::String& strValue){
 	IAS_TRACER;
 
@@ -114,6 +119,11 @@ void DataObjectString::setDate(const IAS::Date& tValue){
 void DataObjectString::setTime(const IAS::Time& tValue){
 	IAS_TRACER;
 	strValue=tValue.toString();
+}
+/*************************************************************************/
+void DataObjectString::setDecimal(const Decimal& aValue){
+	IAS_TRACER;
+	strValue = aValue.toString();
 }
 /*************************************************************************/
 void DataObjectString::setDataObject(const IAS::DM::DataObject* pDataObject){

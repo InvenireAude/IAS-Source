@@ -40,10 +40,12 @@ SubString3::~SubString3() throw(){
 void SubString3::executeExternal(Exe::Context *pCtx) const{
 	IAS_TRACER;
 	DM::DataObject* pParameters = pCtx->getBlockVariables(0);
-	const String strArgument = pParameters->getString("strArgument");
+	const WString strArgument = TypeTools::ToWString(pParameters->getString("strArgument"));
 	int iStart  = pParameters->getInteger("iStart");
 	int iLength = pParameters->getInteger("iLength");
-	pParameters->setString(Model::Dec::ResultDeclarationNode::CStrResultVariable, strArgument.substr(iStart,iLength));
+	pParameters->setString(Model::Dec::ResultDeclarationNode::CStrResultVariable,
+    TypeTools::FromWString(strArgument.substr(iStart,iLength))
+    );
 }
 /*************************************************************************/
 Statement* SubString3::Create(const DM::Type* pType, const StringList& lstParamaters, const ModuleProxy* pModuleProxy){

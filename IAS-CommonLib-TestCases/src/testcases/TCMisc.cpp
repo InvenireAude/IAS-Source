@@ -1,14 +1,14 @@
 /*
  * File: IAS-CommonLib-TestCases/src/testcases/TCMisc.cpp
- * 
+ *
  * Copyright (C) 2015, Albert Krzymowski
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  * http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -41,6 +41,7 @@ void TCMisc::init(TestSuite* pTestSuite){
 	IAS_TRACER;
 	//theTestRunner.addCase("ALL",&::IAS::TCT::TCMisc::caseALL);
 	theTestRunner.addCase("Base64",&::IAS::TCT::TCMisc::caseBase64);
+  theTestRunner.addCase("Decimal",&::IAS::TCT::TCMisc::decimal);
 	TestUnit::init("TCMisc",&theTestRunner,pTestSuite);
 }
 /*************************************************************************/
@@ -98,6 +99,42 @@ void TCMisc::caseBase64(){
 	std::cout<<strOutput<<'\n';
 	String str2((const char*)buffer,iDataLen-1);
 	std::cout<<str2<<'\n';
+}
+/*************************************************************************/
+void TCMisc::decimal(){
+	IAS_TRACER;
+
+	Decimal d1("+123.4");
+  Decimal d2(123.456);
+  Decimal d3(-1234.56);
+
+ // std::cout<<"Decimal:"<<d1<<" "<<d2<<" "<<d3<<std::endl;
+ // std::cout<<"Decimal2:"<<(Float)d2<<" "<<(long)d2<<" "<<d2.toString()<<std::endl;
+ // std::cout<<"Decimal3:"<<(d2+d3)<<std::endl;
+ // std::cout<<"Decimal3:"<<(Decimal)100<<" "<<(d2+(Decimal)100)<<std::endl;
+
+	if((d2+(Decimal)100).toString().compare("223.45") != 0)
+			IAS_THROW(InternalException("Test case failed for test case: Decimal [01]"));
+
+	if((d2-(Decimal)100).toString().compare("23.45") != 0)
+			IAS_THROW(InternalException("Test case failed for test case: Decimal [02]"));
+
+	if((d2*(Decimal)10).toString().compare("1234.50") != 0)
+			IAS_THROW(InternalException("Test case failed for test case: Decimal [03]" + (d2*(Decimal)10).toString()));
+
+	if((d2/(Decimal)-10).toString().compare("-12.34") != 0)
+			IAS_THROW(InternalException("Test case failed for test case: Decimal [04]" + (d2/(Decimal)-10).toString()));
+
+	if(d1 == d2)
+			IAS_THROW(InternalException("Test case failed for test case: Decimal [05]"));
+
+	if(d1 != Decimal("123.40"))
+			IAS_THROW(InternalException("Test case failed for test case: Decimal [06]" + d1.toString() + " ? 123.40"));
+
+	if(!(d1 != Decimal("123.41")))
+			IAS_THROW(InternalException("Test case failed for test case: Decimal [07]" + d1.toString() + " ? 123.41"));
+
+
 }
 /*************************************************************************/
 } /* namespace TCT */

@@ -97,6 +97,7 @@
 #include "commonlib/time/TimeSamplesRegister.h"
 
 #include "commonlib/types/BitMap.h"
+#include "commonlib/types/Decimal.h"
 
 #include "commonlib/sys/Signal.h"
 #include "commonlib/sys/DynamicLibrary.h"

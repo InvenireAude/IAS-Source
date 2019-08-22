@@ -1,14 +1,14 @@
 /*
  * File: IAS-DataModelLib/src/dm/Impl/DataObjectTime.cpp
- * 
+ *
  * Copyright (C) 2015, Albert Krzymowski
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  * http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -45,6 +45,13 @@ int DataObjectTime::toInteger()const{
 	return (int)iValue;
 }
 /*************************************************************************/
+Decimal DataObjectTime::toDecimal()const{
+	IAS_TRACER;
+	time_t iValue;
+	tValue.toPosixTime(iValue);
+	return (int)iValue;
+}
+/*************************************************************************/
 IAS::DateTime DataObjectTime::toDateTime()const{
 	IAS_TRACER;
 	return DateTime(tValue);
@@ -75,6 +82,12 @@ void DataObjectTime::setDateTime(const IAS::DateTime& tValue){
 void DataObjectTime::setTime(const IAS::Time& tValue){
 	IAS_TRACER;
 	this->tValue = tValue;
+}
+/*************************************************************************/
+void DataObjectTime::setDecimal(const IAS::Decimal& aValue){
+	IAS_TRACER;
+  time_t tmpValue((long)aValue);
+	tValue.fromPosixTime(tmpValue);
 }
 /*************************************************************************/
 void DataObjectTime::setDataObject(const IAS::DM::DataObject* pDataObject){

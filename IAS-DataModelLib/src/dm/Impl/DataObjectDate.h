@@ -1,14 +1,14 @@
 /*
  * File: IAS-DataModelLib/src/dm/Impl/DataObjectDate.h
- * 
+ *
  * Copyright (C) 2015, Albert Krzymowski
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  * http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -36,12 +36,15 @@ public:
 	virtual void setInteger(int iValue);
 	virtual void setDateTime(const IAS::DateTime& tValue);
 	virtual void setDate(const IAS::Date& tValue);
+  virtual void setDecimal(const Decimal& dValue);
+
 	virtual void setDataObject(const IAS::DM::DataObject* pDataObject);
 
 	virtual String toString()const;
 	virtual int    toInteger()const;
 	virtual IAS::DateTime toDateTime()const;
 	virtual IAS::Date toDate()const;
+  virtual Decimal toDecimal()const;
 
 	virtual bool    equals(const IAS::DM::DataObject* dmValue)const;
 

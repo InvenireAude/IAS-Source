@@ -121,8 +121,10 @@ void JSONSerializer::serializeElement(const DataObject* pDataObject,
 				printEscaped(pDataObject->toString());
 			}
 			break;
-		case ::IAS::DM::Type::BooleanType:
+
+    case ::IAS::DM::Type::BooleanType:
 		case ::IAS::DM::Type::IntegerType:
+    case ::IAS::DM::Type::DecimalType:
 		case ::IAS::DM::Type::FloatType:
 
 			if(bXSIType){

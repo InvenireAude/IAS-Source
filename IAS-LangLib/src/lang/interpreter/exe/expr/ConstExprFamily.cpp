@@ -1,14 +1,14 @@
 /*
  * File: IAS-LangLib/src/lang/interpreter/exe/expr/ConstExprFamily.cpp
- * 
+ *
  * Copyright (C) 2015, Albert Krzymowski
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  * http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -21,6 +21,7 @@
 #include <commonlib/commonlib.h>
 
 #include "ConstIntegerExpr.h"
+#include "ConstDecimalExpr.h"
 #include "ConstBooleanExpr.h"
 #include "ConstStringExpr.h"
 #include "ConstFloatExpr.h"
@@ -77,6 +78,10 @@ Expr* ConstExprFamily::Create(const DM::Type* pType, const String& strValue){
 
 	case DM::Type::DateTimeType:
 		ptrExpr = IAS_DFT_FACTORY<ConstDateTimeExpr>::Create(IAS::DateTime(strValue));
+		break;
+
+	case DM::Type::DecimalType:
+		ptrExpr = IAS_DFT_FACTORY<ConstDecimalExpr>::Create(IAS::Decimal(strValue));
 		break;
 
 	case DM::Type::AnyType:

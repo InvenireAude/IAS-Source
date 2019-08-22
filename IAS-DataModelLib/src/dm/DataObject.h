@@ -1,14 +1,14 @@
 /*
  * File: IAS-DataModelLib/src/dm/DataObject.h
- * 
+ *
  * Copyright (C) 2015, Albert Krzymowski
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  * http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -71,6 +71,7 @@ public:
 	virtual IAS::Date  getDate(const String& strXPath)const=0;
 	virtual String  getString(const String& strXPath)const=0;
 	virtual void    getRaw(const String& strXPath, RawContent* pRawContent)const=0;
+	virtual Decimal getDecimal(const String& strXPath)const=0;
 
 
 	virtual bool    getBoolean(const Property* pProperty)const=0;
@@ -81,6 +82,7 @@ public:
 	virtual IAS::Time  getTime(const Property* pProperty)const=0;
 	virtual String  getString(const Property* pProperty)const=0;
 	virtual void    getRaw(const Property* pProperty, RawContent* pRawContent)const=0;
+  virtual Decimal getDecimal(const Property* pProperty)const=0;
 
 	virtual void setDataObject(const String& strXPath, DataObject *pDataObject)=0;
 
@@ -94,6 +96,7 @@ public:
 	virtual void  setBoolean(const String& strXPath, bool bValue)=0;
 	virtual void  setString(const String& strXPath, const String& strValue)=0;
 	virtual void  setRaw(const String& strXPath, const RawContent* pRawContent)=0;
+  virtual void  setDecimal(const String& strXPath, const Decimal& d)=0;
 
 	virtual void setDataObject(const Property* pProperty, DataObject *pDataObject)=0;
 
@@ -105,6 +108,7 @@ public:
 	virtual void  setBoolean(const Property* pProperty, bool bValue)=0;
 	virtual void  setString(const Property* pProperty, const String& strValue)=0;
 	virtual void  setRaw(const Property* pProperty, const RawContent* pRawContent)=0;
+	virtual void  setDecimal(const Property* pProperty, const Decimal& d)=0;
 
 	virtual String  toString()   const = 0;
 	virtual bool    toBoolean()  const = 0;
@@ -114,6 +118,7 @@ public:
 	virtual IAS::Date      toDate() const = 0;
 	virtual IAS::Time      toTime() const = 0;
 	virtual void toRaw(RawContent* pRawContent)const=0;
+  virtual Decimal toDecimal() const = 0;
 
 	virtual const Type*   getType() const =0;
 
@@ -128,6 +133,7 @@ public:
 
 	virtual void setString(const String& strValue)=0;
 	virtual void setRaw(const RawContent* pRawContent)=0;
+  virtual void setDecimal(const Decimal& d)=0;
 	virtual void setInteger(int iValue)=0;
 	virtual void setBoolean(bool bValue)=0;
 	virtual void setFloat(Float fValue)=0;

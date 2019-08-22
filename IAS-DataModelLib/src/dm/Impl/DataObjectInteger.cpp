@@ -1,14 +1,14 @@
 /*
  * File: IAS-DataModelLib/src/dm/Impl/DataObjectInteger.cpp
- * 
+ *
  * Copyright (C) 2015, Albert Krzymowski
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  * http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -78,6 +78,11 @@ IAS::DateTime DataObjectInteger::toDateTime()const{
 	return tsValue;
 }
 /*************************************************************************/
+Decimal DataObjectInteger::toDecimal()const{
+	IAS_TRACER;
+	return iValue;
+}
+/*************************************************************************/
 void DataObjectInteger::setString(const String& strValue){
 	IAS_TRACER;
 	iValue = TypeTools::StringToInt(strValue);
@@ -96,6 +101,11 @@ void DataObjectInteger::setBoolean(bool bValue){
 void DataObjectInteger::setFloat(Float fValue){
 	IAS_TRACER;
 	iValue = (int)fValue;
+}
+/*************************************************************************/
+void DataObjectInteger::setDecimal(const Decimal& aValue){
+	IAS_TRACER;
+	this->iValue = (long)aValue;
 }
 /*************************************************************************/
 void DataObjectInteger::setDateTime(const IAS::DateTime& tValue){

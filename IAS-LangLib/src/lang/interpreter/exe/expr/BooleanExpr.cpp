@@ -1,14 +1,14 @@
 /*
  * File: IAS-LangLib/src/lang/interpreter/exe/expr/BooleanExpr.cpp
- * 
+ *
  * Copyright (C) 2015, Albert Krzymowski
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  * http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -71,6 +71,11 @@ int  BooleanExpr::evaluateInt(Context *pCtx) const{
 	IAS::Time tsResult;
 	tsResult.setTime(0,0,evaluateBoolean(pCtx));
 	return tsResult;
+}
+/*************************************************************************/
+::IAS::Decimal BooleanExpr::evaluateDecimal(Context *pCtx) const{
+	IAS_TRACER;
+	return evaluateBoolean(pCtx);
 }
 /*************************************************************************/
 void BooleanExpr::evaluate(Context *pCtx, DM::DataObjectPtr& refResult) const{

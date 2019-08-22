@@ -1,14 +1,14 @@
 /*
  * File: IAS-DataModelLib/src/dm/Impl/DataObject.cpp
- * 
+ *
  * Copyright (C) 2015, Albert Krzymowski
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  * http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -146,6 +146,11 @@ String  DataObject::getString(const IAS::DM::Property* pProperty)const{
 }
 /*************************************************************************/
 void DataObject::getRaw(const IAS::DM::Property* pProperty, RawContent* pRawContent)const{
+	IAS_TRACER;
+	IAS_THROW(RuntimeException(String("Not a complex type.")));
+}
+/*************************************************************************/
+Decimal DataObject::getDecimal(const IAS::DM::Property* pProperty)const{
 	IAS_TRACER;
 	IAS_THROW(RuntimeException(String("Not a complex type.")));
 }
@@ -301,6 +306,17 @@ void  DataObject::setRaw(const String& strXPath, const RawContent* pRawContent){
 	pParent->setRaw(pProperty,pRawContent);
 }
 /*************************************************************************/
+void  DataObject::setDecimal(const String& strXPath, const Decimal& d){
+	IAS_TRACER;
+	IAS_LOG(IAS::DM::LogLevel::INSTANCE.isInfo(),"setDataObject:["<<strXPath<<"], "<<d.toString());
+
+	IAS::DM::DataObject* pParent;
+	const ::IAS::DM::Property *pProperty;
+	XPathCursor::FindLastParent(this,strXPath,pParent, pProperty);
+
+	pParent->setDecimal(pProperty,d);
+}
+/*************************************************************************/
 void DataObject::unset(const String& strXPath){
 	IAS_TRACER;
 
@@ -364,6 +380,11 @@ void DataObject::setRaw(const IAS::DM::Property* pProperty, const RawContent* pR
 	IAS_THROW(RuntimeException(String("Not a complex type.")));
 }
 /*************************************************************************/
+void DataObject::setDecimal(const IAS::DM::Property* pProperty, const Decimal& d){
+	IAS_TRACER;
+	IAS_THROW(RuntimeException(String("Not a complex type.")));
+}
+/*************************************************************************/
 
 /*************************************************************************/
 bool DataObject::getBoolean(const String& strXPath)const{
@@ -406,6 +427,11 @@ void DataObject::getRaw(const String& strXPath, RawContent* pRawContent) const{
 	return getDataObject(strXPath)->toRaw(pRawContent);
 }
 /*************************************************************************/
+Decimal DataObject::getDecimal(const String& strXPath) const{
+	IAS_TRACER;
+	return getDataObject(strXPath)->toDecimal();
+}
+/*************************************************************************/
 String DataObject::toString() const{
 	IAS_TRACER;
 	IAS_THROW(IllegalCastException(pType,"Conversion to string not available."));
@@ -415,6 +441,12 @@ void DataObject::toRaw(RawContent* pRawContent) const{
 	IAS_TRACER;
 	IAS_LOG(IAS::DM::LogLevel::INSTANCE.isError(),"toRaw not allowed:  ["<<pType->getName()<<"]");
 	IAS_THROW(IllegalCastException(pType,"Conversion to Raw content not available."));
+}
+/*************************************************************************/
+Decimal DataObject::toDecimal() const{
+	IAS_TRACER;
+	IAS_LOG(IAS::DM::LogLevel::INSTANCE.isError(),"toDecimal not allowed:  ["<<pType->getName()<<"]");
+	IAS_THROW(IllegalCastException(pType,"Conversion to Decimal content not available."));
 }
 /*************************************************************************/
 bool DataObject::toBoolean()const{
@@ -456,6 +488,11 @@ void DataObject::setString(const String& strValue){
 void DataObject::setRaw(const RawContent* pRawContent){
 	IAS_TRACER;
 	IAS_THROW(IllegalCastException(pType,"Conversion from Raw content not available."));
+}
+/*************************************************************************/
+void DataObject::setDecimal(const Decimal& d){
+	IAS_TRACER;
+	IAS_THROW(IllegalCastException(pType,"Conversion from Decimal content not available."));
 }
 /*************************************************************************/
 void DataObject::setInteger(int iValue){

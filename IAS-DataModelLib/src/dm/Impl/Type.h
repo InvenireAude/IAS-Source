@@ -1,14 +1,14 @@
 /*
  * File: IAS-DataModelLib/src/dm/Impl/Type.h
- * 
+ *
  * Copyright (C) 2015, Albert Krzymowski
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  * http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -60,7 +60,7 @@ public:
 
 
     virtual IAS::DM::DataObject* createDataObject() const;
-	virtual IAS::DM::DataObject* createDataObject(const char*  sValue) const;
+	  virtual IAS::DM::DataObject* createDataObject(const char*  sValue) const;
     virtual IAS::DM::DataObject* createDataObject(const String& strValue) const;
     virtual IAS::DM::DataObject* createDataObject(int iValue) const;
     virtual IAS::DM::DataObject* createDataObject(bool bValue) const;
@@ -68,6 +68,7 @@ public:
     virtual IAS::DM::DataObject* createDataObject(const IAS::Time& tsValue) const;
     virtual IAS::DM::DataObject* createDataObject(const IAS::Date& tsValue) const;
     virtual IAS::DM::DataObject* createDataObject(const IAS::DateTime& tsValue) const;
+    virtual IAS::DM::DataObject* createDataObject(const IAS::Decimal&  aValue) const;
 
 	virtual IAS::DM::DataObject* createDataObject(const IAS::DM::DataObject* pDataObject) const;
 

@@ -1,14 +1,14 @@
 /*
  * File: IAS-LangLib/src/lang/interpreter/exe/expr/BinaryExprFamily.cpp
- * 
+ *
  * Copyright (C) 2015, Albert Krzymowski
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  * http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -22,6 +22,7 @@
 #include "BinaryBooleanExpr.h"
 #include "BinaryFloatExpr.h"
 #include "BinaryIntegerExpr.h"
+#include "BinaryDecimalExpr.h"
 #include "BinaryStringExpr.h"
 #include "BinaryDateTimeExpr.h"
 #include "BinaryDateExpr.h"
@@ -62,6 +63,7 @@ Expr* BinaryExprFamily::Create(Expr* pLeft, Expr* pRight, TypeInfoProxy aTypeInf
 
 		case DM::Type::TextType:     return BinaryStringExpr::Create(pLeft,pRight,aTypeInfoProxy);
 		case DM::Type::IntegerType:  return BinaryIntegerExpr::Create(pLeft,pRight,aTypeInfoProxy);
+    case DM::Type::DecimalType:  return BinaryDecimalExpr::Create(pLeft,pRight,aTypeInfoProxy);
 		case DM::Type::BooleanType:  return BinaryBooleanExpr::Create(pLeft,pRight,aTypeInfoProxy);
 		case DM::Type::FloatType:    return BinaryFloatExpr::Create(pLeft,pRight,aTypeInfoProxy);
 		case DM::Type::DateTimeType:

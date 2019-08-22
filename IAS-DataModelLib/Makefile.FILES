@@ -1,4 +1,4 @@
-#Thu Apr 27 18:53:09 CEST 2017
+#Wed Aug 21 17:49:04 CEST 2019
 FILES+=dm/gen/CppCodeGenerator
 FILES+=dm/gen/DataFactory
 FILES+=dm/gen/Impl/CppCodeGeneratorDataFactory
@@ -18,6 +18,7 @@ FILES+=dm/Impl/DataObjectBoolean
 FILES+=dm/Impl/DataObjectComplex
 FILES+=dm/Impl/DataObjectDate
 FILES+=dm/Impl/DataObjectDateTime
+FILES+=dm/Impl/DataObjectDecimal
 FILES+=dm/Impl/DataObjectFloat
 FILES+=dm/Impl/DataObjectInteger
 FILES+=dm/Impl/DataObjectList
@@ -27,6 +28,7 @@ FILES+=dm/Impl/DataObjectTime
 FILES+=dm/Impl/default/Boolean
 FILES+=dm/Impl/default/Date
 FILES+=dm/Impl/default/DateTime
+FILES+=dm/Impl/default/Decimal
 FILES+=dm/Impl/default/Float
 FILES+=dm/Impl/default/Integer
 FILES+=dm/Impl/default/Raw
@@ -46,6 +48,7 @@ FILES+=dm/Impl/TypeBoolean
 FILES+=dm/Impl/TypeComplex
 FILES+=dm/Impl/TypeDate
 FILES+=dm/Impl/TypeDateTime
+FILES+=dm/Impl/TypeDecimal
 FILES+=dm/Impl/TypeFloat
 FILES+=dm/Impl/TypeInteger
 FILES+=dm/Impl/TypeList

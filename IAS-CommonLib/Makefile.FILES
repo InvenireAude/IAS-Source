@@ -1,4 +1,4 @@
-#Tue Dec  5 17:53:21 CET 2017
+#Tue Aug 20 17:33:23 CEST 2019
 FILES+=commonlib/configfile/Properties
 FILES+=commonlib/configfile/PropertiesProvider
 FILES+=commonlib/configfile/PropertiesProviderFromFile
@@ -115,6 +115,7 @@ FILES+=commonlib/tools/SerializationHelper
 FILES+=commonlib/tools/Template
 FILES+=commonlib/tools/TypeTools
 FILES+=commonlib/types/BitMap
+FILES+=commonlib/types/Decimal
 FILES+=commonlib/ui/MessageCatalog
 FILES+=commonlib/ui/Messages
 FILES+=commonlib/ui/UserMessage

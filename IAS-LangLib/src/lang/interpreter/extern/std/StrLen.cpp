@@ -42,8 +42,8 @@ StrLen::~StrLen() throw(){
 void StrLen::executeExternal(Exe::Context *pCtx) const{
 	IAS_TRACER;
 	DM::DataObject* pParameters = pCtx->getBlockVariables(0);
-	const String strArgument = pParameters->getString("strArgument");
-	pParameters->setInteger(Model::Dec::ResultDeclarationNode::CStrResultVariable, strArgument.size());
+	const WString strArgument = TypeTools::ToWString(pParameters->getString("strArgument"));
+	pParameters->setInteger(Model::Dec::ResultDeclarationNode::CStrResultVariable, strArgument.length());
 }
 /*************************************************************************/
 Statement* StrLen::Create(const DM::Type* pType, const StringList& lstParamaters, const ModuleProxy* pModuleProxy){
