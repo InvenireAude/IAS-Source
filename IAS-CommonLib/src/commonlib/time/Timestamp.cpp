@@ -34,15 +34,27 @@ struct Locale{
 	 ias_std_unordered_map<std::string,int>  hmMonths;
 	 ias_std_unordered_map<std::string,int>  hmDays;
 
+  long int    iGMTOffset;
+  const char *sTimeZone;
+
+  const String CDftDateTimeFormatIn;
+  const String CDftDateTimeFormatOut;
+  const String CDftTimeFormat;
+  const String CDftDateFormat;
 };
 
 Locale TheLocale;
 
-const String& Timestamp::CDftDateTimeFormat("%Y-%m-%dT%H:%M:%S%F%Z");
-const String& Timestamp::CDftTimeFormat("%H:%M:%S");
-const String& Timestamp::CDftDateFormat("%Y-%m-%d");
+
 /*************************************************************************/
-Locale::Locale(){
+Locale::Locale():
+  CDftDateTimeFormatIn(EnvTools::GetEnvWithDefault("IAS_DATETIME_FMT_IN","%Y-%m-%dT%H:%M:%S%F%z")),
+  CDftDateTimeFormatOut(EnvTools::GetEnvWithDefault("IAS_DATETIME_FMT_OUT","%Y-%m-%dT%H:%M:%S%F")),
+  CDftTimeFormat(EnvTools::GetEnvWithDefault("IAS_TIME_FMT","%H:%M:%S")),
+  CDftDateFormat(EnvTools::GetEnvWithDefault("IAS_DATE_FMT","%Y-%m-%d"))
+{
+
+  tzset();
 
 	tabMonths.push_back(::nl_langinfo(ABMON_1));
 	tabMonths.push_back(::nl_langinfo(ABMON_2));
@@ -76,6 +88,13 @@ Locale::Locale(){
 		hmDays[*it]=iIdx++;
 	}
 
+  time_t t = time(NULL);
+  struct tm lt = {0};
+
+  localtime_r(&t, &lt);
+
+  iGMTOffset = lt.tm_gmtoff / 60;
+  sTimeZone  = lt.tm_zone;
 }
 /*************************************************************************/
 Timestamp::Timestamp(bool bCurrentSystemDate) {
@@ -214,28 +233,37 @@ String Timestamp::toString() const {
 /*************************************************************************/
 String Timestamp::toDateTimeString() const {
 	IAS_TRACER;
-	return toString("%Y-%m-%dT%H:%M:%S%F"/*//TODO (L) timestamp zones CDftDateTimeFormat*/);
+	return toString(TheLocale.CDftDateTimeFormatOut);
 }
 /*************************************************************************/
 String Timestamp::toTimeString() const {
 	IAS_TRACER;
-	return toString(CDftTimeFormat);
+	return toString(TheLocale.CDftTimeFormat);
 }
 /*************************************************************************/
 String Timestamp::toDateString() const {
 	IAS_TRACER;
-	return toString(CDftDateFormat);
+	return toString(TheLocale.CDftDateFormat);
 }
 /*************************************************************************/
 String Timestamp::toString(const String& strFormat) const {
 	IAS_TRACER;
+
 
 	StringStream ssValue;
 	ssValue<<std::setfill('0');
 	struct tm tmpTime;
 
 	memset(&tmpTime,0,sizeof(struct tm));
-	localtime_r(&theValue.tv_sec,&tmpTime);
+
+  String::const_iterator it=strFormat.end();
+
+  if( (*--it) == 'Z' && (*it) != '%'){
+    gmtime_r(&theValue.tv_sec,&tmpTime);
+  } else {
+    localtime_r(&theValue.tv_sec,&tmpTime);
+  }
+
 
 	tmpTime.tm_year+=1900;
 	tmpTime.tm_mon+=1;
@@ -269,17 +297,17 @@ String Timestamp::toString(const String& strFormat) const {
 				case 'S': ssValue<<std::setw(2)<<(tmpTime.tm_sec); break;
 				case 'f': ssValue<<std::setw(CFPrec)<<(theValue.tv_usec/CFRound);break;
 				case 'F':
-				if(theValue.tv_usec/CFRound > 0)
-				ssValue<<"."<<std::setw(CFPrec)<<(theValue.tv_usec/CFRound);
+				  if(theValue.tv_usec/CFRound > 0)
+				    ssValue<<"."<<std::setw(CFPrec)<<(theValue.tv_usec/CFRound);
 				break;
 				case 'u': ssValue<<std::setw(UFPrec)<<(theValue.tv_usec);break;
 				case 'U':
-				if(theValue.tv_usec > 0)
-				ssValue<<"."<<std::setw(UFPrec)<<(theValue.tv_usec);
+				  if(theValue.tv_usec > 0)
+				    ssValue<<"."<<std::setw(UFPrec)<<(theValue.tv_usec);
 				break;
 
-				case 'z': ssValue<<(timezone < 0 ? "-" : "+")<<std::setw(2)<<abs(timezone/3600); break;
-				case 'Z': if(timezone!=0)ssValue<<(timezone < 0 ? "-" : "+")<<std::setw(2)<<abs(timezone/3600); break;
+				case 'z': ssValue<<(TheLocale.iGMTOffset < 0 ? "-" : "+")<<std::setw(2)<<abs(TheLocale.iGMTOffset/60); break;
+				case 'Z': if(TheLocale.sTimeZone != 0){ ssValue<<TheLocale.sTimeZone;} break;
 
 				default:
 				IAS_THROW(BadUsageException(String("Invalid timestamp format:")+strFormat));
@@ -298,17 +326,17 @@ void Timestamp::fromString(const String& strValue) {
 /*************************************************************************/
 void Timestamp::fromDateTimeString(const String& strValue) {
 	IAS_TRACER;
-	fromString(strValue,CDftDateTimeFormat);
+	fromString(strValue,TheLocale.CDftDateTimeFormatIn);
 }
 /*************************************************************************/
 void Timestamp::fromDateString(const String& strValue) {
 	IAS_TRACER;
-	fromString(strValue,CDftDateFormat);
+	fromString(strValue,TheLocale.CDftDateFormat);
 }
 /*************************************************************************/
 void Timestamp::fromTimeString(const String& strValue) {
 	IAS_TRACER;
-	fromString(strValue,CDftTimeFormat);
+	fromString(strValue,TheLocale.CDftTimeFormat);
 }
 /*************************************************************************/
 void Timestamp::fromString(const String& strValue, const String& strFormat) {
@@ -321,13 +349,16 @@ void Timestamp::fromString(const String& strValue, const String& strFormat, bool
 
 	StringStream ssValue(strValue);
 
-	short iZone=0;
-
 	struct tm tmpTime;
 	memset(&tmpTime,0,sizeof(struct tm));
+
+  String strZone;
+  int    iZoneOff=0;
+
 	tmpTime.tm_mday=1;
 	tmpTime.tm_year=70;
-	bool bReplacement=false;
+
+  bool bReplacement=false;
 	short iMSec = 0;
 
 	for(String::const_iterator it=strFormat.begin();
@@ -378,8 +409,11 @@ void Timestamp::fromString(const String& strValue, const String& strFormat, bool
 
 					case 'f': iMSec=readUSec(ssValue,false);break;
 					case 'F': iMSec=readUSec(ssValue,true);break;
-					case 'z': iZone=readZone(ssValue,false); break;
-					case 'Z': iZone=readZone(ssValue,true); break;
+					case 'z': iZoneOff=readZoneOffset(ssValue) - TheLocale.iGMTOffset; break;
+					case 'Z':
+            ssValue>>strZone;
+            tmpTime.tm_zone=strZone.c_str();
+            break;
 
 					default:
 					IAS_THROW(BadUsageException(String("Invalid timestamp format:")+strFormat));
@@ -390,9 +424,10 @@ void Timestamp::fromString(const String& strValue, const String& strFormat, bool
 		}
 	}
 
-	//TODO (L) Time zones
-
 	tmpTime.tm_isdst=-1;
+
+  // tmpTime.tm_gmtoff does not work.
+  tmpTime.tm_min += iZoneOff ;
 
 
 	if (toLocalTime) {
@@ -464,7 +499,7 @@ short Timestamp::readUSec(std::istream& is, bool bOptionalDecimal) {
 	return iValue;
 }
 /*************************************************************************/
-short Timestamp::readZone(std::istream& is, bool bOptionalDecimal) {
+short Timestamp::readZoneOffset(std::istream& is) {
 	IAS_TRACER;
 
 	short iSign=0;
@@ -473,13 +508,9 @@ short Timestamp::readZone(std::istream& is, bool bOptionalDecimal) {
 
 	char c=is.get();
 
-	if(!is.eof()) {
-
-		if(bOptionalDecimal)
-		return 0;
-
-		IAS_THROW(BadUsageException("Parse error in a timestamp string, \'+/-\' in zone expected."));
-	}
+  if(!is.good()){
+    return TheLocale.iGMTOffset;
+  }
 
 	switch(c) {
 
@@ -487,27 +518,24 @@ short Timestamp::readZone(std::istream& is, bool bOptionalDecimal) {
 		case '-': iSign=-1; break;
 		case 'Z': return 0;
 		default:
-		if(bOptionalDecimal) {
-			is.unget();
-			return 0;
-		} else {
-			IAS_THROW(BadUsageException("Parse error in a timestamp string, \'+/-/Z\' in zone expected."));
-		}
+
+			IAS_THROW(BadUsageException("Parse error [1] in a timestamp string, \'+/-/Z\' in zone expected:"));
 	}
 
 	iHours=readNumber(is,2);
 
-	if(!is.eof()) {
+  c=is.get();
 
-		if((c=is.get()) == ':') {
-			iMinutes=readNumber(is,2);
-		} else {
-			is.unget();
-		}
+  if(!is.eof()){
 
-	}
+    if(c != ':'){
+      is.unget();
+    }
 
-	return iSign*60*iHours+iMinutes;
+    iMinutes=readNumber(is,2);
+  }
+
+	return iSign * 60 * iHours+iMinutes;
 }
 /*************************************************************************/
 short Timestamp::readAbbreviatedMonth(std::istream& is) {

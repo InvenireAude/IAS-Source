@@ -1,14 +1,14 @@
 /*
  * File: IAS-CommonLib/src/commonlib/time/Timestamp.h
- * 
+ *
  * Copyright (C) 2015, Albert Krzymowski
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  * http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -104,13 +104,9 @@ private:
 
 	short readNumber(std::istream& is, int iLimitDigits=0);
 	short readUSec(std::istream& is, bool bOptionalDecimal);
-	short readZone(std::istream& is, bool bOptionalDecimal);
+	short readZoneOffset(std::istream& is);
 	short readAbbreviatedMonth(std::istream& is);
 	time_t gmtToLocal(struct tm* timeinfo);
-
-	static const String& CDftDateTimeFormat;
-	static const String& CDftTimeFormat;
-	static const String& CDftDateFormat;
 
 	static const int CFPrec  = 3;
 	static const int CFRound = 1000;
