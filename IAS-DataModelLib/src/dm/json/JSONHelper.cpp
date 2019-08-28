@@ -25,12 +25,28 @@
 #include "../../dm/json/JSONSerializer.h"
 #include "../../dm/log/LogLevel.h"
 
+
 namespace IAS {
 namespace DM {
 namespace JSON {
 
+const String JSONHelper::CEnvDateTimeFormatOut("IAS_DM_TS_FMT");
+
+struct JSONHelperDefaults {
+
+ JSONHelperDefaults(){
+    EnvTools::GetEnv(JSONHelper::CEnvDateTimeFormatOut, strDateTimeFormatOut);
+ }
+
+  String strDateTimeFormatOut;
+};
+
+static JSONHelperDefaults TheJSONHelperDefaults;
 /*************************************************************************/
-JSONHelper::JSONHelper(const ::IAS::DM::DataFactory *pDataFactory):pDataFactory(pDataFactory){
+JSONHelper::JSONHelper(const ::IAS::DM::DataFactory *pDataFactory):
+  pDataFactory(pDataFactory),
+  strDateTimeFormatOut(TheJSONHelperDefaults.strDateTimeFormatOut){
+
 	IAS_TRACER;
 	IAS_CHECK_IF_VALID(pDataFactory);
 }
@@ -66,7 +82,7 @@ void JSONHelper::save(std::ostream& os,
 		   bool  bXSIType){
 	IAS_TRACER;
 
-	IAS_DFT_FACTORY<JSONSerializer>::PtrHolder ptrSerializer(IAS_DFT_FACTORY<JSONSerializer>::Create<std::ostream&>(os));
+	IAS_DFT_FACTORY<JSONSerializer>::PtrHolder ptrSerializer(IAS_DFT_FACTORY<JSONSerializer>::Create<const JSONHelper*, std::ostream&>(this,os));
 
 	ptrSerializer->serialize(pDataObject,bXSIType);
 
@@ -77,11 +93,15 @@ void JSONHelper::saveList(std::ostream& os,
 			                const ::IAS::DM::DataObjectList& lstDataObject){
   IAS_TRACER;
 
-	IAS_DFT_FACTORY<JSONSerializer>::PtrHolder ptrSerializer(IAS_DFT_FACTORY<JSONSerializer>::Create<std::ostream&>(os));
+	IAS_DFT_FACTORY<JSONSerializer>::PtrHolder ptrSerializer(IAS_DFT_FACTORY<JSONSerializer>::Create<const JSONHelper*, std::ostream&>(this,os));
 
 	ptrSerializer->serialize(lstDataObject, false);
 
 }
+/*************************************************************************/
+ void JSONHelper::setDateTimeFormatOut(const String& strDateTimeFormatOut){
+   this->strDateTimeFormatOut = strDateTimeFormatOut;
+ }
 /*************************************************************************/
 }
 }

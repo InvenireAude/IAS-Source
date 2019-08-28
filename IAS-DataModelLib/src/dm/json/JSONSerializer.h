@@ -28,7 +28,7 @@ class Type;
 namespace JSON {
 class LibJSONWriter;
 class JSONDocument;
-
+class JSONHelper;
 /*************************************************************************/
 /** The class. */
  class JSONSerializer {
@@ -40,7 +40,7 @@ public:
 	void serialize(const DataObjectList& lstDataObject, bool  bXSIType=true);
 
 protected:
-	JSONSerializer(std::ostream& os);
+	JSONSerializer(const JSONHelper *pJSONHelper, std::ostream& os);
 
 
 	void serializeElement(const DataObject* pDataObject,
@@ -66,6 +66,7 @@ protected:
   };
 
   static Prefixes prefixes;
+  const JSONHelper *pJSONHelper;
 
 	friend class ::IAS::Factory<JSONSerializer>;
 

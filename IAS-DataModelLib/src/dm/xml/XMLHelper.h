@@ -1,14 +1,14 @@
 /*
  * File: IAS-DataModelLib/src/dm/xml/XMLHelper.h
- * 
+ *
  * Copyright (C) 2015, Albert Krzymowski
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  * http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -82,11 +82,22 @@ public:
 		return bPrefixElements;
 	}
 
+  inline bool hasDateTimeFormatOut()const{
+    return !strDateTimeFormatOut.empty();
+  }
+
+  const String& getDateTimeFormatOut()const{
+    return strDateTimeFormatOut;
+  }
+
 	void setEmptyFirstNS(bool bEmptyFirstNS);
 	void setPrefixElements(bool bPrefixElements);
 
+  void setDateTimeFormatOut(const String& strDateTimeFormatOut);
+
 	static const String CEnvNULLAction;
 	static const String CEnvFirstNS;
+  static const String CEnvDateTimeFormatOut;
 	static const String CXMLPayloadElement;
 
 protected:
@@ -98,6 +109,8 @@ protected:
 	bool bSkipNullElements;
 	bool bEmptyFirstNS;
 	bool bPrefixElements;
+
+  String strDateTimeFormatOut;
 
 	friend class ::IAS::Factory<XMLHelper>;
 };

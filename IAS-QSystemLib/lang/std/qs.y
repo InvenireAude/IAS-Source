@@ -23,6 +23,25 @@ BEGIN
 
 END;
 
+PROGRAM std::setAttribute(
+  VAR ctx AS Context :  "http://www.invenireaude.org/qsystem/workers",
+	VAR _name  AS String,
+  VAR _value AS String)
+BEGIN
+
+  WITH a AS ctx.attributes DO
+    IF a.name == _name THEN BEGIN
+      a.value = _value;
+      RETURN;
+   END;
+
+  ctx.attributes = NEW Attribute :  "http://www.invenireaude.org/qsystem/workers" BEGIN
+     name  = _name;
+     value = _value;
+  END;
+
+END;
+
 PROGRAM std::send(VAR name     AS String,
 				   VAR ctx      AS Context  : "http://www.invenireaude.org/qsystem/workers",
 				   VAR data     AS AnyType)

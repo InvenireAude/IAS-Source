@@ -1,14 +1,14 @@
 /*
  * File: IAS-QSystemLib/src/qs/fmt/JSONFormatter.cpp
- * 
+ *
  * Copyright (C) 2015, Albert Krzymowski
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  * http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -26,6 +26,8 @@
 namespace IAS {
 namespace QS {
 namespace Fmt {
+
+const String& JSONFormatter::CDateTimeFormatOut("."+DM::JSON::JSONHelper::CEnvDateTimeFormatOut);
 
 /*************************************************************************/
 JSONFormatter::JSONFormatter(const DM::DataFactory* pDataFactory):pDataFactory(pDataFactory){
@@ -67,6 +69,9 @@ void JSONFormatter::write(const DM::DataObject* dmData,
 
 	TimeSample ts(::IAS::QS::LogLevel::INSTANCE.isProfile());
     ts.start();
+
+  if(pAttributes && pAttributes->isSet(CDateTimeFormatOut))
+		ptrJSONHelper->setDateTimeFormatOut(pAttributes->getValue(CDateTimeFormatOut));
 
 	ptrJSONHelper->save(ostream,dmData);
 	ostream.flush();

@@ -1,14 +1,14 @@
 /*
  * File: IAS-DataModelLib/src/dm/xml/XMLHelper.cpp
- * 
+ *
  * Copyright (C) 2015, Albert Krzymowski
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  * http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -36,6 +36,7 @@ namespace XML {
 
 const String XMLHelper::CEnvNULLAction("IAS_DM_XML_SKIPNULL");
 const String XMLHelper::CEnvFirstNS("IAS_DM_XML_NS0");
+const String XMLHelper::CEnvDateTimeFormatOut("IAS_DM_TS_FMT");
 const String XMLHelper::CXMLPayloadElement("xmlPayload");
 
 
@@ -56,11 +57,14 @@ struct XMLHelperDefaults {
 		if(EnvTools::GetEnv(XMLHelper::CEnvFirstNS,strFirstNS))
 			bEmptyFirstNS =	(!strFirstNS.compare("N") || !strFirstNS.compare("n"));
 
+    EnvTools::GetEnv(XMLHelper::CEnvDateTimeFormatOut, strDateTimeFormatOut);
 	};
 
 	bool bSkipNullElements;
 	bool bEmptyFirstNS;
 	bool bPrefixElements;
+
+  String strDateTimeFormatOut;
 
 };
 
@@ -71,7 +75,8 @@ XMLHelper::XMLHelper(const ::IAS::DM::DataFactory *pDataFactory):
 		pDataFactory(pDataFactory),
 		bSkipNullElements(TheXMLHelperDefaults.bSkipNullElements),
 		bEmptyFirstNS(TheXMLHelperDefaults.bEmptyFirstNS),
-		bPrefixElements(TheXMLHelperDefaults.bPrefixElements){
+		bPrefixElements(TheXMLHelperDefaults.bPrefixElements),
+    strDateTimeFormatOut(TheXMLHelperDefaults.strDateTimeFormatOut){
 	IAS_TRACER;
 	IAS_CHECK_IF_VALID(pDataFactory);
 }
@@ -210,6 +215,10 @@ void XMLHelper::setPrefixElements(bool bPrefixElements){
 	IAS_TRACER;
 	this->bPrefixElements=bPrefixElements;
 }
+/*************************************************************************/
+ void XMLHelper::setDateTimeFormatOut(const String& strDateTimeFormatOut){
+   this->strDateTimeFormatOut = strDateTimeFormatOut;
+ }
 /*************************************************************************/
 }
 }

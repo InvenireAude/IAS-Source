@@ -27,6 +27,8 @@
 #include "../../dm/PropertyList.h"
 #include "../../dm/Type.h"
 
+#include "JSONHelper.h"
+
 namespace IAS {
 namespace DM {
 namespace JSON {
@@ -53,7 +55,8 @@ JSONSerializer::Prefixes::Prefixes() {
   }
 }
 /*************************************************************************/
-JSONSerializer::JSONSerializer(std::ostream& os):
+JSONSerializer::JSONSerializer(const JSONHelper *pJSONHelper, std::ostream& os):
+        pJSONHelper(pJSONHelper),
 				os(os){
 	IAS_TRACER;
 }
@@ -106,9 +109,6 @@ void JSONSerializer::serializeElement(const DataObject* pDataObject,
 		case ::IAS::DM::Type::RawType:
 		case ::IAS::DM::Type::TimeType:
 		case ::IAS::DM::Type::DateType:
-		case ::IAS::DM::Type::DateTimeType:
-
-			//TODO excape
 
 			if(bXSIType){
 				os<<"{"<<prefixes.sEndl<<strPrefix;
@@ -120,7 +120,32 @@ void JSONSerializer::serializeElement(const DataObject* pDataObject,
 			}else{
 				printEscaped(pDataObject->toString());
 			}
-			break;
+		break;
+
+		case ::IAS::DM::Type::DateTimeType:
+      {
+        String strValue;
+
+        if(pJSONHelper->hasDateTimeFormatOut()){
+          Timestamp ts(pDataObject->toDateTime());
+          strValue = ts.toString(pJSONHelper->getDateTimeFormatOut());
+        }else{
+          strValue = pDataObject->toString();
+        }
+
+        if(bXSIType){
+          os<<"{"<<prefixes.sEndl<<strPrefix;
+          os<<"\"_value\":";
+          printEscaped(strValue);
+          os<<",";
+          os<<prefixes.sEndl<<strPrefix<<prefixes.sDMType<<pType->getURI()<<"#"<<pType->getName()<<"\"";
+          os<<prefixes.sEndl<<strPrefix<<"}";
+        }else{
+          printEscaped(strValue);
+        }
+
+      }
+		break;
 
     case ::IAS::DM::Type::BooleanType:
 		case ::IAS::DM::Type::IntegerType:

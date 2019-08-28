@@ -196,11 +196,19 @@ void XMLSerializer::serializeElement(const DataObject* pDataObject,
 		case ::IAS::DM::Type::IntegerType:
     case ::IAS::DM::Type::DecimalType:
 		case ::IAS::DM::Type::FloatType:
-		case ::IAS::DM::Type::DateTimeType:
 		case ::IAS::DM::Type::DateType:
 		case ::IAS::DM::Type::TimeType:
 			pWriter->writeString(pDataObject->toString());
 		break;
+
+    case ::IAS::DM::Type::DateTimeType:
+      if(pXMLHelper->hasDateTimeFormatOut()){
+        Timestamp ts(pDataObject->toDateTime());
+        pWriter->writeString(ts.toString(pXMLHelper->getDateTimeFormatOut()));
+      }else{
+        pWriter->writeString(pDataObject->toString());
+      }
+    break;
 
 		case ::IAS::DM::Type::AnyType:
 		break;

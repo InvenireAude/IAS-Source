@@ -47,10 +47,24 @@ public:
 	DM::DataObjectPtr load(std::istream& is, const DM::Type* pTypeHint=NULL);
   void loadList(std::istream& is, ::IAS::DM::DataObjectList& lstDataObject);
 
+  inline bool hasDateTimeFormatOut()const{
+    return !strDateTimeFormatOut.empty();
+  }
+
+  const String& getDateTimeFormatOut()const{
+    return strDateTimeFormatOut;
+  }
+
+ void setDateTimeFormatOut(const String& strDateTimeFormatOut);
+
+ static const String CEnvDateTimeFormatOut;
+
 protected:
 	JSONHelper(const ::IAS::DM::DataFactory *pDataFactory);
 
 	const ::IAS::DM::DataFactory *pDataFactory;
+
+  String strDateTimeFormatOut;
 
 	friend class ::IAS::Factory<JSONHelper>;
 };
