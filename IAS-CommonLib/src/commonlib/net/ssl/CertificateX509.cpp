@@ -1,14 +1,14 @@
 /*
  * File: IAS-CommonLib/src/commonlib/net/ssl/CertificateX509.cpp
- * 
+ *
  * Copyright (C) 2015, Albert Krzymowski
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  * http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -22,6 +22,18 @@
 #include <commonlib/exception/ItemNotFoundException.h>
 #include <commonlib/exception/BadUsageException.h>
 #include <commonlib/tools/Buffer.h>
+
+#include <openssl/x509.h>
+
+#ifndef OPENSSL_VERSION_NUMBER
+#error "No open ssl ?"
+#endif
+
+#if OPENSSL_VERSION_NUMBER < 0x10101000L
+#warning Using old openssl API (pre 1.1.1)
+#define _IAS_OPENSSL_COMPAT
+#define ASN1_STRING_get0_data ASN1_STRING_data
+#endif
 
 namespace IAS {
 namespace Net {
@@ -90,9 +102,9 @@ void CertificateX509::getSubject(NamesMap& hmNames)const{
 	 for (int iIdx = 0; iIdx < X509_NAME_entry_count(name); iIdx++){
 		 X509_NAME_ENTRY *e = X509_NAME_get_entry(name, iIdx);
 		 if(e){
-			 OBJ_obj2txt(sBuffer,32,e->object,0);
+			 OBJ_obj2txt(sBuffer,32,X509_NAME_ENTRY_get_object(e),0);
 
-			 hmNames[sBuffer]=String((char*)ASN1_STRING_data(e->value));
+			 hmNames[sBuffer]=String((char*)ASN1_STRING_get0_data(X509_NAME_ENTRY_get_data(e)));
 		 }
 	  }
 
@@ -132,7 +144,7 @@ String CertificateX509::getSubjectField(int nid)const{
 	  if(!data)
 		  return String("");
 
-	  return String((char*)ASN1_STRING_data(data));
+	  return String((char*)ASN1_STRING_get0_data(data));
 }
 /*************************************************************************/
 CertificateX509::~CertificateX509() throw(){

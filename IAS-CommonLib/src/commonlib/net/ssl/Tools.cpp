@@ -29,6 +29,16 @@
 #include <openssl/evp.h>
 #include <openssl/hmac.h>
 #include <openssl/md5.h>
+#include <openssl/opensslv.h>
+
+#ifndef OPENSSL_VERSION_NUMBER
+#error "No open ssl ?"
+#endif
+
+#if OPENSSL_VERSION_NUMBER < 0x10101000L
+#warning Using old openssl API (pre 1.1.1)
+#define _IAS_OPENSSL_COMPAT
+#endif
 
 namespace IAS {
 namespace Net {
@@ -158,25 +168,51 @@ Buffer* Tools::ComputeSignature(const PrivateKey* pKey, const String& strValue){
 	 return ComputeSignature(pKey, strValue.c_str(), strValue.length());
 }
 /***********************************************************************/
+#ifndef _IAS_OPENSSL_COMPAT
+class MDHolder{
+  public:
+    MDHolder():md(0){
+      this->md = EVP_MD_CTX_new();
+    }
+
+    ~MDHolder(){
+      if(md)
+        EVP_MD_CTX_free(md);
+    }
+
+    operator EVP_MD_CTX *(){
+      return this->md;
+    }
+
+  protected:
+    EVP_MD_CTX *md;
+};
+#endif
+/***********************************************************************/
 Buffer* Tools::ComputeSignature(const PrivateKey* pKey, const void *pData, size_t iDataLen){
 
 
 	size_t iSignatureLen = 0;
 
 
+#ifdef _IAS_OPENSSL_COMPAT
 	EVP_MD_CTX md_ctx;
-	EVP_MD_CTX_init(&md_ctx);
+	EVP_MD_CTX *mdh = &md_ctx;
+  EVP_MD_CTX_init(mdh);
+#else
+  MDHolder mdh;
+#endif
 
 	//SSL API revenge ...
     EVP_PKEY *pkey = const_cast<EVP_PKEY *>(pKey->getPrivateKey());
 
     IAS_CHECK_IF_NULL(pkey);
 
-	if(!EVP_DigestSignInit(&md_ctx, NULL, EVP_sha1(), NULL, pkey) ||
-	   !EVP_DigestSignUpdate(&md_ctx, pData, iDataLen))
+	if(!EVP_DigestSignInit(mdh, NULL, EVP_sha1(), NULL, pkey) ||
+	   !EVP_DigestSignUpdate(mdh, pData, iDataLen))
 		IAS_THROW(InternalException("Openssl error in EVP_DigestSignUpdate or EVP_DigestSignInit"));
 
-	 if (!EVP_DigestSignFinal(&md_ctx, NULL, &iSignatureLen))
+	 if (!EVP_DigestSignFinal(mdh, NULL, &iSignatureLen))
 		 IAS_THROW(InternalException("Openssl error in EVP_DigestSignFinal"));
 
 	 if (iSignatureLen != EVP_PKEY_size(pkey))
@@ -184,7 +220,7 @@ Buffer* Tools::ComputeSignature(const PrivateKey* pKey, const void *pData, size_
 
 	 IAS_DFT_FACTORY<Buffer>::PtrHolder ptrBuffer(IAS_DFT_FACTORY<Buffer>::Create(iSignatureLen));
 
-	  if(!EVP_DigestSignFinal(&md_ctx, ptrBuffer->getBuffer<unsigned char>(), &iSignatureLen))
+	  if(!EVP_DigestSignFinal(mdh, ptrBuffer->getBuffer<unsigned char>(), &iSignatureLen))
 		  IAS_THROW(InternalException("Openssl error in EVP_DigestSignFinal (2)"));
 
 	  return ptrBuffer.pass();
@@ -201,11 +237,15 @@ static const EVP_MD *_dencodePBKDF2Algo(const String& strAlgo){
   if(!strAlgo.compare("SHA512"))
     return EVP_sha512();
 
-// TODO openssl 1.1.1
-// if(!strAlgo.compare("SHA3_512"))
-//  return EVP_sha3_512();
+ if(!strAlgo.compare("SHA3_512")){
+#ifdef _IAS_OPENSSL_COMPAT
+  IAS_THROW(BadUsageException("SHA3_512 is supported since openssl version 1.1.1"));
+#else
+    return EVP_sha3_512();
+#endif
+ }
 
-  IAS_THROW(BadUsageException("Unknown PBKDF2 parameter, supported HMACs are[SHA1, SHA256, SHA512]"));
+  IAS_THROW(BadUsageException("Unknown PBKDF2 parameter, supported HMACs are[SHA1, SHA256, SHA512, SHA3_512]"));
 
 }
 /*************************************************************************/
@@ -271,11 +311,6 @@ String Tools::PBKDF2(
     return strResult;
 }
 
-//String strResult;
-//
-//MiscTools::BinaryToBase64(ptrBuffer->getBuffer<unsigned char>(), iSignatureLen, strResult);
-//
-//return strResult;
 }
 }
 }
