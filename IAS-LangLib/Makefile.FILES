@@ -1,4 +1,4 @@
-#Wed Aug 21 18:44:39 CEST 2019
+#Mon Nov  4 15:21:58 CET 2019
 FILES+=Impl/DataFactory
 FILES+=Impl/org/invenireaude/lang/builtin/DataObjects
 FILES+=lang/exception/ParseErrorException
@@ -237,6 +237,7 @@ FILES+=lang/interpreter/extern/std/security/Sign
 FILES+=lang/interpreter/extern/std/security/StandardModuleProxy
 FILES+=lang/interpreter/extern/std/security/StrToHMAC256
 FILES+=lang/interpreter/extern/std/security/StrToMD5
+FILES+=lang/interpreter/extern/std/security/StrToPBKDF2
 FILES+=lang/interpreter/extern/std/security/StrToSHA1
 FILES+=lang/interpreter/extern/std/security/StrToSHA256
 FILES+=lang/interpreter/extern/std/StandardModuleProxy

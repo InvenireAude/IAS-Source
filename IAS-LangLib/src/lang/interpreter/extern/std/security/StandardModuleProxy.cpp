@@ -35,6 +35,7 @@
 #include "StrToSHA256.h"
 #include "StrToMD5.h"
 #include "StrToHMAC256.h"
+#include "StrToPBKDF2.h"
 
 namespace IAS {
 namespace Lang {
@@ -72,7 +73,7 @@ void StandardModuleProxy::setupImpl(){
   registerSymbol("StrToSHA256",&(StrToSHA256::Create));
   registerSymbol("StrToMD5",&(StrToMD5::Create));
   registerSymbol("StrToHMAC256",&(StrToHMAC256::Create));
-
+  registerSymbol("StrToPBKDF2",&(StrToPBKDF2::Create));
 }
 /*************************************************************************/
 void StandardModuleProxy::cleanUpImpl(){

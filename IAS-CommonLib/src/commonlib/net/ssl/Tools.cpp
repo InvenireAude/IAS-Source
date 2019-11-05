@@ -1,14 +1,14 @@
 /*
  * File: IAS-CommonLib/src/commonlib/net/ssl/Tools.cpp
- * 
+ *
  * Copyright (C) 2015, Albert Krzymowski
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  * http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -24,6 +24,7 @@
 #include <commonlib/exception/BadUsageException.h>
 
 #include <commonlib/tools/MiscTools.h>
+#include <string.h>
 
 #include <openssl/evp.h>
 #include <openssl/hmac.h>
@@ -189,6 +190,87 @@ Buffer* Tools::ComputeSignature(const PrivateKey* pKey, const void *pData, size_
 	  return ptrBuffer.pass();
 }
 /*************************************************************************/
+static const EVP_MD *_dencodePBKDF2Algo(const String& strAlgo){
+
+  if(!strAlgo.compare("SHA1"))
+    return EVP_sha1();
+
+  if(!strAlgo.compare("SHA256"))
+    return EVP_sha256();
+
+  if(!strAlgo.compare("SHA512"))
+    return EVP_sha512();
+
+// TODO openssl 1.1.1
+// if(!strAlgo.compare("SHA3_512"))
+//  return EVP_sha3_512();
+
+  IAS_THROW(BadUsageException("Unknown PBKDF2 parameter, supported HMACs are[SHA1, SHA256, SHA512]"));
+
+}
+/*************************************************************************/
+String Tools::PBKDF2(
+    const String& strAlgo,
+    const String& strPassword,
+    const String& strSalt,
+    const unsigned long iCount,
+    const unsigned long iResultSize) {
+
+	  IAS_TRACER;
+
+    const EVP_MD *algo = _dencodePBKDF2Algo(strAlgo);
+
+	  unsigned int iDigestLength = SHA_DIGEST_LENGTH;
+
+    unsigned char mdValue[EVP_MAX_MD_SIZE];
+	  unsigned char mdWork[EVP_MAX_MD_SIZE];
+
+    unsigned long iCounter = 1;
+	  unsigned long iGeneratedSize = 0;
+
+    unsigned char output[iResultSize];
+
+    size_t iSaltLength = strSalt.length();
+    unsigned char salt[iSaltLength + 4];
+
+    const unsigned char* password = (unsigned char*)strPassword.c_str();
+    size_t iPasswordLength = strPassword.length();
+
+    memcpy(salt, strSalt.c_str(), iSaltLength);
+
+	  while (iGeneratedSize < iResultSize) {
+
+      size_t iTmp = iSaltLength;
+
+      salt[iTmp++] = (iCounter >> 24) & 0xff;
+      salt[iTmp++] = (iCounter >> 16) & 0xff;
+      salt[iTmp++] = (iCounter >> 8) & 0xff;
+      salt[iTmp++] = (iCounter >> 0) & 0xff;
+
+      HMAC(algo, password, iPasswordLength, salt, iSaltLength + 4, mdValue, &iDigestLength);
+
+      memcpy(mdWork, mdValue, iDigestLength);
+
+      for (int iIdx = 2; iIdx <= iCount; iIdx++) {
+        HMAC(algo, password, iPasswordLength, mdValue, iDigestLength, mdValue, &iDigestLength);
+
+        for (unsigned long iByte = 0; iByte < iDigestLength; iByte++) {
+          mdWork[iByte] ^= mdValue[iByte];
+        }
+
+      }
+
+      unsigned long iBytes = (iResultSize - iGeneratedSize < iDigestLength) ? (iResultSize - iGeneratedSize) : iDigestLength ;
+      memcpy(output + iGeneratedSize, mdWork, iBytes);
+      iGeneratedSize += iBytes;
+      ++iCounter;
+    }
+
+    String strResult;
+    MiscTools::BinaryToBase64(output, iResultSize, strResult);
+    return strResult;
+}
+
 //String strResult;
 //
 //MiscTools::BinaryToBase64(ptrBuffer->getBuffer<unsigned char>(), iSignatureLen, strResult);
