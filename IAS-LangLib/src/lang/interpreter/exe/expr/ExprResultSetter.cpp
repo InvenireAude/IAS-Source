@@ -1,14 +1,14 @@
 /*
  * File: IAS-LangLib/src/lang/interpreter/exe/expr/ExprResultSetter.cpp
- * 
+ *
  * Copyright (C) 2015, Albert Krzymowski
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  * http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -94,9 +94,17 @@ void _Merge(::IAS::DM::DataObject* dmLeft, const ::IAS::DM::DataObject* dmRight)
 	IAS_LOG(LogLevel::INSTANCE.isInfo(),"Left: "<<dmLeft->getType()->getFullName());
 	IAS_LOG(LogLevel::INSTANCE.isInfo(),"Right: "<<dmRight->getType()->getFullName());
 
-	if (!dmLeft->getType()->isDataObjectType() || !dmRight->getType()->isDataObjectType()) {
-		IAS_THROW(InternalException("!pType->isDataObjectType()"));
-	}
+	if (!dmLeft->getType()->isDataObjectType() && !dmRight->getType()->isDataObjectType()) {
+
+ 		if(dmLeft->getType()->isAssignableTo(dmRight->getType()) )
+				dmLeft->setDataObject(dmRight);
+			else
+				dmLeft->setString(dmRight->toString());
+
+    return;
+	} else if (!dmLeft->getType()->isDataObjectType() || !dmRight->getType()->isDataObjectType()) {
+    IAS_THROW(InternalException("!pType->isDataObjectType()"));
+  }
 
 	const DM::PropertyList& lstLeft  = dmLeft->getType()->asComplexType()->getProperties();
 	const DM::PropertyList& lstRight = dmRight->getType()->asComplexType()->getProperties();
