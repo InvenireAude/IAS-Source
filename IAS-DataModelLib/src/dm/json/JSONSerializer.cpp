@@ -75,6 +75,7 @@ void JSONSerializer::printEscaped(const String& strValue){
 
 		switch(*s){
 			case '\n': os<<"\\n";   break;
+      case '\r': os<<"\\r";   break;
 			case '\t': os<<"\\t";   break;
 			case '"' : os<<"\\\"";  break;
 			case '\\' : os<<"\\\\"; break;
