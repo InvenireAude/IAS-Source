@@ -119,6 +119,8 @@
 #include "net/async/InputDataPump.h"
 #include "net/async/OutputDataPump.h"
 
+#include "version/Version.h"
+
 #ifndef NULL
 #define NULL ((void*)0)
 #endif

@@ -1,14 +1,14 @@
 /*
  * File: IAS-QSystemExe/src/parameters/ProgramParameters.cpp
- * 
+ *
  * Copyright (C) 2015, Albert Krzymowski
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  * http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -21,11 +21,15 @@
 #include <qs/api/Administrator.h>
 #include <org/invenireaude/qsystem/DataFactory.h>
 
+#include <dm/version/Version.h>
+#include <lang/version/Version.h>
+#include <qs/version/Version.h>
+
 namespace IAS {
 namespace QS {
 namespace Parameters {
 /*************************************************************************/
-const String ProgramParameters::StrCommonArgSpec("hm:");
+const String ProgramParameters::StrCommonArgSpec("Vhm:");
 /*************************************************************************/
 ProgramParameters::ProgramParameters() throw(){
 	IAS_TRACER;
@@ -46,6 +50,24 @@ bool ProgramParameters::checkAndShowHelp(std::ostream& os){
 	return true;
 }
 /*************************************************************************/
+bool ProgramParameters::checkAndShowVersion(std::ostream& os){
+	IAS_TRACER;
+
+	if(hmIndicators.size() > 0 && !hmIndicators['V'])
+		return false;
+
+  IAS::Version::Print(os);
+  os<<std::endl;
+  IAS::DM::Version::Print(os);
+  os<<std::endl;
+  IAS::Lang::Version::Print(os);
+  os<<std::endl;
+  IAS::QS::Version::Print(os);
+  os<<std::endl;
+
+	return true;
+}
+/*************************************************************************/
 void ProgramParameters::showHelp(std::ostream& os){
 	IAS_TRACER;
 
@@ -54,6 +76,7 @@ void ProgramParameters::showHelp(std::ostream& os){
 	os<<std::endl<<std::endl;
 	os<<"Options:"<<std::endl;
 	os<<"\t-h\t\t This help."<<std::endl;
+  os<<"\t-V\t\t Version information."<<std::endl;
 	printArgsDesc(os);
 	os<<std::endl;
 

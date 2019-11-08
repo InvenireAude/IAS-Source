@@ -1,4 +1,4 @@
-#Mon Nov  4 15:21:58 CET 2019
+#Fri 08 Nov 2019 01:52:13 PM CET
 FILES+=Impl/DataFactory
 FILES+=Impl/org/invenireaude/lang/builtin/DataObjects
 FILES+=lang/exception/ParseErrorException
@@ -491,4 +491,5 @@ FILES+=lang/tools/parser/LexerIStreamFactoryForFiles
 FILES+=lang/tools/parser/LexerIStreamWrapper
 FILES+=lang/tools/parser/SourceLocation
 FILES+=lang/ui/Messages
+FILES+=lang/version/Version
 FILES+=org/invenireaude/lang/builtin/DataFactory

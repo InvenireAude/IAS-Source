@@ -1,4 +1,4 @@
-#Tue Aug 20 17:33:23 CEST 2019
+#Fri 08 Nov 2019 01:43:26 PM CET
 FILES+=commonlib/configfile/Properties
 FILES+=commonlib/configfile/PropertiesProvider
 FILES+=commonlib/configfile/PropertiesProviderFromFile
@@ -119,3 +119,4 @@ FILES+=commonlib/types/Decimal
 FILES+=commonlib/ui/MessageCatalog
 FILES+=commonlib/ui/Messages
 FILES+=commonlib/ui/UserMessage
+FILES+=commonlib/version/Version

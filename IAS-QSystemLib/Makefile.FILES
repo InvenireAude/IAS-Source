@@ -1,4 +1,4 @@
-#Wed Nov 28 00:35:06 CET 2018
+#Fri 08 Nov 2019 01:53:24 PM CET
 FILES+=ds/api/Environment
 FILES+=ds/api/exception/ConstraintViolationException
 FILES+=ds/api/exception/ParseErrorException
@@ -240,6 +240,7 @@ FILES+=qs/net/StateMachineWorker
 FILES+=qs/net/StateMachineWorkManager
 FILES+=qs/tools/Template
 FILES+=qs/ui/Messages
+FILES+=qs/version/Version
 FILES+=qs/workers/proc/cache/CacheFactory
 FILES+=qs/workers/proc/cache/CacheStore
 FILES+=qs/workers/proc/cache/LocalCache

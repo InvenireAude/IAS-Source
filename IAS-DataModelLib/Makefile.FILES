@@ -1,4 +1,4 @@
-#Wed Aug 21 17:49:04 CEST 2019
+#Fri 08 Nov 2019 01:50:58 PM CET
 FILES+=dm/gen/CppCodeGenerator
 FILES+=dm/gen/DataFactory
 FILES+=dm/gen/Impl/CppCodeGeneratorDataFactory
@@ -68,6 +68,7 @@ FILES+=dm/tools/Setter
 FILES+=dm/Type
 FILES+=dm/urlenc/exception/URLEncodeHelperException
 FILES+=dm/urlenc/URLEncodeHelper
+FILES+=dm/version/Version
 FILES+=dm/xml/exception/XMLHelperException
 FILES+=dm/xml/LibXMLLexer
 FILES+=dm/xml/LibXMLLexerForFile
