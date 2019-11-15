@@ -42,6 +42,8 @@
 #include "StrToLower.h"
 #include "StrToUpper.h"
 #include "StrLen.h"
+#include "StringToRaw.h"
+#include "RawToString.h"
 
 namespace IAS {
 namespace Lang {
@@ -84,6 +86,8 @@ void StandardModuleProxy::setupImpl(){
 	registerSymbol("StrToLower",&(StrToLower::Create));
 	registerSymbol("StrToUpper",&(StrToUpper::Create));
 	registerSymbol("StrLen",&(StrLen::Create));
+	registerSymbol("StringToRaw",&(StringToRaw::Create));
+	registerSymbol("RawToString",&(RawToString::Create));
 
 }
 /*************************************************************************/

@@ -193,6 +193,16 @@ EXTERNAL "libIASLangLib:ias_lang_std_security_proxy:ReadCertificate"();
 
 /* ********************************************************************************* */
 
+PROGRAM std::copyStringToRaw(VAR strArgument AS String)
+RETURNS Raw
+EXTERNAL "libIASLangLib:ias_lang_std_proxy:StringToRaw"();
+
+PROGRAM std::copyRawToString(VAR bData AS Raw)
+RETURNS String
+EXTERNAL "libIASLangLib:ias_lang_std_proxy:RawToString"();
+
+/* ********************************************************************************* */
+
 PROGRAM std::fromBase64(VAR strArgument AS String)
 RETURNS Raw
 EXTERNAL "libIASLangLib:ias_lang_std_security_proxy:Base64ToBinary"();
