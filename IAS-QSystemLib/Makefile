@@ -10,6 +10,7 @@ LANG_FILES+=dict.y
 LANG_FILES+=execute.y
 LANG_FILES+=fmt.y
 LANG_FILES+=qs.y
+LANG_FILES+=ds.y
 LANG_FILES+=storage.y
 LANG_FILES+=template.y
 LANG_FILES+=typeinfo.y

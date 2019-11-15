@@ -1,14 +1,14 @@
 /*
  * File: IAS-CommonLib/src/commonlib/sys/Signal.h
- * 
+ *
  * Copyright (C) 2015, Albert Krzymowski
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  * http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -45,8 +45,17 @@ public:
 
 	static void SignalHandler(int iSignal = 0);
 	static void SignalHandlerStopOnly(int iSignal = 0);
+  static void UserSignalHandler(int iSignal = 0);
 
 	static Signal* GetInstance();
+
+  class UserSignalCallback {
+    public:
+      UserSignalCallback();
+      virtual ~UserSignalCallback();
+      virtual void handleUserSignal() = 0;
+  };
+
 
 protected:
 	Signal();
@@ -54,10 +63,17 @@ protected:
 	typedef std::set<Thread*> ThreadSet;
 	ThreadSet                 setThreadsToStop;
 
+	typedef std::set<UserSignalCallback*> UserSignalCallbackSet;
+	UserSignalCallbackSet                 setUserSignalCallback;
+
 	void addThread(Thread* pThread);
 	void removeThread(Thread* pThread);
 
+  void addUserSignalCallback(UserSignalCallback *pUserSignalCallback);
+  void removeUserSignalCallback(UserSignalCallback *pUserSignalCallback);
+
 	void stopThreads();
+  void handleUserSignal();
 
 	friend class Factory<Signal>;
 

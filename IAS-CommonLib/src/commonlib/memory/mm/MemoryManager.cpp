@@ -1,14 +1,14 @@
 /*
  * File: IAS-CommonLib/src/commonlib/memory/mm/MemoryManager.cpp
- * 
+ *
  * Copyright (C) 2015, Albert Krzymowski
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  * http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -16,7 +16,7 @@
  * limitations under the License.
  */
 /* ChangeLog:
- * 
+ *
  */
 
 #include "MemoryManager.h"
@@ -26,6 +26,7 @@
 #include "commonlib/memory/memory.h"
 
 #include <stdlib.h>
+#include <cstring>
 
 namespace IAS {
 
@@ -33,13 +34,14 @@ MemoryManager* MemoryManager::pInstance = NULL;
 Allocator*     MemoryManager::pAllocator = NULL;
 
 /*************************************************************************/
-MemoryManager::MemoryManager():
+MemoryManager::MemoryManager(const char* sName):
 	iNewEntries(0),
 	pMemory(0),
 	iFree(0),
 	iTotalEntries(0),
 	iCurEntries(0),
-	iInstances(0){
+	iInstances(0),
+  sName(sName){
 
 	//iFree=10000000;
 	//pMemory = new unsigned char[iFree];
@@ -50,18 +52,21 @@ MemoryManager::MemoryManager():
 MemoryManager::~MemoryManager() throw () {
 }
 /*************************************************************************/
-void MemoryManager::clearNewFlag() {
+void MemoryManager::clearNewFlagNoLock() {
 
-	EntryMap::iterator iter;
-	IAS_LOG(LogLevel::INSTANCE.isMemory(),"Clearing New Flag.");
-
-	Mutex::Locker locker(theLock);
-
-	for (iter = hmEntries.begin(); iter != hmEntries.end(); iter++) {
+	for (EntryMap::iterator iter = hmEntries.begin(); iter != hmEntries.end(); iter++) {
 		Entry& entry = iter->second;
 		entry.bNewFlag = false;
 	}
 	iNewEntries = 0;
+}
+/*************************************************************************/
+void MemoryManager::clearNewFlag() {
+
+	IAS_LOG(LogLevel::INSTANCE.isMemory(),"Clearing New Flag.");
+	Mutex::Locker locker(theLock);
+
+  clearNewFlagNoLock();
 }
 /*************************************************************************/
 void MemoryManager::addEntry(const char* sFile, const char* sFun, int iLine, unsigned long lPtr, unsigned long iNumBytes) {
@@ -151,12 +156,11 @@ void MemoryManager::printToStream(std::ostream& os, bool bNewOnly, bool bStatsOn
 
 	Mutex::Locker locker(theLock);
 
-	os << " >>>  MEMORY USAGE " << std::endl;
+	os << " >>>  MEMORY USAGE: " <<sName<< std::endl;
 	os << " >>>  Total:     " << iTotalEntries << std::endl;
 	os << " >>>  Bytes:     " << iNumBytes << std::endl;
 	os << " >>>  Current:   " << iCurEntries << "," << hmEntries.size() << std::endl;
 	os << " >>>  New:       " << iNewEntries << std::endl;
-	os << " >>>  Instances: " << iInstances << std::endl;
 
 	if(!bStatsOnly){
 
@@ -182,8 +186,8 @@ void MemoryManager::printToStream(std::ostream& os, bool bNewOnly, bool bStatsOn
 
 	}/* !bStatsOnly */
 
+  clearNewFlagNoLock();
 	os<<"Waits:  "<<tsrMutexWaits<<std::endl;
-
 }
 
 /*************************************************************************/
@@ -268,6 +272,10 @@ void MemoryManager::free(const void* p) {
 	}else{
 		::free( const_cast<void*>(p));
 	}
+}
+/*************************************************************************/
+void MemoryManager::handleUserSignal(){
+    printToStream(std::cerr,false,true);
 }
 /*************************************************************************/
 }/* namespace IAS */

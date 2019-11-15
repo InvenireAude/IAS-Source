@@ -1,14 +1,14 @@
 /*
  * File: IAS-CommonLib/src/commonlib/misc/InstanceFeature.h
- * 
+ *
  * Copyright (C) 2015, Albert Krzymowski
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  * http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -21,7 +21,7 @@
 /*
  *
  */
-#include "../logger/logger.h"
+
 #include "../memory/ma/Factory.h"
 #include "../threads/Mutex.h"
 
@@ -35,34 +35,30 @@ public:
 	virtual ~InstanceFeature(){};
 
 	static TT* GetInstance() {
-		IAS_TRACER;
 		//TODO (L) Analyze Mutex::Locker locker(TheMutex) - is it up to the user to initialize safely.
-		if(TheInstance.isNull())
+		if(!TheInstance)
 			TheInstance = ::IAS::StandardFactory< TT >::Create();
-		return TheInstance.getPointer();
+		return TheInstance;
 	}
 
 	/*
 	 * For debug purposes only.
 	 */
 
-	static void Delete() { TheInstance = 0; }
+	static void Delete() {
+    if(TheInstance)
+         ::IAS::StandardFactory< TT >::Free(TheInstance);
+    TheInstance = 0;
+    }
 
 
 protected:
-
-	typedef typename ::IAS::StandardFactory< TT >::PtrHolder TheInstanceType;
-
+	typedef TT* TheInstanceType;
 	static TheInstanceType TheInstance;
-	//static Mutex TheMutex;
 };
 
 template<class TT>
-typename InstanceFeature<TT>::TheInstanceType InstanceFeature<TT>::TheInstance(0);
-
-//template<class TT>
-//Mutex InstanceFeature<TT>::TheMutex(false);
-
+ typename InstanceFeature<TT>::TheInstanceType InstanceFeature<TT>::TheInstance(0);
 
 template<class F , class T>
 class InstanceFeatureWithFactory {
@@ -71,10 +67,9 @@ public:
 	virtual ~InstanceFeatureWithFactory(){};
 
 	static T* GetInstance() {
-		IAS_TRACER;
-		if(TheInstance.isNull())
+		if(!TheInstance)
 			TheInstance = F::Create();
-		return TheInstance.getPointer();
+		return TheInstance;
 	}
 
 	/*
@@ -83,16 +78,15 @@ public:
 
 	static void Delete() { F::Free(TheInstance); }
 
-
 protected:
 
-	typedef typename F::PtrHolder TheInstanceType;
-
+	typedef T* TheInstanceType;
 	static TheInstanceType TheInstance;
 };
 
 template<class F, class T>
 typename InstanceFeatureWithFactory<F,T>::TheInstanceType InstanceFeatureWithFactory<F,T>::TheInstance(0);
+
 
 }
 

@@ -1,14 +1,14 @@
 /*
  * File: IAS-CommonLib/src/commonlib/memory/mm/MemoryManager.h
- * 
+ *
  * Copyright (C) 2015, Albert Krzymowski
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  * http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -18,7 +18,7 @@
 /* IAS_COPYRIGHT */
 
 /* ChangeLog:
- * 
+ *
  */
 
 #ifndef _IAS_MemoryManager_H_
@@ -32,6 +32,7 @@
 #include "../ma/Allocator.h"
 
 #include "../../threads/Mutex.h"
+#include "../../sys/Signal.h"
 
 namespace IAS{
 
@@ -41,10 +42,12 @@ namespace IAS{
  */
 
 class MemoryManager :
-	public Allocator  {
+	public Allocator,
+  public SYS::Signal::UserSignalCallback
+   {
 
 public:
-	MemoryManager();
+	MemoryManager(const char *sName = "Default");
 	virtual ~MemoryManager()throw();
 
 	void addEntry(const char*   sFile,
@@ -52,21 +55,22 @@ public:
 			      int           iLine,
 			      unsigned long lPtr,
 				  unsigned long iNumBytes);
-	
+
 	bool removeEntry(unsigned long lPtr);
-	
+
 	/** dumps the entries to the output stream */
 
 	virtual void printToStream(std::ostream& os);
 
 	void printToStream(std::ostream& os, bool bNewOnly, bool bStatsOnly = false);
-	
+
 	/** clears the "new" flag - use after allocating globals for example. */
 	void clearNewFlag();
-	
+
 	inline static MemoryManager *GetInstance(){
-		if(pInstance == NULL)
+		if(pInstance == NULL){
 			pAllocator = pInstance = new MemoryManager;
+    }
 		return pInstance;
 	}
 
@@ -85,8 +89,10 @@ public:
 			return pAllocator;
 	}
 
+  virtual void handleUserSignal();
+
  private:
-	
+
 	 struct Entry{
 		const char *sFun;
 		const char *sFile;
@@ -96,13 +102,13 @@ public:
 		unsigned long lPtr;
 		unsigned long iNumBytes;
 	};
-	
+
 	typedef std::map<unsigned long, Entry> EntryMap;
 	typedef std::map<std::string, void*> SharableInstancesMap;
-	
+
 	static MemoryManager   *pInstance;
 	static Allocator       *pAllocator;
-	
+
 	EntryMap 				hmEntries;
 	SharableInstancesMap	hmSharableInstances;
 
@@ -118,8 +124,10 @@ public:
 
 	unsigned char *pMemory;
 	int           iFree;
-
+  const char    *sName;
 	TimeSamplesResults  tsrMutexWaits;
+
+  void clearNewFlagNoLock();
 };
 
 template<class T, class CO = DynamicCastOperator <T> >

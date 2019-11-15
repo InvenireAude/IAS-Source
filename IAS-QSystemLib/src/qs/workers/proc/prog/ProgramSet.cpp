@@ -1,14 +1,14 @@
 /*
  * File: IAS-QSystemLib/src/qs/workers/proc/prog/ProgramSet.cpp
- * 
+ *
  * Copyright (C) 2015, Albert Krzymowski
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  * http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -187,6 +187,17 @@ void ProgramSet::execute(const String& strProgramName,
 	const ::IAS::Lang::Interpreter::Exe::Program *pProgram=getProgram(strProgramName);
 	if(match(pProgram, dmContext->getType(), dmData->getType()))
 		execute(pProgram,dmContext,dmData);
+}
+/*************************************************************************/
+void ProgramSet::handleUserSignal(){
+  if(hmPrograms.size()){
+
+    std::cerr<<"*** Script Performance Report ***"<<std::endl;
+    Mutex::Locker locker(mutex);
+	  for(ProgramMap::const_iterator it = hmPrograms.begin(); it != hmPrograms.end(); it++){
+		  std::cerr<<std::setw(60) << it->second->strName<<" : \t"<<it->second->tsrExe<<std::endl;
+    }
+	}
 }
 /*************************************************************************/
 void ProgramSet::setResultHandler(ResultHandler *pResultHandler){

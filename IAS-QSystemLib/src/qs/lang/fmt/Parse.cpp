@@ -24,17 +24,22 @@
 #include <lang/interpreter/exe/exception/InterpreterProgramException.h>
 
 #include <org/invenireaude/qsystem/workers/Context.h>
+#include <org/invenireaude/qsystem/workers/Attribute.h>
 #include <org/invenireaude/qsystem/workers/Exception.h>
 #include <org/invenireaude/qsystem/workers/DataFactory.h>
 
 #include <dm/datamodel.h>
 
+
 #include <qs/workers/proc/wcm/WorkContextManager.h>
 #include <qs/workers/proc/GlobalContext.h>
+#include <qs/Impl/base/Attributes.h>
 
 
 using namespace ::IAS::Lang::Interpreter;
 using namespace ::org::invenireaude::qsystem;
+
+
 
 namespace IAS {
 namespace QS {
@@ -60,15 +65,27 @@ void Parse::executeExternal(Exe::Context *pCtx) const{
 
 	const String strFormat   = pParameters->getString("format");
 
-	try{
+  IAS_DFT_FACTORY<QS::Base::Attributes>::PtrHolder ptrAttributes(IAS_DFT_FACTORY<QS::Base::Attributes>::Create());
+
+  if(pParameters->getType()->asComplexType()->getProperties().hasProperty("attributes")){
+    DM::DataObjectList& lstAttributes = pParameters->getList("attributes");
+
+    for(int iIdx = 0; iIdx < lstAttributes.size(); iIdx++){
+    const workers::Attribute* pAttribute = workers::DataFactory::GetInstance()->getAttributeType()->cast(lstAttributes.at(iIdx));
+    ptrAttributes->setValue(pAttribute->getName(), pAttribute->getValue() );
+    }
+  }
+
+  try{
 
 		StringStream ssData(pParameters->getString("payload"));
 		DM::DataObjectPtr dmValue;
 
-		ptrFmtFactory->getFormatter(strFormat)->read(dmValue,ssData);
+		ptrFmtFactory->getFormatter(strFormat)->read(dmValue,ssData, ptrAttributes);
 
 		pParameters->setDataObject(String(IAS::Lang::Model::Dec::ResultDeclarationNode::CStrResultVariable),
 							       dmValue);
+
 
 	}catch(Exception& e){
 

@@ -1,4 +1,4 @@
-#Fri 08 Nov 2019 01:53:24 PM CET
+#Fri 15 Nov 2019 02:39:38 PM CET
 FILES+=ds/api/Environment
 FILES+=ds/api/exception/ConstraintViolationException
 FILES+=ds/api/exception/ParseErrorException
@@ -194,8 +194,10 @@ FILES+=qs/lang/cache/GetItem
 FILES+=qs/lang/cache/ModuleProxy
 FILES+=qs/lang/cache/ReleaseBucket
 FILES+=qs/lang/db/Commit
+FILES+=qs/lang/db/CommitAll
 FILES+=qs/lang/db/ModuleProxy
 FILES+=qs/lang/db/Rollback
+FILES+=qs/lang/db/RollbackAll
 FILES+=qs/lang/db/WrappedStatement
 FILES+=qs/lang/dict/CreateDictionary
 FILES+=qs/lang/dict/GetValue
@@ -317,6 +319,7 @@ FILES+=qs/workers/proc/stats/pub/Console
 FILES+=qs/workers/proc/stats/Publisher
 FILES+=qs/workers/proc/stats/PublisherFactory
 FILES+=qs/workers/proc/stats/PublisherStore
+FILES+=qs/workers/proc/stats/pub/Memory
 FILES+=qs/workers/proc/stats/pub/Sender
 FILES+=qs/workers/proc/task/BackgroundTask
 FILES+=qs/workers/proc/task/WaitingRoom

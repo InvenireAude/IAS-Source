@@ -1,14 +1,14 @@
 /*
  * File: IAS-CommonLib/src/commonlib/sys/Signal.cpp
- * 
+ *
  * Copyright (C) 2015, Albert Krzymowski
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  * http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -56,6 +56,16 @@ void Signal::SignalHandlerStopOnly(int iSignal){
 	bStopping=true;
 }
 /*************************************************************************/
+void Signal::UserSignalHandler(int iSignal){
+
+	Mutex::Locker locker(_SignalMutex);
+
+	if(bStopping)
+		return;
+
+		Signal::GetInstance()->handleUserSignal();
+}
+/*************************************************************************/
 Signal::Signal(){
 	IAS_TRACER;
 
@@ -85,6 +95,10 @@ Signal::Signal(){
 	if(sigaction(SIGTERM, &new_action,old_action+SIGTERM) == -1)
 		IAS_THROW(SystemException("Signal SIGTERM"));
 
+  new_action.sa_handler = Signal::UserSignalHandler;
+
+	if(sigaction(SIGUSR1, &new_action,old_action+SIGUSR1) == -1)
+		IAS_THROW(SystemException("Signal SIGUSR1"));
 }
 /*************************************************************************/
 Signal::~Signal() throw(){
@@ -129,6 +143,35 @@ Signal::ThreadRegistration::ThreadRegistration(){
 Signal::ThreadRegistration::~ThreadRegistration(){
 	Signal::GetInstance()->removeThread(
 			Thread::Specific::GetPointer());
+}
+/*************************************************************************/
+/*************************************************************************/
+void Signal::addUserSignalCallback(UserSignalCallback* pUserSignalCallback){
+	IAS_TRACER;
+	Mutex::Locker locker(_SignalMutex);
+	setUserSignalCallback.insert(pUserSignalCallback);
+}
+/*************************************************************************/
+void Signal::removeUserSignalCallback(UserSignalCallback* pUserSignalCallback){
+	IAS_TRACER;
+	Mutex::Locker locker(_SignalMutex);
+	setUserSignalCallback.erase(pUserSignalCallback);
+}
+/*************************************************************************/
+Signal::UserSignalCallback::UserSignalCallback(){
+	Signal::GetInstance()->addUserSignalCallback(this);
+}
+/*************************************************************************/
+Signal::UserSignalCallback::~UserSignalCallback(){
+	Signal::GetInstance()->addUserSignalCallback(this);
+}
+/*************************************************************************/
+void Signal::handleUserSignal(){
+	for(UserSignalCallbackSet::iterator it=setUserSignalCallback.begin();
+		it != setUserSignalCallback.end(); it++){
+		IAS_LOG(LogLevel::INSTANCE.isSystem(), "handle the user signal:");;
+		(*it)->handleUserSignal();
+	}
 }
 /*************************************************************************/
 //TODO AIX xlc/linker workaround

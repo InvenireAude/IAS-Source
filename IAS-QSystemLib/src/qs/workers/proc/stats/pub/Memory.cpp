@@ -1,5 +1,5 @@
 /*
- * File: IAS-CommonLib/src/commonlib/sys/DynamicLoader.cpp
+ * File: Memory.cpp
  *
  * Copyright (C) 2015, Albert Krzymowski
  *
@@ -15,23 +15,49 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#include "DynamicLoader.h"
 
-#include <dlfcn.h>
+#include "Memory.h"
+#include <iomanip>
+
+#include <org/invenireaude/qsystem/workers/stats/LogicSample.h>
+#include <org/invenireaude/qsystem/workers/stats/LogicSamplesSet.h>
+#include <org/invenireaude/qsystem/stats/Sample.h>
+
+#include <qs/workers/proc/wcm/WorkContextManager.h>
+#include <qs/workers/proc/GlobalContext.h>
+#include "../PublisherStore.h"
+
+using namespace ::org::invenireaude::qsystem::workers;
+using namespace ::org::invenireaude;
+
+using namespace std;
 
 namespace IAS {
-/*************************************************************************/
-namespace SYS {
+namespace QS {
+namespace Workers {
+namespace Proc {
+namespace Stats {
+namespace Pub {
 
 /*************************************************************************/
-DynamicLoader::DynamicLoader(){
+Memory::Memory(){
 	IAS_TRACER;
 }
+/*************************************************************************/
+Memory::~Memory() throw(){
+	IAS_TRACER;
+}
+/*************************************************************************/
+void Memory::publish(stats::LogicSamplesSet* dmLogicSamplesSet,
+					  WCM::WorkContextManager* pWorkContextManager)const{
+	IAS_TRACER;
 
-/*************************************************************************/
-DynamicLoader::~DynamicLoader() throw(){
-	IAS_TRACER;
 }
 /*************************************************************************/
+
+}
+}
+}
+}
 }
 }

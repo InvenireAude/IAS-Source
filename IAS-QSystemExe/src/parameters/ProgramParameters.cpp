@@ -85,18 +85,18 @@ void ProgramParameters::showHelp(std::ostream& os){
 void ProgramParameters::init(int argc, char* argv[], const String& strArgSpec){
 	IAS_TRACER;
 	String strAllArgSpec(StrCommonArgSpec);
-	strAllArgSpec+=strArgSpec;
-	::IAS::ProgramParameters::init(argc,argv,strAllArgSpec);
+	strAllArgSpec += strArgSpec;
+	::IAS::ProgramParameters::init(argc, argv, strAllArgSpec);
 }
 /*************************************************************************/
 void ProgramParameters::printCmdDesc(std::ostream& os) const {
 	IAS_TRACER;
-	os<<"test1";
+	os<<"";
 }
 /*************************************************************************/
 void ProgramParameters::printArgsDesc(std::ostream& os) const {
 	IAS_TRACER;
-	os<<"test2";
+	os<<"";
 }
 /*************************************************************************/
 }

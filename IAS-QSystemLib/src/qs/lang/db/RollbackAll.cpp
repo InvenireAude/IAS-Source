@@ -1,5 +1,5 @@
 /*
- * File: IAS-QSystemLib/src/qs/lang/db/Rollback.cpp
+ * File: IAS-QSystemLib/src/qs/lang/db/RollbackAll.cpp
  *
  * Copyright (C) 2015, Albert Krzymowski
  *
@@ -15,7 +15,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#include "Rollback.h"
+#include "RollbackAll.h"
 #include<qs/log/LogLevel.h>
 
 #include <commonlib/commonlib.h>
@@ -50,31 +50,20 @@ namespace Lang {
 namespace DB {
 
 /*************************************************************************/
-Rollback::Rollback(const DM::Type* pType, const StringList& lstParamaters, const ::IAS::Lang::Interpreter::Extern::ModuleProxy* pModuleProxy){
-	IAS_TRACER;
-
-	if(lstParamaters.size() != 1)
-		IAS_THROW(BadUsageException("TODO exception, wrong parameters in DataSource Rollback Statement."));
-
-	StringList::const_iterator it=lstParamaters.begin();
-	strDataSource=*it++;
-}
-/*************************************************************************/
-Rollback::~Rollback() throw(){
+RollbackAll::RollbackAll(const DM::Type* pType, const StringList& lstParamaters, const ::IAS::Lang::Interpreter::Extern::ModuleProxy* pModuleProxy){
 	IAS_TRACER;
 }
 /*************************************************************************/
-void Rollback::executeExternal(Exe::Context *pCtx) const{
+RollbackAll::~RollbackAll() throw(){
 	IAS_TRACER;
-
-	DM::DataObjectPtr dmInput(pCtx->getBlockVariables(0));
-	DM::DataObjectPtr dmResult;
+}
+/*************************************************************************/
+void RollbackAll::executeExternal(Exe::Context *pCtx) const{
+	IAS_TRACER;
 
 	try{
 
-		DSDriver *pDriver     = pWorkContext->getDSManager()->getDSDriver(strDataSource);
-
-		pDriver->getSession()->rollback();
+    pWorkContext->ds.rollback();
 
 	}catch(Exception& e){
 
@@ -89,9 +78,9 @@ void Rollback::executeExternal(Exe::Context *pCtx) const{
 
 }
 /*************************************************************************/
-Extern::Statement* Rollback::Create(const DM::Type* pType, const StringList& lstParamaters, const ::IAS::Lang::Interpreter::Extern::ModuleProxy* pModuleProxy){
+Extern::Statement* RollbackAll::Create(const DM::Type* pType, const StringList& lstParamaters, const ::IAS::Lang::Interpreter::Extern::ModuleProxy* pModuleProxy){
 	IAS_TRACER;
-	return IAS_DFT_FACTORY<Rollback>::Create(pType, lstParamaters, pModuleProxy);
+	return IAS_DFT_FACTORY<RollbackAll>::Create(pType, lstParamaters, pModuleProxy);
 }
 /*************************************************************************/
 }

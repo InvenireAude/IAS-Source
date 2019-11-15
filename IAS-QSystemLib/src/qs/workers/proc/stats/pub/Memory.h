@@ -1,5 +1,5 @@
 /*
- * File: IAS-CommonLib/src/commonlib/sys/DynamicLoader.cpp
+ * File: Memory.h
  *
  * Copyright (C) 2015, Albert Krzymowski
  *
@@ -15,23 +15,50 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#include "DynamicLoader.h"
 
-#include <dlfcn.h>
+
+#ifndef _IAS_QS_Workers_Proc_Stats_Pub_Memory_H_
+#define _IAS_QS_Workers_Proc_Stats_Pub_Memory_H_
+
+#include <commonlib/commonlib.h>
+
+#include "../Publisher.h"
 
 namespace IAS {
-/*************************************************************************/
-namespace SYS {
+namespace QS {
+namespace Workers {
+namespace Proc {
+class GlobalContext;
+
+namespace Stats {
+namespace Pub {
+
 
 /*************************************************************************/
-DynamicLoader::DynamicLoader(){
-	IAS_TRACER;
-}
+/** The Memory class.
+ *
+ */
+class Memory : public Publisher{
+public:
+
+	virtual ~Memory() throw();
+
+
+	virtual void publish(::org::invenireaude::qsystem::workers::stats::LogicSamplesSet* dmLogicSamplesSet,
+			             ::IAS::QS::Workers::Proc::WCM::WorkContextManager* pWorkContextManager)const;
+
+protected:
+	Memory();
+
+	friend class Factory<Memory>;
+};
 
 /*************************************************************************/
-DynamicLoader::~DynamicLoader() throw(){
-	IAS_TRACER;
-}
-/*************************************************************************/
 }
 }
+}
+}
+}
+}
+
+#endif /* _IAS_QS_Workers_Proc_Stats_Pub_Memory_H_ */

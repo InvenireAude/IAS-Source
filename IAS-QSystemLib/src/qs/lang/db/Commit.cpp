@@ -30,7 +30,6 @@
 #include <qs/workers/proc/GlobalContext.h>
 #include <qs/workers/proc/ds/DSManager.h>
 #include <qs/workers/proc/ds/DSDriver.h>
-#include <qs/workers/proc/ds/wrapper/Insert.h>
 
 #include <org/invenireaude/qsystem/workers/Context.h>
 #include <org/invenireaude/qsystem/workers/DataFactory.h>
