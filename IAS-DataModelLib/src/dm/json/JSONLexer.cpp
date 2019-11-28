@@ -89,7 +89,7 @@ void JSONLexer::skipWhiteChars(){
 		nextChar(true);
 		if(cCurrent=='\n')
 			iLineNo++;
-	}while(cCurrent == ' ' || cCurrent == '\n' || cCurrent == '\t');
+	}while(cCurrent == ' ' || cCurrent == '\n' || cCurrent == '\t' || cCurrent == '\r');
 
 }
 /*************************************************************************/
