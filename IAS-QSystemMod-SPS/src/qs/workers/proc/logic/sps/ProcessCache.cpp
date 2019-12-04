@@ -1,14 +1,14 @@
 /*
  * File: IAS-QSystemMod-SPS/src/qs/workers/proc/logic/sps/ProcessCache.cpp
- * 
+ *
  * Copyright (C) 2015, Albert Krzymowski
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  * http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -19,7 +19,6 @@
 #include "ProcessDataStore.h"
 
 #include<qs/log/sps/LogLevel.h>
-#include <unistd.h>
 
 #include <org/invenireaude/qsystem/workers/sps/ProcessInstance.h>
 #include <org/invenireaude/qsystem/workers/sps/ProcessArray.h>
@@ -34,20 +33,24 @@ namespace Proc {
 namespace Logic {
 namespace SPS {
 
+const String ProcessCache::CEnvCacheSize("IAS_SPS_CACHE_SZ");
+
+/*************************************************************************/
+int ProcessCache::getDefaultCacheSize(){
+
+    String strValue("100");
+    EnvTools::GetEnv(CEnvCacheSize, strValue);
+    return TypeTools::StringToInt(strValue);
+}
 /*************************************************************************/
 ProcessCache::ProcessCache():
-	CacheBase(100),
+	CacheBase(getDefaultCacheSize()),
 	iCounter(0){
 	IAS_TRACER;
 
-	//TODO better id;
-	strKeyPrefix="SPS";
-	char sBuffer[33];
-	gethostname(sBuffer,32);
-	sBuffer[32]=0;
-	strKeyPrefix+=sBuffer;
-	strKeyPrefix+=TypeTools::IntToString(getpid());
-
+  strKeyPrefix = MiscTools::GetUUID();
+  IAS_LOG(LogLevel::INSTANCE.isSystem(), "Prefix: "<<strKeyPrefix);
+  strKeyPrefix+="-";
 	ptrDataStore = IAS_DFT_FACTORY<ProcessDataStore>::Create("spsdb");
 }
 /*************************************************************************/

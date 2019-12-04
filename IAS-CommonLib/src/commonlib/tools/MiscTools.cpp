@@ -24,6 +24,9 @@
 
 #include <locale>
 #include <algorithm>
+
+#include <uuid/uuid.h>
+
 #include "EnvTools.h"
 
 
@@ -424,7 +427,15 @@ String MiscTools::StrToUpper(const String& strData){
 	return result;
 
 }
+/*************************************************************************/
+String MiscTools::GetUUID(){
 
+  uuid_t id;
+  char sID[37];
+  uuid_generate(id);
+  uuid_unparse_upper(id, sID);
+  return sID;
+}
 /*************************************************************************/
 }
 
