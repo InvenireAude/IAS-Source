@@ -167,6 +167,8 @@ EXTERNAL "libIASLangLib:ias_lang_std_math_proxy:GetRandom"();
 PROGRAM std::randString(VAR length AS Integer) RETURNS String
 EXTERNAL "libIASLangLib:ias_lang_std_math_proxy:GetRandomString"();
 
+/* ********************************************************************************* */
+
 PROGRAM std::getHash(VAR value AS String) RETURNS Integer
 EXTERNAL "libIASLangLib:ias_lang_std_security_proxy:GetHash"();
 
@@ -190,6 +192,21 @@ EXTERNAL "libIASLangLib:ias_lang_std_security_proxy:BinaryToMD5"();
 
 PROGRAM std::readCertificate(VAR strFileName AS String) RETURNS String
 EXTERNAL "libIASLangLib:ias_lang_std_security_proxy:ReadCertificate"();
+
+PROGRAM std::hmac256(VAR strKey AS String, VAR strArgument AS String) RETURNS String
+EXTERNAL "libIASLangLib:ias_lang_std_security_proxy:StrToHMAC256"();
+
+PROGRAM std::hmac256(VAR strKey AS String, VAR bData AS Raw) RETURNS String
+EXTERNAL "libIASLangLib:ias_lang_std_security_proxy:BinaryToHMAC256"();
+
+PROGRAM std::pbkdf2(
+  VAR strAlgo AS String,
+  VAR strArgument AS String,
+  VAR strSalt AS Stri
+  VAR iCount AS Integer,
+  VAR iResultLen AS Integer
+  ) RETURNS String
+EXTERNAL "libIASLangLib:ias_lang_std_security_proxy:StrToPBKDF2"();
 
 /* ********************************************************************************* */
 
