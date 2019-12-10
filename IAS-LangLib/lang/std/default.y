@@ -355,3 +355,23 @@ BEGIN
 
     RETURN FALSE;
 END;
+
+PROGRAM std::split(
+	VAR value AS String,
+	VAR delimiter AS String
+) RETURNS ARRAY OF String
+BEGIN
+    VAR begin AS Integer;
+    begin = 0;
+    VAR end AS Integer;
+    VAR length AS Integer;
+    length = std::strlen(value);
+    WHILE begin <= length DO BEGIN
+        end = std::find(value, delimiter, begin);
+        IF end == -1 THEN
+            end = length;
+        IF end >= begin THEN
+            result = std::substring(value, begin, end - begin);
+        begin = end + 1;
+    END;
+END;
