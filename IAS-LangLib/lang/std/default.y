@@ -236,6 +236,15 @@ PROGRAM std::toHex(VAR bData AS Raw)
 RETURNS String
 EXTERNAL "libIASLangLib:ias_lang_std_security_proxy:BinaryToHex"();
 
+/* ******************* DEPRICATED BACKWORD COMPATIBILITY ************************* */
+
+PROGRAM std::str2lower(VAR strArgument AS String) RETURNS String
+EXTERNAL "libIASLangLib:StrToLower"();
+
+PROGRAM std::str2upper(VAR strArgument AS String) RETURNS String
+EXTERNAL "libIASLangLib:StrToUpper"();
+
+
 /* ******************* DO ZASTAPIENIA LEPSZA IMPLEMENTACJA ************************* */
 PROGRAM std::ltrim(VAR strArgument AS String)
 RETURNS String
