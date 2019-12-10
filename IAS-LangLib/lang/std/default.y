@@ -202,7 +202,7 @@ EXTERNAL "libIASLangLib:ias_lang_std_security_proxy:BinaryToHMAC256"();
 PROGRAM std::pbkdf2(
   VAR strAlgo AS String,
   VAR strArgument AS String,
-  VAR strSalt AS Stri
+  VAR strSalt AS String,
   VAR iCount AS Integer,
   VAR iResultLen AS Integer
   ) RETURNS String
