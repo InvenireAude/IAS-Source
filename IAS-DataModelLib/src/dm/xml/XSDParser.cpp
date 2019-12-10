@@ -225,7 +225,6 @@ String XSDParser::parse_xsd_documentation(){
 	if(ptrLibXMLLexer->isEmpty())
 		return ssResult.str();
 
-	bool bFirst=true;
 
 	while(true){
 
@@ -236,11 +235,24 @@ String XSDParser::parse_xsd_documentation(){
 			   ptrLibXMLLexer->checkLocalName("documentation"))
 			return ssResult.str();
 
-		if(ptrLibXMLLexer->hasValue()){
-			if(!bFirst)
-				ssResult<<", ";
-			ssResult<<ptrLibXMLLexer->getValue();
-			bFirst=false;
+    if(ptrLibXMLLexer->checkType(XML_READER_TYPE_ELEMENT)){
+    	   ssResult<<"<"<<ptrLibXMLLexer->getLocalName();
+
+         bool noMoreAttributes = false;
+
+         while(ptrLibXMLLexer->nextAttribute())
+          if(ptrLibXMLLexer->hasValue()){
+            ssResult<<" "<<ptrLibXMLLexer->getLocalName()<<"=\""<<ptrLibXMLLexer->getValue()<<"\"";
+          }
+
+        ssResult<<">";
+     }
+
+    if(ptrLibXMLLexer->checkType(XML_READER_TYPE_END_ELEMENT))
+    	  ssResult<<"</"<<ptrLibXMLLexer->getLocalName()<<">";
+
+		if(ptrLibXMLLexer->checkType(XML_READER_TYPE_TEXT) && ptrLibXMLLexer->hasValue()){
+        ssResult<<ptrLibXMLLexer->getValue();
 		}
 	}
 

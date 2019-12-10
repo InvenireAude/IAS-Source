@@ -1,14 +1,14 @@
 /*
  * File: Messages.h
- * 
+ *
  * Copyright (C) 2015, Albert Krzymowski
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  * http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -40,6 +40,7 @@ public:
 	static const MessageCatalog::MsgId	MSGE_LangScriptParseError      = 21002;
 	static const MessageCatalog::MsgId	MSGE_LangScriptNotFoundError   = 21003;
 	static const MessageCatalog::MsgId	MSGE_LangScriptUsageError      = 21004;
+  static const MessageCatalog::MsgId	MSGE_LangScriptAmbiguousParameters = 21005;
 	static const MessageCatalog::MsgId	MSGE_LangScriptRuntimeError    = 21010;
 	static const MessageCatalog::MsgId	MSGE_LangInternalError         = 21999;
 

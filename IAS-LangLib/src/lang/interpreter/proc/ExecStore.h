@@ -1,14 +1,14 @@
 /*
  * File: IAS-LangLib/src/lang/interpreter/proc/ExecStore.h
- * 
+ *
  * Copyright (C) 2015, Albert Krzymowski
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  * http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -21,6 +21,8 @@
 #include <commonlib/commonlib.h>
 #include <dm/datamodel.h>
 
+#include <lang/model/Model.h>
+
 #include "../TypeList.h"
 
 namespace IAS {
@@ -29,7 +31,6 @@ namespace Model {
 namespace Dec{
 class TypeDefinitionNode;
 }
-class Model;
 class ProgramNode;
 }
 
@@ -57,10 +58,6 @@ public:
 	::IAS::Lang::Interpreter::Exe::Program *createOrGetExecutable(const String& strName,
 														  	      const TypeList& lstTypes);
 
-//	::IAS::Lang::Interpreter::Exe::Program *getExecutable(const String& strName,
-//														  const TypeList& lstTypes,
-//														  const StringList& lstSearchPath);
-
 	::IAS::Lang::Interpreter::Exe::Program *createOrGetExecutable(const Model::ProgramNode* pProgramNode);
 	const ::IAS::Lang::Interpreter::Exe::Program *getExecutable(const Model::ProgramNode* pProgramNode)const;
 
@@ -85,9 +82,15 @@ protected:
 
 	::IAS::DM::DataFactory  *pDataFactory;
 
-	bool getExecutableImpl(const String& strName,
+	bool findExecutable(const String& strName,
 						   const TypeList& lstTypes,
 						   ::IAS::Lang::Interpreter::Exe::Program* &refOutput);
+
+
+	bool matchExecutable(const ::IAS::Lang::Model::Model::ProgramList& lstProgramsForName,
+						   const TypeList& lstTypes,
+						   ::IAS::Lang::Interpreter::Exe::Program* &refOutput,
+               bool  bAllowUpcast);
 
 
 	void buildExecutable(const Model::ProgramNode* pProgramNode);
@@ -108,7 +111,8 @@ protected:
 	IAS_DFT_FACTORY< ::IAS::Lang::Interpreter::Extern::ModuleStore >::PtrHolder ptrModuleStore;
 
 	bool matchParameteres(const ::IAS::Lang::Model::ProgramNode* pProgramNode,
-						  const TypeList& lstTypes)const;
+						            const TypeList& lstTypes,
+                        bool  bAllowUpcast = false)const;
 
 	String createPrintableSignature(const TypeList& lstTypes)const;
 

@@ -53,10 +53,18 @@ void Save::executeExternal(Exe::Context *pCtx) const{
 
 	if(strFileName.compare("stdout")==0){
 		String strValue;
-		ptrXMLHelper->save(strValue,dm,dm->getType()->getName(),"");
+
+    if(!dm.isNull()){
+		  ptrXMLHelper->save(strValue,dm,dm->getType()->getName(),"");
+    }else{
+      strValue="NULL\n";
+    }
+
 		std::cout<<strValue;
 	}else{
-		ptrXMLHelper->save((const String&)strFileName,dm,dm->getType()->getName(),"");
+
+    if(!dm.isNull())
+		  ptrXMLHelper->save((const String&)strFileName,dm,dm->getType()->getName(),"");
 	}
 
 }

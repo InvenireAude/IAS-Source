@@ -24,6 +24,8 @@
 #include <lang/model/ProgramNode.h>
 #include <lang/model/dec/QualifiedNameNode.h>
 
+#include <lang/exception/ScriptUsageException.h>
+
 #include <lang/interpreter/exe/Program.h>
 #include <lang/interpreter/exe/dec/Parameters.h>
 
@@ -40,6 +42,7 @@
 
 #include <lang/printer/CallbackSignature.h>
 #include <lang/printer/CallbackRegister.h>
+#include <lang/ui/Messages.h>
 
 namespace IAS {
 namespace Lang {
@@ -72,33 +75,11 @@ Exe::Program *ExecStore::createOrGetExecutable(const String& strName,
 	IAS_TRACER;
 	Exe::Program *pResult;
 
-	if(!getExecutableImpl(strName, lstTypes, pResult))
+	if(!findExecutable(strName, lstTypes, pResult))
 		IAS_THROW(ItemNotFoundException(String(strName)+createPrintableSignature(lstTypes)));
 
 	return pResult;
 }
-/*************************************************************************/
-//Exe::Program *ExecStore::getExecutable(const String& strName,
-//									   const TypeList& lstTypes,
-//									   const StringList& lstSearchPath){
-//	IAS_TRACER;
-//
-//	Exe::Program *pResult;
-//
-//	if(getExecutableImpl(strName, lstTypes, pResult))
-//		return pResult;
-//
-//	for(StringList::const_iterator it = lstSearchPath.begin();
-//		it != lstSearchPath.end();
-//		it++){
-//		//TODO (M) delimiter
-//		if(getExecutableImpl((*it)+'.'+strName, lstTypes, pResult))
-//			return pResult;
-//
-//	}
-//
-//	IAS_THROW(ItemNotFoundException(String(strName)+createPrintableSignature(lstTypes)));
-//}
 /*************************************************************************/
 ::IAS::Lang::Interpreter::Exe::Program *ExecStore::createOrGetExecutable(const Model::ProgramNode* pProgramNode){
 
@@ -121,14 +102,27 @@ const ::IAS::Lang::Interpreter::Exe::Program *ExecStore::getExecutable(const Mod
 	return hmExecutables.at(pProgramNode);
 }
 /*************************************************************************/
-bool ExecStore::getExecutableImpl(const String& strName,
+bool ExecStore::findExecutable(const String& strName,
 								  const TypeList& lstTypes,
 								  Exe::Program* &refOutput){
+  IAS_TRACER;
+
+  const Model::Model::ProgramList& lstProgramsForName=pModel->getPrograms(strName);
+
+  if(matchExecutable(lstProgramsForName,lstTypes,refOutput,false)){
+    return true;
+  }else{
+    return matchExecutable(lstProgramsForName,lstTypes,refOutput,true);
+  }
+}
+/*************************************************************************/
+bool ExecStore::matchExecutable(const Model::Model::ProgramList& lstProgramsForName,
+								                   const TypeList& lstTypes,
+								                   Exe::Program* &refOutput,
+                                   bool bAllowUpcast){
 	IAS_TRACER;
 
-    const Model::Model::ProgramList& lstProgramsForName=pModel->getPrograms(strName);
-
-	IAS_LOG(::IAS::Lang::LogLevel::INSTANCE.isInfo(),"Program: "<<strName<<", count: "<<lstProgramsForName.size());
+  const Model::ProgramNode* pMatchingProgramNode = NULL;
 
     for(Model::Model::ProgramList::const_iterator it = lstProgramsForName.begin();
     	it != lstProgramsForName.end();
@@ -140,21 +134,35 @@ bool ExecStore::getExecutableImpl(const String& strName,
         	buildExecutable(pProgramNode);
         }
 
-    	if(lstTypes.isAnyThing() || matchParameteres(pProgramNode,lstTypes)){
-    		refOutput=hmExecutables[pProgramNode];
-    		IAS_LOG(::IAS::Lang::LogLevel::INSTANCE.isInfo(),"Result: "<<(void*)refOutput<<", "
-    				<<pModel->resolve(pProgramNode->getSourceLocation().getSourceID())<<":"
-					<<pProgramNode->getSourceLocation().getLineNumber());
-    		return true;
+    	if(lstTypes.isAnyThing() || matchParameteres(pProgramNode, lstTypes, bAllowUpcast)){
+
+        if(!pMatchingProgramNode){
+    		  pMatchingProgramNode = pProgramNode;
+    		  IAS_LOG(::IAS::Lang::LogLevel::INSTANCE.isInfo(),"Result: "<<(void*)refOutput<<", "
+    				                                      <<pModel->resolve(pProgramNode->getSourceLocation().getSourceID())<<":"
+					                                        <<pProgramNode->getSourceLocation().getLineNumber());
+        }else{
+          UserMessage(UI::Messages::MSGE_LangScriptAmbiguousParameters)
+                  <<pModel->resolve(pProgramNode->getSourceLocation().getSourceID())<<pProgramNode->getSourceLocation().getLineNumber()
+                  <<pModel->resolve(pMatchingProgramNode->getSourceLocation().getSourceID())<<pMatchingProgramNode->getSourceLocation().getLineNumber();
+
+          IAS_THROW(ScriptUsageException("Ambiguous Parameters"));
+        }
     	}
 
+    }
+
+    if(pMatchingProgramNode){
+      refOutput=hmExecutables[pMatchingProgramNode];
+      return true;
     }
 
     return false;
 }
 /*************************************************************************/
 bool ExecStore::matchParameteres(const ::IAS::Lang::Model::ProgramNode* pProgramNode,
-								 const TypeList& lstTypes)const{
+								 const TypeList& lstTypes,
+                 bool  bAllowUpcast)const{
 	IAS_TRACER;
 
 	IAS_LOG(::IAS::Lang::LogLevel::INSTANCE.isInfo(),"Program: "<<pProgramNode->getQualifiedNameNode()->getName()<<
@@ -173,7 +181,14 @@ bool ExecStore::matchParameteres(const ::IAS::Lang::Model::ProgramNode* pProgram
 
 	for(int iIdx = 0; iIdx<lstTypes.size(); iIdx++){
 
-		if(! (lstTypes[iIdx]->isAssignableTo(lstProperties.getProperty(iIdx)->getType())) ){
+		if(! (lstTypes[iIdx]->isAssignableTo(lstProperties.getProperty(iIdx)->getType()) ||
+          (
+            bAllowUpcast &&
+            lstTypes[iIdx]->getTypeEnum() != DM::Type::DataObjectType &&
+	           //lstTypes[iIdx]->getTypeEnum() != DM::Type::AnyType &&
+             lstTypes[iIdx]->isRootType()) &&
+             lstProperties.getProperty(iIdx)->getType()->isAssignableTo(lstTypes[iIdx])
+          )){
 			IAS_LOG(::IAS::Lang::LogLevel::INSTANCE.isInfo(),
 					lstTypes[iIdx]->getName()<<""<<lstTypes[iIdx]->getFullName()
 					<<"!="<<lstProperties.getProperty(iIdx)->getType()->getFullName());
