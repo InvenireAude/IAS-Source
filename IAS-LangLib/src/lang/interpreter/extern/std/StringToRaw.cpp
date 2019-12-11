@@ -50,7 +50,7 @@ void StringToRaw::executeExternal(Exe::Context *pCtx) const{
 	IAS_DFT_FACTORY<DM::RawContent>::PtrHolder ptrDataBuffer(
 			IAS_DFT_FACTORY<DM::RawContent>::Create(strArgument.length()));
 
-	size_t iDataLen = strArgument.length() + 1;
+	size_t iDataLen = strArgument.length();
 
 	ptrDataBuffer->resize(iDataLen);
 
