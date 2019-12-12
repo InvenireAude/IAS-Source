@@ -249,7 +249,7 @@ void JSONSerializer::serialize(const DataObject* pDataObject, bool  bXSIType){
 
 	IAS_CHECK_IF_VALID(pDataObject);
 
-	serializeElement(pDataObject,bXSIType,"");
+	serializeElement(pDataObject,bXSIType, prefixes.sPrefix);
 	os<<prefixes.sEndl;
 }
 /*************************************************************************/
