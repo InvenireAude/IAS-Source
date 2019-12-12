@@ -11,6 +11,7 @@ EXTERNAL "libIASQSystemLib:ias_qs_lang_db_proxy:WrappedStatement"
    ? data.middlename => middlename,
    ? data.lastname   => lastname,
    ? data.age        => age,
+   ? data.money      => money,
    ? data.birthDate  => birthDate,
    ? data.wakeup     => wakeup,
    ? data.updated    => updated

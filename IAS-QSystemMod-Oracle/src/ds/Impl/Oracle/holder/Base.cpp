@@ -122,6 +122,7 @@ Base* Base::Create(Statement* pStatement, DM::Tools::Setter* pSetter, bool bOpti
 			break;
 
 		case DM::Type::TextType:
+    case DM::Type::DecimalType:
 			return IAS_DFT_FACTORY<Text>::Create(pStatement,pSetter,bOptional);
 			break;
 

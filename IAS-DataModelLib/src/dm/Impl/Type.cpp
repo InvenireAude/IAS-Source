@@ -31,6 +31,7 @@
 #include "../../dm/Impl/TypeDateTime.h"
 #include "../../dm/Impl/TypeFloat.h"
 #include "../../dm/Impl/TypeInteger.h"
+#include "../../dm/Impl/TypeDecimal.h"
 #include "../../dm/Impl/TypeString.h"
 #include "../../dm/Impl/TypeTime.h"
 #include "../../dm/log/LogLevel.h"
@@ -48,7 +49,8 @@ Type::Type(const String& strURI,
 	pBaseType(pBaseType),
 	bIsNSElementsType(false),
 	strDescription(""),
-	iMaxLength(CDftMaxLength){
+	iMaxLength(CDftMaxLength),
+  iFractionDigits(CDftFractionDigits){
 
 		IAS_TRACER;
 
@@ -98,6 +100,14 @@ void Type::setRestrictionMaxLength(const Type::MaxLenghtType iMaxLength){
 /*************************************************************************/
 Type::MaxLenghtType Type::getRestrictionMaxLenght()const{
 	return iMaxLength;
+}
+/*************************************************************************/
+void Type::setRestrictionFractionDigits(const Type::FractionDigitsType iFractionDigits){
+	this->iFractionDigits = iFractionDigits;
+}
+/*************************************************************************/
+Type::FractionDigitsType Type::getRestrictionFractionDigits()const{
+	return iFractionDigits;
 }
 /*************************************************************************/
 bool Type::isRootType() const{
@@ -257,7 +267,7 @@ IAS::DM::DataObject* Type::createDataObject(const IAS::DM::DataObject* pDataObje
 			ptrNewType=ModelAllocator<TypeInteger>::Create(strURI, strName, pBaseType);
 		break;
 		case ::IAS::DM::Type::DecimalType:
-			ptrNewType=ModelAllocator<TypeInteger>::Create(strURI, strName, pBaseType);
+			ptrNewType=ModelAllocator<TypeDecimal>::Create(strURI, strName, pBaseType);
 		break;
 		case ::IAS::DM::Type::TextType:
 			ptrNewType=ModelAllocator<TypeString>::Create(strURI, strName, pBaseType);

@@ -17,6 +17,7 @@ sqlite3 ${IAS_TEST_DS_SQLITE_DB} <<EOF
         LASTNAME   VARCHAR(128),
         MIDDLENAME VARCHAR(128),
         AGE        INTEGER,
+        MONEY      NUMBER(10,2),
         BIRTHDATE  DATE,
         WAKEUP     DATETIME,
         UPDATED    TIMESTAMP,

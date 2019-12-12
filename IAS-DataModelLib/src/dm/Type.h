@@ -151,11 +151,18 @@ public:
 
     /** Set maximum lenght */
     typedef unsigned int MaxLenghtType;
+
+    /** Set maximum digits */
+    typedef unsigned int FractionDigitsType;
+
     virtual void setRestrictionMaxLength(const MaxLenghtType iMaxLength)=0;
     virtual MaxLenghtType getRestrictionMaxLenght()const=0;
 
-    static const MaxLenghtType CDftMaxLength;
+    virtual void setRestrictionFractionDigits(const FractionDigitsType iFractionDigits)=0;
+    virtual FractionDigitsType getRestrictionFractionDigits()const=0;
 
+    static const MaxLenghtType CDftMaxLength;
+    static const FractionDigitsType CDftFractionDigits;
 };
 
  /*************************************************************************/

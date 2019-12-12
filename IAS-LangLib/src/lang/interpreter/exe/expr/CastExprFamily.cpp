@@ -1,14 +1,14 @@
 /*
  * File: IAS-LangLib/src/lang/interpreter/exe/expr/CastExprFamily.cpp
- * 
+ *
  * Copyright (C) 2015, Albert Krzymowski
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  * http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -21,6 +21,7 @@
 #include <commonlib/commonlib.h>
 #include "StringExpr.h"
 #include "IntegerExpr.h"
+#include "DecimalExpr.h"
 #include "FloatExpr.h"
 #include "BooleanExpr.h"
 #include "DateTimeExpr.h"
@@ -71,6 +72,20 @@ class CastIntegerExpr : public CastExprFamily, public IntegerExpr{
 		CastExprFamily(pExpr,pType){}
 
 	friend class Factory<CastIntegerExpr>;
+};
+/*************************************************************************/
+class CastDecimalExpr : public CastExprFamily, public DecimalExpr{
+
+	virtual ::IAS::Decimal evaluateDecimal(Context *pCtx) const{
+		IAS_TRACER;
+		return ptrExpr->evaluateDecimal(pCtx);
+	}
+
+	protected:
+	CastDecimalExpr(Expr* pExpr, const DM::Type* pType):
+		CastExprFamily(pExpr,pType){}
+
+	friend class Factory<CastDecimalExpr>;
 };
 /*************************************************************************/
 class CastFloatExpr : public CastExprFamily, public FloatExpr{
@@ -185,6 +200,10 @@ Expr* CastExprFamily::Create(Expr* pExpr, const DM::Type* pType){
 
 		case DM::Type::IntegerType:
 			ptrExpr=IAS_DFT_FACTORY<CastIntegerExpr>::Create(pExpr,pType);
+			break;
+
+		case DM::Type::DecimalType:
+			ptrExpr=IAS_DFT_FACTORY<CastDecimalExpr>::Create(pExpr,pType);
 			break;
 
 		case DM::Type::FloatType:

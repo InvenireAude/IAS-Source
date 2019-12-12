@@ -53,8 +53,7 @@ Decimal::Decimal(int iValue, Precision iPrecision) {
 Decimal::Decimal(const String& strValue, Precision iPrecision) {
 	IAS_TRACER;
   setup(iPrecision);
-  StringStream ssTmp(strValue);
-  ssTmp>>(*this);
+  parseString(strValue);
 }
 /*************************************************************************/
 Decimal::~Decimal() {
@@ -210,9 +209,29 @@ Decimal& Decimal::operator=(long  iValue){
 }
 /*************************************************************************/
 Decimal& Decimal::operator=(const String& strValue){
-  StringStream ssTmp(strValue);
-  ssTmp>>(*this);
+  parseString(strValue);
   return *this;
+}
+/*************************************************************************/
+void Decimal::parseString(const String& strValue){
+
+  StringStream ssTmp(strValue);
+
+  try {
+
+    ssTmp>>(*this);
+
+  }catch(BadUsageException& e){
+    IAS_THROW(BadUsageException(e.getInfo() + "["+strValue+"]"));
+  }
+
+  while(!ssTmp.eof() && isblank(ssTmp.get()))
+    /* skip() */;
+
+  if(!ssTmp.eof()){
+    IAS_THROW(BadUsageException("Error data in a decimal value. ["+strValue+"]"));
+  }
+
 }
 /*************************************************************************/
 bool Decimal::operator==(const Decimal& d)const{
@@ -261,6 +280,8 @@ std::ostream & operator << (std::ostream &out, const Decimal &d)
   return out;
 }
 
+/*************************************************************************/
+
 std::istream & operator >> (std::istream &in,  Decimal &d)
 {
 
@@ -269,16 +290,16 @@ std::istream & operator >> (std::istream &in,  Decimal &d)
   bool bFirst = true;
   bool bDecrementPrecision = false;
   bool bStop = false;
+  bool bHasData = false;
   long long iValue = 0;
 
   Decimal::Precision iPrecision = d.getPrecision();
 
   while(!bStop && (c = in.get()) && in.good()){
 
-    IAS_LOG(true, (char)(c)<<" "<<iValue);
-
     if( isdigit(c) ){
-
+        bFirst = false;
+        bHasData = true;
       if( !(bDecrementPrecision && iPrecision == 0) ){
         iValue = iValue * 10 + (c - '0');
       }
@@ -286,18 +307,29 @@ std::istream & operator >> (std::istream &in,  Decimal &d)
       if(bDecrementPrecision && iPrecision){
         iPrecision--;
       }
-    }else if( c == '.') {
+
+    }else if(!bDecrementPrecision && c == '.') {
+
       bDecrementPrecision = true;
 
     } else if( bFirst && c == '-'){
+
         iSign = -1;
         bFirst = false;
+
     }else if(bFirst && c == '+'){
+
         bFirst = false;
+    } else if(bFirst && isblank(c)){
     } else {
       bStop = true;
     }
   }
+
+  if((in.good() && !isblank(c)) || ! bHasData){
+    IAS_THROW(BadUsageException("Error in a decimal value."));
+  }
+
 
   while(iPrecision-- > 0){
     iValue = iValue * 10;
@@ -311,5 +343,7 @@ std::istream & operator >> (std::istream &in,  Decimal &d)
 
   return in;
 }
+/*************************************************************************/
 
 }
+

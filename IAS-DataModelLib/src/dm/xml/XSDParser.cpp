@@ -637,6 +637,18 @@ void XSDParser::parse_xsd_maxLength(){
 
 }
 /*************************************************************************/
+void XSDParser::parse_xsd_fractionDigits(){
+
+	IAS_TRACER;
+
+	TypeInfo* pCurrentTypeInfo=getCurrentType();
+	String strValue = ptrLibXMLLexer->getMandatoryAttribute("value");
+	pCurrentTypeInfo->iFractionDigits = TypeTools::StringToInt(strValue);
+
+	IAS_LOG(IAS::DM::LogLevel::INSTANCE.isInfo(),pCurrentTypeInfo->strName<<", fractionDigits: "<<pCurrentTypeInfo->iMaxLength);
+
+}
+/*************************************************************************/
 void XSDParser::parse_xsd_restriction(){
 	IAS_TRACER;
 
@@ -663,6 +675,10 @@ void XSDParser::parse_xsd_restriction(){
 
 		if(ptrLibXMLLexer->checkLocalName("maxLength")){
 			parse_xsd_maxLength();
+		}
+
+		if(ptrLibXMLLexer->checkLocalName("fractionDigits")){
+			parse_xsd_fractionDigits();
 		}
 
 		if(ptrLibXMLLexer->checkType(XML_READER_TYPE_END_ELEMENT) &&
@@ -891,6 +907,9 @@ DM::Type* XSDParser::defineType(TypeInfo* pTypeInfo, bool bSkipProperties){
 
 		if(pTypeInfo->iMaxLength != Type::CDftMaxLength)
 			pNewType->setRestrictionMaxLength(pTypeInfo->iMaxLength);
+
+		if(pTypeInfo->iFractionDigits != Type::CDftFractionDigits)
+			pNewType->setRestrictionFractionDigits(pTypeInfo->iFractionDigits);
 
 		pTypeInfo->iStage=TypeInfo::STAGE_PROPERTIES;
 

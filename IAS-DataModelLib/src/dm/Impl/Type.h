@@ -58,6 +58,8 @@ public:
     virtual void setRestrictionMaxLength(const MaxLenghtType iMaxLength);
     virtual MaxLenghtType getRestrictionMaxLenght()const;
 
+    virtual void setRestrictionFractionDigits(const FractionDigitsType iFractionDigits);
+    virtual FractionDigitsType getRestrictionFractionDigits()const;
 
     virtual IAS::DM::DataObject* createDataObject() const;
 	  virtual IAS::DM::DataObject* createDataObject(const char*  sValue) const;
@@ -103,6 +105,7 @@ protected:
 	const ::IAS::DM::Type*  pBaseType;
 
 	MaxLenghtType iMaxLength;
+  FractionDigitsType iFractionDigits;
 
 	void setIsNSElementsType(bool bIsNSElementsType);
 

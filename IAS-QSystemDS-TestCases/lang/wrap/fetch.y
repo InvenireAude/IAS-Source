@@ -3,16 +3,17 @@ PROGRAM wrap::fetchCustomer(VAR ctx      AS Context  : "http://www.invenireaude.
 EXTERNAL "libIASQSystemLib:ias_qs_lang_db_proxy:WrappedStatement"
 (
 "db",
-"SELECT ONCE 
+"SELECT ONCE
    firstname  => data.firstname,
    middlename => data.middlename,
    lastname   => data.lastname,
 ?  birthDate  => data.birthDate,
 ?  wakeup     => data.wakeup,
 ?  updated    => data.updated,
-   age   	  => data.age
+   age   	  => data.age,
+?  money  => data.money
  FROM 'CUSTOMER_VW'
- WHERE 
+ WHERE
    id = data.id
 ");
 
@@ -21,16 +22,17 @@ PROGRAM wrap::fetchCustomerForUpdate(VAR ctx      AS Context  : "http://www.inve
 EXTERNAL "libIASQSystemLib:ias_qs_lang_db_proxy:WrappedStatement"
 (
 "db",
-"SELECT ONCE 
+"SELECT ONCE
    firstname  => data.firstname,
    middlename => data.middlename,
    lastname   => data.lastname,
  ? birthDate  => data.birthDate,
  ? wakeup     => data.wakeup,
  ? updated    => data.updated,
-   age        => data/age
+   age        => data.age,
+ ? money      => data.money
  FROM 'CUSTOMER_VW'
- WHERE 
+ WHERE
    id = data.id
  FOR UPDATE
 ");
@@ -42,15 +44,16 @@ RETURNS ARRAY OF Customer : "http://www.examples.org/akc"
 EXTERNAL "libIASQSystemLib:ias_qs_lang_db_proxy:WrappedStatement"
 (
 "db",
-"SELECT ARRAY INTO result 
+"SELECT ARRAY INTO result
    id         => id,
    firstname  => firstname,
    middlename => middlename,
    lastname   => lastname,
 ?  birthDate  => birthDate,
 ?  wakeup     => wakeup,
-?  updated    => updated, 
-   age        => age
+?  updated    => updated,
+   age        => age,
+?  money  =>  money
  FROM 'CUSTOMER_VW'
 ");
 
@@ -61,15 +64,16 @@ RETURNS ARRAY OF Customer : "http://www.examples.org/akc"
 EXTERNAL "libIASQSystemLib:ias_qs_lang_db_proxy:WrappedStatement"
 (
 "db",
-"SELECT ARRAY INTO result PAGE(offset,page) 
+"SELECT ARRAY INTO result PAGE(offset,page)
    id         => id,
    firstname  => firstname,
    middlename => middlename,
    lastname   => lastname,
 ?  birthDate  => birthDate,
 ?  wakeup     => wakeup,
-?  updated    => updated,    
-   age        => age
+?  updated    => updated,
+   age        => age,
+?  money  =>  money
  FROM 'CUSTOMER_VW'
 ");
 
@@ -79,7 +83,7 @@ PROGRAM wrap::fetchAddresses(VAR ctx      AS Context  : "http://www.invenireaude
 EXTERNAL "libIASQSystemLib:ias_qs_lang_db_proxy:WrappedStatement"
 (
 "db",
-"SELECT ARRAY INTO data.address 
+"SELECT ARRAY INTO data.address
 	MAP type (
 		F     => Address : 'http://www.examples.org/akcf'(
            ? country => country
@@ -87,7 +91,7 @@ EXTERNAL "libIASQSystemLib:ias_qs_lang_db_proxy:WrappedStatement"
 	    _     => Address : 'http://www.examples.org/akc'
    )
    street => street,
-   block  => block 
+   block  => block
  FROM 'ADDRESS_VW'
  WHERE 'CUSTOMER_ID' = data.id
 ");

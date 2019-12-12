@@ -15,6 +15,7 @@ psql ${IAS_TEST_DS_POSTGRESQL_DB} <<EOF
         LASTNAME   VARCHAR(128),
         MIDDLENAME VARCHAR(128),
         AGE        INTEGER,
+        MONEY      NUMERIC(10,2),
         BIRTHDATE  DATE,
         WAKEUP     TIME,
         UPDATED    TIMESTAMP,

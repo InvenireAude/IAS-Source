@@ -17,7 +17,7 @@
  */
 #include "../../dm/Impl/DataObjectDecimal.h"
 #include <commonlib/commonlib.h>
-#include "../../dm/Type.h"
+#include "../../dm/Impl/Type.h"
 #include "../../dm/log/LogLevel.h"
 
 namespace IAS {
@@ -25,7 +25,9 @@ namespace DM {
 namespace Impl {
 
 /*************************************************************************/
-DataObjectDecimal::DataObjectDecimal(const Type *pType):DataObjectBasic(pType),aValue(0){
+DataObjectDecimal::DataObjectDecimal(const Type *pType):
+  DataObjectBasic(pType),
+  aValue(0, pType->getRestrictionFractionDigits()){
 	IAS_TRACER;
 }
 /*************************************************************************/

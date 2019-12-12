@@ -79,8 +79,8 @@ protected:
   DecimalValueHolder getRawValue() const;
   DecimalValueHolder getAdjustedRawValue(const Decimal& d) const;
 
+  void parseString(const String& strValue);
   DecimalValueHolder iValue;
-
 };
 
 /*************************************************************************/

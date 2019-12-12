@@ -17,6 +17,11 @@
 		</xsd:sequence>
 </xsd:complexType>
 
+<xsd:simpleType name="BigMoney">
+	<xsd:restriction base="xsd:decimal">
+	  <xsd:fractionDigits value="2"/>
+	</xsd:restriction>
+ </xsd:simpleType>
 
   <xsd:complexType name="Customer">
    <xsd:sequence>
@@ -28,7 +33,7 @@
       <xsd:element name="age" type="xsd:integer"/>
       <xsd:element name="age1" type="xsd:integer"/>
       <xsd:element name="birth" type="xsd:dateTime"/>
-
+      <xsd:element name="money" type="akc:BigMoney"/>
       <xsd:element name="wakeup"    type="xsd:time"/>
       <xsd:element name="birthDate" type="xsd:date"/>
       <xsd:element name="updated"   type="xsd:dateTime"/>

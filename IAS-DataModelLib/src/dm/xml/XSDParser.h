@@ -1,14 +1,14 @@
 /*
  * File: IAS-DataModelLib/src/dm/xml/XSDParser.h
- * 
+ *
  * Copyright (C) 2015, Albert Krzymowski
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  * http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -69,6 +69,7 @@ protected:
 	void parse_xsd_extension(bool bComplexType);
 	void parse_xsd_restriction();
 	void parse_xsd_maxLength();
+  void parse_xsd_fractionDigits();
 	void parse_xsd_schema();
 	void parse_xsd_schemaAttribute();
 	String parse_xsd_annotation();
@@ -113,7 +114,7 @@ protected:
 		};
 
 		virtual ~TypeInfo(){};
-		TypeInfo() throw():pType(NULL),iStage(STAGE_NONE),iMaxLength(Type::CDftMaxLength){};
+		TypeInfo() throw():pType(NULL),iStage(STAGE_NONE),iMaxLength(Type::CDftMaxLength),iFractionDigits(Type::CDftFractionDigits){};
 
 		String strName;
 		String strBaseTypeURI;
@@ -125,7 +126,8 @@ protected:
 		Type* pType;
 		Stage iStage;
 
-		Type::MaxLenghtType iMaxLength;
+		Type::MaxLenghtType      iMaxLength;
+    Type::FractionDigitsType iFractionDigits;
 		void init();
 	};
 
