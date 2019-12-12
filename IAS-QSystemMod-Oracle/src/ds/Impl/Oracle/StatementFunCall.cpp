@@ -30,7 +30,7 @@ StatementFunCall::StatementFunCall(Session* pSession):
 /*************************************************************************/
 void StatementFunCall::setSQLText(const String& strSQLText){
   IAS_TRACER;
-  Statement::setSQLText("SELECT " + strSQLText + " FROM DUAL");
+   Statement::setSQLText("BEGIN :O000 := " + strSQLText + "; END;");
 }
 /*************************************************************************/
 StatementFunCall::~StatementFunCall() throw(){

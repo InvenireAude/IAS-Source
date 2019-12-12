@@ -58,6 +58,8 @@ Call::Call(::IAS::DS::API::Session* pSession,
 
     ptrCall = pSession->createFunCall();
 
+    String strTag(tabInputSetters.addXPath(strFunctionResultXPath, SettersTable::M_OUTPUT));
+
 	}else{
     ptrCall = pSession->createCall();
   }
@@ -140,7 +142,6 @@ Call::Call(::IAS::DS::API::Session* pSession,
 		IAS_THROW(ParseException(String("Expected end of input, got:")+TypeTools::IntToString(iToken),pLexer->getLine()));
 
   if(bIsFunction){
-     String strTag(tabInputSetters.addXPath(strFunctionResultXPath, SettersTable::M_OUTPUT));
      ptrCall->setSQLText(strSQLText);
   }else{
     ptrCall->setSQLText("CALL " + strSQLText);
@@ -153,10 +154,6 @@ Call::Call(::IAS::DS::API::Session* pSession,
 }
 /*************************************************************************/
 Call::~Call() throw(){
-	IAS_TRACER;
-}
-/*************************************************************************/
-void Call::parseInput(Lexer* pLexer){
 	IAS_TRACER;
 }
 /*************************************************************************/

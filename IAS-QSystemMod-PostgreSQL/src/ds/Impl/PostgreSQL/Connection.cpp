@@ -34,8 +34,8 @@ namespace Impl {
 namespace PostgreSQL {
 
 
-const String& Connection::CDFmtTime("%H:%M:%S%F%Z");
-const String& Connection::CDFmtDateTime("%Y-%m-%d %H:%M:%S%F%Z");
+const String& Connection::CDFmtTime("%H:%M:%S%F%z");
+const String& Connection::CDFmtDateTime("%Y-%m-%d %H:%M:%S%F%z");
 const String& Connection::CDFmtDate("%Y-%m-%d");
 
 /*************************************************************************/

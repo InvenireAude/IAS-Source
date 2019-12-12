@@ -105,7 +105,7 @@ cp ${_out_dir}/output ${_in_dir}/output
 fi
 ###############################
 
-diff ${_in_dir}/output ${_out_dir}/output 2> ${_out_dir}/output.diff 1>&2
+diff -bw ${_in_dir}/output ${_out_dir}/output 2> ${_out_dir}/output.diff 1>&2
 if [ $? == 0 ]
 then
 _result=OK

@@ -51,8 +51,6 @@ protected:
 
 	SettersTable 		tabInputSetters;
 
-	void parseInput(Lexer *pLexer);
-
 	friend class Factory<Call>;
 };
 

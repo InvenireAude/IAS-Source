@@ -34,6 +34,7 @@ void FunctionOutput::addOutput(const String& strTag, DM::Tools::Setter *pSetter)
 
     tabOutputHolders.push_back(Holder::Base::Create(&statement,pSetter,false));
 	  tabOutputHolders.back()->define(tabOutputHolders.size() + tabInputOutputHolders.size());
+    tabOutputHolders.back()->bind(this->iNumInputs++);
 
 }
 /*************************************************************************/
