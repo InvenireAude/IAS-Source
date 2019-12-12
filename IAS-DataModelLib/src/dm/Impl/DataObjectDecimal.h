@@ -34,6 +34,7 @@ public:
 
 	virtual void setString(const String& strValue);
 	virtual void setDecimal(const Decimal& aValue);
+  virtual void setInteger(int iValue);
 	virtual void setBoolean(bool bValue);
 	virtual void setFloat(Float fValue);
 	virtual void setDateTime(const IAS::DateTime& tValue);
@@ -45,6 +46,7 @@ public:
 	virtual bool   toBoolean()const;
   virtual int    toInteger()const;
 	virtual Decimal toDecimal()const;
+
 	virtual Float  toFloat()const;
 
 	virtual IAS::Date  toDate()const;

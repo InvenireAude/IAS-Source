@@ -88,6 +88,11 @@ void DataObjectDecimal::setString(const String& strValue){
 	this->aValue = strValue;
 }
 /*************************************************************************/
+void DataObjectDecimal::setInteger(int iValue){
+	IAS_TRACER;
+	this->aValue = (long)iValue;
+}
+/*************************************************************************/
 void DataObjectDecimal::setDecimal(const Decimal& aValue){
 	IAS_TRACER;
 	this->aValue = aValue;

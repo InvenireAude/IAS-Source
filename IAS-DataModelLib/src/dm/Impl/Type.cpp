@@ -256,6 +256,9 @@ IAS::DM::DataObject* Type::createDataObject(const IAS::DM::DataObject* pDataObje
 		case ::IAS::DM::Type::IntegerType:
 			ptrNewType=ModelAllocator<TypeInteger>::Create(strURI, strName, pBaseType);
 		break;
+		case ::IAS::DM::Type::DecimalType:
+			ptrNewType=ModelAllocator<TypeInteger>::Create(strURI, strName, pBaseType);
+		break;
 		case ::IAS::DM::Type::TextType:
 			ptrNewType=ModelAllocator<TypeString>::Create(strURI, strName, pBaseType);
 		break;
