@@ -37,18 +37,20 @@ int TypeTools::StringToInt(const String& strValue) {
 
 	int iResult;
 
-#if __cplusplus >= 1201103L
+#if __cplusplus >= 201103L
+
 	try{
 		iResult = std::stoi(strValue.c_str(),0,10);
 	}catch(std::exception& e){
-		IAS_THROW(BadUsageException("Conversion error: " + strValue));
-	}
-#else
-	StringStream ss(strValue);
-	ss >> iResult;
-
-	if(!ss.eof())
 		IAS_THROW(BadUsageException("Conversion error: [" + strValue + "]"));
+	}
+
+#else
+
+ 	StringStream ss(strValue);
+ 	ss >> iResult;
+ 	if(ss.fail())
+ 		IAS_THROW(BadUsageException("Conversion error: [" + strValue + "]"));
 
 #endif
 
