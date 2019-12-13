@@ -79,7 +79,7 @@ bool  FloatExpr::evaluateBoolean(Context *pCtx) const{
 /*************************************************************************/
 Decimal FloatExpr::evaluateDecimal(Context *pCtx) const{
 	IAS_TRACER;
-	return evaluateInt(pCtx);
+	return evaluateFloat(pCtx);
 }
 /*************************************************************************/
 void FloatExpr::evaluate(Context *pCtx, DM::DataObjectPtr& refResult) const{

@@ -22,9 +22,10 @@
 
 namespace IAS {
 
-#define C_DECIMAL_PREC_BIT  7
-#define C_DECIMAL_PREC_MASK 127
+#define C_DECIMAL_PREC_BIT  4
+#define C_DECIMAL_PREC_MASK 15
 #define C_DECIMAL_PREC_OFF (8*sizeof(Decimal::DecimalValueHolder) - C_DECIMAL_PREC_BIT - 1)
+#define C_DECIMAL_FLOAT_PREC 5
 
 /*************************************************************************/
 Decimal::Decimal(const Decimal& d) {
@@ -34,8 +35,8 @@ Decimal::Decimal(const Decimal& d) {
 /*************************************************************************/
 Decimal::Decimal(Float fValue, Precision iPrecision) {
 	IAS_TRACER;
-  setup(iPrecision);
-  setValue(fValue * pow(10, iPrecision));
+  setup(iPrecision == C_DefaultPrecision ?  C_DECIMAL_FLOAT_PREC : iPrecision);
+  setValue(fValue * pow(10, C_DECIMAL_FLOAT_PREC));
 }
 /*************************************************************************/
 Decimal::Decimal(long iValue, Precision iPrecision) {
@@ -199,11 +200,13 @@ Decimal& Decimal::operator=(const Decimal& d1){
 }
 /*************************************************************************/
 Decimal& Decimal::operator=(Float fValue){
-  setValue(fValue * pow(10, getPrecision()));
+  setup(C_DECIMAL_FLOAT_PREC);
+  setValue(fValue * pow(10, C_DECIMAL_FLOAT_PREC));
   return *this;
 }
 /*************************************************************************/
 Decimal& Decimal::operator=(long  iValue){
+  setup(0);
   setValue(iValue * pow(10, getPrecision()));
   return *this;
 }
@@ -292,8 +295,14 @@ std::istream & operator >> (std::istream &in,  Decimal &d)
   bool bStop = false;
   bool bHasData = false;
   long long iValue = 0;
+  bool bPrecisionFromInput=false;
 
   Decimal::Precision iPrecision = d.getPrecision();
+
+  if(iPrecision == Decimal::C_DefaultPrecision) {
+    bPrecisionFromInput = true;
+    iPrecision = C_DECIMAL_PREC_MASK - 1;
+  }
 
   while(!bStop && (c = in.get()) && in.good()){
 
@@ -330,6 +339,10 @@ std::istream & operator >> (std::istream &in,  Decimal &d)
     IAS_THROW(BadUsageException("Error in a decimal value."));
   }
 
+  if(bPrecisionFromInput) {
+    d.setup(C_DECIMAL_PREC_MASK - 1 - iPrecision);
+    iPrecision = 0;
+  }
 
   while(iPrecision-- > 0){
     iValue = iValue * 10;

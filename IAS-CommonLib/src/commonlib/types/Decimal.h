@@ -33,7 +33,7 @@ public:
 	virtual ~Decimal() throw();
 
   typedef unsigned short Precision;
-  static const Precision C_DefaultPrecision = 2;
+  static const Precision C_DefaultPrecision = 0;
 
   Decimal(const Decimal& d);
 	Decimal(Float fValue, Precision iPrecision = C_DefaultPrecision);
