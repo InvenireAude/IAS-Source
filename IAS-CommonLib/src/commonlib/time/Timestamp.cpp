@@ -306,7 +306,9 @@ String Timestamp::toString(const String& strFormat) const {
 				    ssValue<<"."<<std::setw(UFPrec)<<(theValue.tv_usec);
 				break;
 
-				case 'z': ssValue<<(TheLocale.iGMTOffset < 0 ? "-" : "+")<<std::setw(2)<<abs(TheLocale.iGMTOffset/60); break;
+				case 'x': ssValue<<(TheLocale.iGMTOffset < 0 ? "-" : "+")<<std::setw(2)<<abs(TheLocale.iGMTOffset/60); break;
+        case 'z': ssValue<<(TheLocale.iGMTOffset < 0 ? "-" : "+")<<std::setw(2)<<abs(TheLocale.iGMTOffset/60)
+                         <<":"<<std::setw(2)<<abs(TheLocale.iGMTOffset%60);break;
 				case 'Z': if(TheLocale.sTimeZone != 0){ ssValue<<TheLocale.sTimeZone;} break;
 
 				default:
@@ -410,6 +412,7 @@ void Timestamp::fromString(const String& strValue, const String& strFormat, bool
 					case 'f': iMSec=readUSec(ssValue,false);break;
 					case 'F': iMSec=readUSec(ssValue,true);break;
 					case 'z': iZoneOff=readZoneOffset(ssValue) - TheLocale.iGMTOffset; break;
+          case 'x': iZoneOff=readZoneOffset(ssValue) - TheLocale.iGMTOffset; break;
 					case 'Z':
             ssValue>>strZone;
             tmpTime.tm_zone=strZone.c_str();
