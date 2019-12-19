@@ -33,6 +33,8 @@ namespace Cfg {
 const String& Config::StrConfigLockFile = "Config.lck";
 const String& Config::StrConfigFile = "SMServices.xml";
 const String& Config::StrDeploymentFile = "SMDeployment.xml";
+const String& Config:: CEnvLogDateTimeFormat="IAS_SM_DATETIME_FMT";
+
 /*************************************************************************/
 Config::Entry::Entry(const String& strDirName):strDirName(strDirName){
 	IAS_TRACER;
@@ -361,12 +363,11 @@ String Config::getLogFilesBase(const Service* pService) const{
 	IAS_TRACER;
 
 	const ResourceGroup* dmResourceGrp = getMergedServiceResourceGrps(pService);
-
 	Timestamp ts(true);
 	StringStream ssFileName;
 	ssFileName << dmResourceGrp->getLogDir() << "/";
 	ssFileName << pService->getName() << "-";
-	ssFileName << ts.toString("%Y%m%d-%H:%M:%S") << ".";
+	ssFileName << ts.toString(EnvTools::GetEnvWithDefault(CEnvLogDateTimeFormat, "%Y%m%d-%H:%M:%S")) << ".";
 	return ssFileName.str();
 }
 /*************************************************************************/
