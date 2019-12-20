@@ -58,6 +58,14 @@ PROGRAM std::strlen(VAR strArgument AS String) RETURNS Integer
 EXTERNAL "libIASLangLib:StrLen"();
 
 /* ********************************************************************************* */
+// Compat
+PROGRAM std::to2lower(VAR strArgument AS String) RETURNS String
+EXTERNAL "libIASLangLib:StrToLower"();
+
+PROGRAM std::to2upper(VAR strArgument AS String) RETURNS String
+EXTERNAL "libIASLangLib:StrToUpper"();
+
+/* ********************************************************************************* */
 
 PROGRAM std::log(VAR priority AS String, VAR message AS String)
 EXTERNAL "libIASLangLib:ias_lang_std_system_proxy:SysLog"();
