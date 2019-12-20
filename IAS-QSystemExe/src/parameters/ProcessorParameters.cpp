@@ -1,14 +1,14 @@
 /*
  * File: IAS-QSystemExe/src/parameters/ProcessorParameters.cpp
- * 
+ *
  * Copyright (C) 2015, Albert Krzymowski
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  * http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -18,7 +18,7 @@
 #include "ProcessorParameters.h"
 
 #include <commonlib/commonlib.h>
-
+#include <commonlib/ui/Messages.h>
 #include <org/invenireaude/qsystem/workers/DataFactory.h>
 
 using namespace ::org::invenireaude::qsystem::workers;
@@ -32,12 +32,13 @@ namespace Parameters {
 ProcessorParameters::ProcessorParameters(int argc, char* argv[]){
 	IAS_TRACER;
 
-	::IAS::QS::Parameters::ProgramParameters::init(argc,argv,"hs:i:o:l:f:N:O:T:d:m:t:c:C:E:P:");
+	::IAS::QS::Parameters::ProgramParameters::init(argc,argv,"hs:i:o:l:f:N:O:T:d:m:t:c:C:E:P:R");
 
 }
 /*************************************************************************/
 const String ProcessorParameters::C_DefaultMode("processor");
 const String ProcessorParameters::C_strEmpty("");
+const String ProcessorParameters::CEnvDbgDontRun("IAS_DBG_DONTRUN");
 /*************************************************************************/
 bool ProcessorParameters::hasModeSpecs()const{
 	return hmIndicators.count('m');
@@ -90,6 +91,14 @@ const String& ProcessorParameters::getLogicSpecs()const{
 /*************************************************************************/
 bool ProcessorParameters::hasDataSourceSpecs()const{
 	return hmIndicators.count('d');
+}
+/*************************************************************************/
+bool ProcessorParameters::getDontRun()const{
+	bool bValue = hmIndicators.count('R') || EnvTools::GetBooleanEnv(CEnvDbgDontRun);
+  if(bValue){
+    UserMessage(IAS::Messages::MSGI_ConfigInfo)<<"WARNING !!! Debug only mode. Logic will not run.";
+  }
+  return bValue;
 }
 /*************************************************************************/
 const String& ProcessorParameters::getDataSourceSpecs()const{

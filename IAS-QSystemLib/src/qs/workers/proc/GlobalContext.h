@@ -111,6 +111,7 @@ public:
 			virtual const String& getFullConfig()const=0;
 
 			virtual const StringList& getLogicParameters()const=0;
+      virtual bool getDontRun()const=0;
 	};
 
 	virtual ~GlobalContext() throw();

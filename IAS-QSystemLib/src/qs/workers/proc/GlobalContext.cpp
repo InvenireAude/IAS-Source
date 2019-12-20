@@ -90,7 +90,7 @@ namespace Proc {
 GlobalContext::GlobalContext(const Parameters* pParameters):
 	ptrDataFactory(org::invenireaude::qsystem::workers::DataFactory::GetInstance()->getContaingDataFactory()),
 	ptrLogicFactory(IAS_DFT_FACTORY<Logic::LogicFactory>::Create()),
-	bAbort(false),
+	bAbort(pParameters->getDontRun()),
 	dmSpecification(NULL){
 
 	IAS_TRACER;
@@ -200,11 +200,11 @@ bool GlobalContext::allDone(){
 
 	IAS_LOG(IAS::QS::LogLevel::INSTANCE.isInfo(),"** Left: "<<iMsgLeft<<", bAbort="<<bAbort);
 
-	if(iMsgLeft==0)
-		return bAbort;
+	if(iMsgLeft == 0 || bAbort)
+    return true;
 
 	iMsgLeft--;
-	return true;
+	return false;
 }
 /*************************************************************************/
 void GlobalContext::abort(bool bImmediate){
@@ -407,6 +407,7 @@ void GlobalContext::Start(const Parameters* pParameters){
 		UserMessage(UI::Messages::MSGE_ConfigError)<<e.getName()<<e.getInfo();
 		return;
 	}
+
 
 	ptrController->start();
 }
