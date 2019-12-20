@@ -58,7 +58,8 @@ void ParametersNodeHandler::call(const Model::Node* pNode,
 	while(itDeclarations != pParametersNode->getDeclarationsList().end()){
 		const Model::Dec::DeclarationNode *pDeclarationNode = *itDeclarations;
 
-		if((*itDeclarations)->getVariable().compare("result")){
+		if((*itDeclarations)->getVariable().compare(
+        Model::Dec::ResultDeclarationNode::CStrResultVariable)){
 
 			//if(!bFirst){
 				aResult.ssOutput<<std::endl;
