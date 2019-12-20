@@ -49,7 +49,7 @@ void Call::execute(Exe::Context *pCtx) const{
 	IAS_DFT_FACTORY<ProgramContext>::PtrHolder ptrContext(
 			IAS_DFT_FACTORY<ProgramContext>::Create(pCtx->getDataFactory(),pProgram));
 
-  ptrExprList->evaluate(pCtx,ptrContext->getParameters(), pProgram->getParameters()->hasResult());
+  ptrExprList->evaluate(pCtx,ptrContext->getParameters(), pProgram->isReturningResult());
 
 	IAS_LOG(Lang::LogLevel::INSTANCE.isLogic(), "CALLTRACE: >> "<<pProgram->getName()<<DM::XML::XMLHelper::Stringify(pCtx->getDataFactory(),ptrContext->getParameters()));
 	ptrContext->execute(pCtx);
