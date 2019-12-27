@@ -4,6 +4,9 @@ CallFun
 Delete_Address
 Fetch_Customer
 Fetch_Customer_Paging
+Fetch_Customer_OrderBy
+Fetch_Customer_OrderByMap
+Fetch_Customer_GroupBy
 Fetch_Customer_XML
 Insert_Customer
 InsertOrUpdate

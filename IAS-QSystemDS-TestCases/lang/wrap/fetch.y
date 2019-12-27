@@ -77,6 +77,67 @@ EXTERNAL "libIASQSystemLib:ias_qs_lang_db_proxy:WrappedStatement"
  FROM 'CUSTOMER_VW'
 ");
 
+PROGRAM wrap::fetchCustomerOrderByAgeAndName()
+RETURNS ARRAY OF Customer : "http://www.examples.org/akc"
+EXTERNAL "libIASQSystemLib:ias_qs_lang_db_proxy:WrappedStatement"
+(
+"db",
+"SELECT ARRAY INTO result
+   id         => id,
+   firstname  => firstname,
+   middlename => middlename,
+   lastname   => lastname,
+?  birthDate  => birthDate,
+?  wakeup     => wakeup,
+?  updated    => updated,
+   age        => age,
+?  money  =>  money
+ FROM 'CUSTOMER_VW'
+ORDER BY age,lastname, firstname DESC
+");
+
+PROGRAM wrap::fetchCustomerOrderByMap(
+  VAR order AS String
+)
+RETURNS ARRAY OF Customer : "http://www.examples.org/akc"
+EXTERNAL "libIASQSystemLib:ias_qs_lang_db_proxy:WrappedStatement"
+(
+"db",
+"SELECT ARRAY INTO result
+   id         => id,
+   firstname  => firstname,
+   middlename => middlename,
+   lastname   => lastname,
+?  birthDate  => birthDate,
+?  wakeup     => wakeup,
+?  updated    => updated,
+   age        => age,
+?  money  =>  money
+ FROM 'CUSTOMER_VW'
+ORDER BY MAP order (
+     id => (id DESC),
+    'age' => (age DESC),
+    'name+' => (lastname ASC,firstname),
+    'name-' => (lastname DESC, firstname DESC),
+     _ => ()
+   )
+");
+
+
+PROGRAM wrap::fetchCustomerGroupBy()
+RETURNS ARRAY OF Customer : "http://www.examples.org/akc"
+EXTERNAL "libIASQSystemLib:ias_qs_lang_db_proxy:WrappedStatement"
+(
+"db",
+"SELECT ARRAY INTO result
+   count(id)   => id,
+   avg(age)    => age,
+   sum(money)  =>  money,
+   lastname    => lastname
+ FROM 'CUSTOMER_VW'
+GROUP BY lastname
+ORDER BY lastname
+");
 
 PROGRAM wrap::fetchAddresses(VAR ctx      AS Context  : "http://www.invenireaude.org/qsystem/workers",
 				              VAR data    AS Customer : "http://www.examples.org/akc")

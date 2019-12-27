@@ -88,6 +88,7 @@ export IAS_DBG_GLOBAL=+info,-details,+error,+stacktrace,+throw,+data,+system
 export IAS_DBG_LANG=+info,-details,+error,+stacktrace,+throw
 #export IAS_DBG_GLOBAL=-info,-details,+error,+stacktrace,+throw,-data,+system
 
+#echo IAS_LANG_SRC_DIRS=${IAS_LANG_SRC_DIRS}:${_in_dir}:${_script_dir}/../lang >/tmp/cmd.txt
 
 ias_qs_processor -i file:${_input_file} \
                  -o file:${_out_dir}/output \

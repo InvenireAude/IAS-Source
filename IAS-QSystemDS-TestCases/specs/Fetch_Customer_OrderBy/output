@@ -1,0 +1,22 @@
+{
+   "customers" : [ {
+      "id" : "2",
+      "firstname" : "Walter",
+      "middlename" : "Junior",
+      "lastname" : "Smith",
+      "age" : 14
+      } ,{
+      "id" : "3",
+      "firstname" : "Sammy",
+      "middlename" : "Nova",
+      "lastname" : "Novak",
+      "age" : 24
+      } ,{
+      "id" : "1",
+      "firstname" : "Johny",
+      "middlename" : "Koval",
+      "lastname" : "Kowalski",
+      "age" : 41
+      }],
+   "_dmType" : "http://www.examples.org/akc#GetCustomerList"
+   }

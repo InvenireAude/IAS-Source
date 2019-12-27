@@ -1,0 +1,71 @@
+{
+   "customers" : [ {
+      "id" : "1",
+      "lastname" : "Kowalski",
+      "age" : 41
+      } ,{
+      "id" : "10",
+      "lastname" : "Novacky0",
+      "age" : 4,
+      "money" : 89.55
+      } ,{
+      "id" : "10",
+      "lastname" : "Novacky1",
+      "age" : 4,
+      "money" : 288.55
+      } ,{
+      "id" : "1",
+      "lastname" : "Novacky10",
+      "age" : 0,
+      "money" : 199.00
+      } ,{
+      "id" : "10",
+      "lastname" : "Novacky2",
+      "age" : 4,
+      "money" : 487.55
+      } ,{
+      "id" : "10",
+      "lastname" : "Novacky3",
+      "age" : 4,
+      "money" : 686.55
+      } ,{
+      "id" : "10",
+      "lastname" : "Novacky4",
+      "age" : 4,
+      "money" : 885.55
+      } ,{
+      "id" : "10",
+      "lastname" : "Novacky5",
+      "age" : 4,
+      "money" : 1084.55
+      } ,{
+      "id" : "10",
+      "lastname" : "Novacky6",
+      "age" : 4,
+      "money" : 1283.55
+      } ,{
+      "id" : "10",
+      "lastname" : "Novacky7",
+      "age" : 4,
+      "money" : 1482.55
+      } ,{
+      "id" : "10",
+      "lastname" : "Novacky8",
+      "age" : 4,
+      "money" : 1681.55
+      } ,{
+      "id" : "10",
+      "lastname" : "Novacky9",
+      "age" : 4,
+      "money" : 1880.55
+      } ,{
+      "id" : "1",
+      "lastname" : "Novak",
+      "age" : 24
+      } ,{
+      "id" : "1",
+      "lastname" : "Smith",
+      "age" : 14
+      }],
+   "_dmType" : "http://www.examples.org/akc#GetCustomerList"
+   }
