@@ -1,4 +1,4 @@
-#Fri 15 Nov 2019 04:18:35 PM CET
+#Fri 27 Dec 2019 07:11:15 PM CET
 FILES+=Impl/DataFactory
 FILES+=Impl/org/invenireaude/lang/builtin/DataObjects
 FILES+=lang/exception/ParseErrorException
@@ -98,6 +98,7 @@ FILES+=lang/interpreter/exe/expr/BinaryDecimalExpr
 FILES+=lang/interpreter/exe/expr/BinaryExprFamily
 FILES+=lang/interpreter/exe/expr/BinaryFloatExpr
 FILES+=lang/interpreter/exe/expr/BinaryIntegerExpr
+FILES+=lang/interpreter/exe/expr/BinaryListExpr
 FILES+=lang/interpreter/exe/expr/BinaryStringExpr
 FILES+=lang/interpreter/exe/expr/BinaryTimeExpr
 FILES+=lang/interpreter/exe/expr/BooleanExpr

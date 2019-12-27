@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ns0:customer xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ns0="http://www.examples.org/akc">
+ <firstname>test1,test2,test3,1,2,3,</firstname>
+ <address>
+  <street>Miodowa</street>
+  <block>11</block>
+ </address>
+ <address/>
+ <address xsi:nil="true"/>
+ <address>
+  <street>Miodowa</street>
+  <block>11</block>
+ </address>
+ <address/>
+ <address xsi:nil="true"/>
+ <address>
+  <street>Novacky</street>
+ </address>
+ <address>
+  <street>Mazacky</street>
+ </address>
+ <address>
+  <street>Testing1</street>
+  <block>1</block>
+ </address>
+ <address>
+  <street>Testing1</street>
+  <block>2</block>
+ </address>
+ <address>
+  <street>Testing2</street>
+  <block>1</block>
+ </address>
+ <address>
+  <street>Testing2</street>
+  <block>2</block>
+ </address>
+</ns0:customer>

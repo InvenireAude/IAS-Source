@@ -42,6 +42,10 @@ Expr::~Expr() throw(){
 	IAS_TRACER;
 }
 /*************************************************************************/
+bool Expr::isArray()const{
+  return false;
+}
+/*************************************************************************/
 const DM::Type* Expr::getType()const{
 	IAS_TRACER;
 	IAS_CHECK_IF_VALID(pType);

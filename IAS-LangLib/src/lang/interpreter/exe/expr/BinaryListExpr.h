@@ -1,5 +1,5 @@
 /*
- * File: IAS-LangLib/src/lang/interpreter/exe/expr/FunCallArray.h
+ * File: IAS-LangLib/src/lang/interpreter/exe/expr/BinaryListExpr.h
  *
  * Copyright (C) 2015, Albert Krzymowski
  *
@@ -15,41 +15,36 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#ifndef _IAS_Lang_Interpreter_Exe_Expr_FunCallArray_H_
-#define _IAS_Lang_Interpreter_Exe_Expr_FunCallArray_H_
+#ifndef _IAS_AS_Lang_Interpreter_Exe_Expr_BinaryListExpr_H_
+#define _IAS_AS_Lang_Interpreter_Exe_Expr_BinaryListExpr_H_
 
-#include "FunCall.h"
+#include "BinaryExprFamily.h"
 #include "DataObjectListExpr.h"
 
 namespace IAS {
 namespace Lang {
 namespace Interpreter {
 namespace Exe {
-class Program;
 namespace Expr {
-class ExprList;
-class ExprResultSetter;
+
 /*************************************************************************/
-/** The FunCallArray class.
- *
- */
-class FunCallArray :
-    public virtual FunCall,
-	public virtual DataObjectListExpr {
+/** The class. */
+ class BinaryListExpr :
+	public DataObjectListExpr,
+	public BinaryExprFamily{
 public:
 
-	virtual ~FunCallArray() throw();
+	virtual ~BinaryListExpr() throw();
 
-
-	/** Main evaluation method overloaded.*/
-	virtual void evaluate(Context *pCtx,
-						  ExprResultSetter& refResult) const;
+	static BinaryListExpr* Create(Expr* pLeft,
+									Expr* pRight,
+									TypeInfoProxy aTypeInfoProxy);
 
 	virtual bool isArray()const;
 
 protected:
-	FunCallArray(Program* pProgram, ExprList* pExprList);
-	friend class ::IAS::Factory<FunCallArray>;
+	BinaryListExpr(Expr* pLeft, Expr* pRight);
+	friend class ::IAS::Factory<BinaryListExpr>;
 };
 
 /*************************************************************************/
@@ -59,4 +54,4 @@ protected:
 }
 }
 
-#endif /* _IAS_Lang_Interpreter_Exe_Expr_FunCallArray_H_ */
+#endif /* _IAS_AS_Lang_Interpreter_Exe_Expr_BINARYSTRINGExpr_H_ */

@@ -27,6 +27,7 @@
 #include "BinaryDateTimeExpr.h"
 #include "BinaryDateExpr.h"
 #include "BinaryTimeExpr.h"
+#include "BinaryListExpr.h"
 
 #include <lang/exception/ScriptUsageException.h>
 
@@ -65,6 +66,9 @@ Expr* BinaryExprFamily::Create(Expr* pLeft, Expr* pRight, TypeInfoProxy aTypeInf
       + pLeft->getType()->getFullName()
       + "] when using a binary operator."));
 
+  if(pLeft->isArray())
+    return BinaryListExpr::Create(pLeft,pRight,aTypeInfoProxy);
+
 	switch(iTypeId){
 
 		case DM::Type::TextType:     return BinaryStringExpr::Create(pLeft,pRight,aTypeInfoProxy);
@@ -78,7 +82,6 @@ Expr* BinaryExprFamily::Create(Expr* pLeft, Expr* pRight, TypeInfoProxy aTypeInf
 			return BinaryDateExpr::Create(pLeft,pRight,aTypeInfoProxy);
 		case DM::Type::TimeType:
 			return BinaryTimeExpr::Create(pLeft,pRight,aTypeInfoProxy);
-
 	}
 
 	IAS_THROW(ScriptUsageException(String("No factory for binary operators for ")

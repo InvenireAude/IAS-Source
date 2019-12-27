@@ -35,7 +35,8 @@ ExprResultSetter::ExprResultSetter(DM::DataObject* ptrDM,
   	  	  	  	  	   int iIdx):
 		ptrDM(ptrDM),
 		pProperty(pProperty),
-		iIdx(iIdx){
+		iIdx(iIdx),
+    bClearList(true){
 	IAS_TRACER;
 
 	IAS_CHECK_IF_VALID(pProperty);
@@ -48,7 +49,8 @@ ExprResultSetter::ExprResultSetter(DM::DataObject* ptrDM,
 ExprResultSetter::ExprResultSetter(const ExprResultSetter& other):
 		ptrDM(other.ptrDM),
 		pProperty(other.pProperty),
-		iIdx(other.iIdx){}
+		iIdx(other.iIdx),
+    bClearList(other.bClearList){}
 /*************************************************************************/
 void ExprResultSetter::assign(DM::DataObject* dmValue){
 	IAS_TRACER;
@@ -74,7 +76,12 @@ void ExprResultSetter::assignList(DM::DataObjectList& refList){
 		IAS_THROW(InterpreterException(String("Cannot assign array to the other array element.")+=pProperty->getName()));
 
 	DM::DataObjectList& refTargetList=ptrDM->getList(pProperty);
-	refTargetList.clear();
+
+  if(&refList == &refTargetList)
+    return;
+
+  if(bClearList)
+	  refTargetList.clear();
 
 	IAS_LOG(::IAS::Lang::LogLevel::INSTANCE.isInfo(),"Coping list: " <<refList.size());
 
@@ -205,6 +212,13 @@ const DM::Property* ExprResultSetter::getProperty()const{
 	IAS_TRACER;
 	IAS_CHECK_IF_VALID(pProperty)
 	return pProperty;
+}
+
+/*************************************************************************/
+bool ExprResultSetter::isTargetArray()const{
+	IAS_TRACER;
+	IAS_CHECK_IF_VALID(pProperty)
+	return pProperty->isMulti() && iIdx == -1;
 }
 /*************************************************************************/
 }

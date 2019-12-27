@@ -70,7 +70,7 @@ public:
 	/** Main evaluation method with a cast.*/
 	virtual void evaluate(Context *pCtx, ExprResultSetter& refResult) const;
 
-	//virtual bool isArray()const;
+	virtual bool isArray()const;
 
 	const DM::Type* getType()const;
 

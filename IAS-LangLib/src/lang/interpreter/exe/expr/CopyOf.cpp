@@ -63,9 +63,13 @@ void CopyOf::ExprResultSetter::assignList(DM::DataObjectList& refList) {
 		IAS_THROW(InternalException(String("Cannot assign array to the other array element.")+=pProperty->getName()));
 
 	DM::DataObjectList& refTargetList=ptrDM->getList(pProperty);
-	refTargetList.clear();
 
-	for(int iIdx=0;iIdx<refList.size();iIdx++) {
+  int iNumItemsToCopy = refList.size();
+
+  if(bClearList && &refTargetList != &refList)
+	  refTargetList.clear();
+
+	for(int iIdx=0;iIdx < iNumItemsToCopy;iIdx++) {
 		DM::DataObject *dmValue(refList.at(iIdx));
 		refTargetList.add(dmValue ? refList.at(iIdx)->duplicate() : NULL);
 	}
@@ -89,6 +93,10 @@ void CopyOf::evaluate(Context *pCtx, IAS::Lang::Interpreter::Exe::Expr::ExprResu
 	ExprResultSetter aCopyOfResultSetter(refResult);
 	ptrXPathExprFamily->evaluate(pCtx,aCopyOfResultSetter);
 
+}
+/*************************************************************************/
+bool CopyOf::isArray()const{
+  return ptrXPathExprFamily->isArray();
 }
 /*************************************************************************/
 }

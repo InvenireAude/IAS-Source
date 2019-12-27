@@ -93,6 +93,7 @@ int main(int argc, char* argv[]) {
 		IAS_TEST_EXE("com::examples::basic::inlinetypes", "customer.xml");
 
     IAS_TEST_EXE("com::examples::basic::upcastargs", "customer.xml");
+    IAS_TEST_EXE("com::examples::basic::listconcat", "customer.xml");
 
 		/**/
 
