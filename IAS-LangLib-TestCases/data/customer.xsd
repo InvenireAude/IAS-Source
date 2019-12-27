@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<xsd:schema 
- xmlns:akc="http://www.examples.org/akc" 
+<xsd:schema
+ xmlns:akc="http://www.examples.org/akc"
  xmlns:akcf="http://www.examples.org/akcf"
- xmlns:xsd="http://www.w3.org/2001/XMLSchema" 
+ xmlns:xsd="http://www.w3.org/2001/XMLSchema"
  targetNamespace="http://www.examples.org/akc">
 
   <xsd:include schemaLocation="address.xsd"/>
@@ -16,12 +16,24 @@
 		</xsd:sequence>
 </xsd:complexType>
 
-  
- <xsd:simpleType name="Name">
-			<xsd:restriction base="xsd:string">
-			</xsd:restriction>
-</xsd:simpleType>
-  
+
+<xsd:simpleType name="Name">
+	<xsd:restriction base="xsd:string">
+	  <xsd:maxLength value="128"/>
+	</xsd:restriction>
+ </xsd:simpleType>
+
+ <xsd:simpleType name="BigMoney">
+	<xsd:restriction base="xsd:decimal">
+	  <xsd:fractionDigits value="2"/>
+	</xsd:restriction>
+ </xsd:simpleType>
+
+ <xsd:simpleType name="Contact">
+	<xsd:restriction base="xsd:string">
+	</xsd:restriction>
+ </xsd:simpleType>
+
   <xsd:complexType name="Customer">
    <xsd:sequence>
       <xsd:element name="id" type="xsd:string"/>
@@ -32,24 +44,24 @@
       <xsd:element name="info" type="xsd:string"/>
       <xsd:element name="age" type="xsd:integer"/>
       <xsd:element name="age1" type="xsd:integer"/>
-      <xsd:element name="birth" type="xsd:dateTime"/>    
+      <xsd:element name="birth" type="xsd:dateTime"/>
       <xsd:element name="someDate" type="xsd:date"/>
-      <xsd:element name="someTime" type="xsd:time"/> 
+      <xsd:element name="someTime" type="xsd:time"/>
       <xsd:element minOccurs="1" maxOccurs="unbounded" name="address" type="akc:Address"/>
 <!--      <xsd:element name="address" type="akc:Address"/> -->
       <xsd:element name="mailingAddress" type="akcf:Address"/>
 <!--  <xsd:element name="photo"  type="xsd:base64Binary"/> -->
 		<xsd:element name="misc" type="xsd:anyType" />
-		
+
 	  <xsd:element name="employment">
 	  		<xsd:complexType>
 	  		  <xsd:all>
 	  		  	<xsd:element name="company" type="xsd:string"/>
 	  		  	<xsd:element name="address" type="akc:Address"/>
-	  		  </xsd:all>	  		 
+	  		  </xsd:all>
 	  	</xsd:complexType>
 	  </xsd:element>
-	  
+
 	  <xsd:element name="prevEmployment">
 	  		<xsd:complexType>
 	  		  <xsd:all>
@@ -57,9 +69,9 @@
 	  			<xsd:element name="address" type="akc:Address"/>
 	  			<xsd:element name="date"    type="xsd:date"/>
 	  		  </xsd:all>
-	  		</xsd:complexType>		
+	  		</xsd:complexType>
 	  </xsd:element>
-	  
+
 	  <xsd:element name="someText">
 	  <xsd:simpleType>
           <xsd:restriction base="xsd:string">
@@ -67,17 +79,17 @@
           </xsd:restriction>
         </xsd:simpleType>
 	</xsd:element>
-	        	   
+
     </xsd:sequence>
     <xsd:attribute name="attr" type="xsd:string" />
-    <xsd:attribute name="extra" type="xsd:string" />   
+    <xsd:attribute name="extra" type="xsd:string" />
 
-    
+
   </xsd:complexType>
-    
+
     <xsd:element name="customer" type="akc:Customer"/>
     <xsd:element name="msgNewCustomer" type="akc:Customer"/>
     <xsd:element name="msgTimeInfo" type="akc:TimeInfo"/>
-   
-    
+
+
 </xsd:schema>

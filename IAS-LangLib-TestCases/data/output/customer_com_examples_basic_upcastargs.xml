@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ns0:customer xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ns0="http://www.examples.org/akc">
+ <firstname>string1</firstname>
+ <lastname xsi:type="ns0:Name">string1</lastname>
+ <someText>string2</someText>
+</ns0:customer>
