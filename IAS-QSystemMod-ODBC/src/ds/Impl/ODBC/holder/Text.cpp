@@ -2,16 +2,16 @@
  * Copyright (C) 2015, Albert Krzymowski
  * Copyright (C) 2015, Invenire Aude Limited
  *
- * File: IAS-QSystemMod-ODBC/src/ds/Impl/ODBC/holder/Text.cpp 
+ * File: IAS-QSystemMod-ODBC/src/ds/Impl/ODBC/holder/Text.cpp
  *
  * Licensed under the Invenire Aude Commercial License (the "License");
- * you may not use this file except in compliance with the License. 
+ * you may not use this file except in compliance with the License.
  * You may find the license terms and conditions in the LICENSE.txt file.
  * or at http://www.invenireaude.com/licenses/license.txt
- * 
+ *
  * This file and any derived form, including but not limited to object
  * executable, represents the Confidential Materials.
- * 
+ *
  */
 #include "Text.h"
 
@@ -34,13 +34,14 @@ Text::~Text() throw(){
 void Text::fetch(DM::DataObjectPtr& dm){
 	IAS_TRACER;
 
-	if(iStrLenOrInd==SQL_NULL_DATA) {
+  IAS_LOG(true, "iStrLen:" <<(void*)iStrLenOrInd<<" "<<(long)iStrLenOrInd);
+
+	if(iStrLenOrInd == SQL_NULL_DATA || iStrLenOrInd==0xffffffff) {
 
 		if(!bOptional)
 			pSetter->unset(dm);
 
 	}else{
-
 		bufData.getBuffer<char>()[iStrLenOrInd]=0;
 		String strValue((const char*)bufData);
 		IAS_LOG(LogLevel::INSTANCE.isDetailedInfo(),"value="<<strValue<<", len="<<iStrLenOrInd);
