@@ -1,14 +1,14 @@
 /*
  * File: IAS-CommonLib/src/commonlib/ui/MessageCatalog.cpp
- * 
+ *
  * Copyright (C) 2015, Albert Krzymowski
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  * http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -143,6 +143,7 @@ void MessageCatalog::fillMessageText(String& strOutput,
 					case '2': if(tabValues.size() >= 2) strOutput+=tabValues[1]; break;
 					case '3': if(tabValues.size() >= 3) strOutput+=tabValues[2]; break;
 					case '4': if(tabValues.size() >= 4) strOutput+=tabValues[3]; break;
+          case '5': if(tabValues.size() >= 5) strOutput+=tabValues[3]; break;
 				  default:
 					  strOutput+=SPECIAL_DSPMSG_CHAR;
 					  strOutput+=c;

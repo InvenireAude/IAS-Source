@@ -28,6 +28,8 @@
 #include <lang/interpreter/proc/ExecStore.h>
 #include <lang/interpreter/exe/allexe.h>
 
+#include <lang/ui/Messages.h>
+
 namespace IAS {
 namespace Lang {
 namespace Interpreter{
@@ -59,14 +61,12 @@ void AssignmentNodeHandler::call(const Model::Node* pNode, CallbackCtx *pCtx, Ca
 	CallbackRegister::SubCall(pExprNode,pCtx,aSubCallResult);
 	IAS_DFT_FACTORY<Exe::Expr::Expr>::PtrHolder ptrExpr(aSubCallResult.pExpr);
 
- if(!ptrLeftSide->getXPathExprFamily()->canAssign(ptrExpr->getType())){
-      // IAS_LOG(true,"Cannot assign a value of type: " + ptrExpr->getType()->getFullName() +
-      //    " to " + ptrLeftSide->getXPathExprFamily()->getType()->getFullName()<<" at "<<
-      //    pCtx->getExecStore()->getModel()->resolve(pAssignmentNode->getSourceLocation().getSourceID())<<"["<<
-      //     pAssignmentNode->getSourceLocation().getLineNumber()<<"]");
+ if(!ptrLeftSide->getXPathExprFamily()->canCastTo(ptrExpr->getType())){
 
-      IAS_THROW(ProcessorException("Cannot assign a value of type: " + ptrExpr->getType()->getFullName() +
-       " to " + ptrLeftSide->getXPathExprFamily()->getType()->getFullName()));
+      IAS_THROW(ProcessorException("Implicit cast error: [" + ptrExpr->getType()->getFullName()
+        + "] ==> ["
+        + ptrLeftSide->getXPathExprFamily()->getType()->getFullName()
+        + "]."));
    }
 
 	IAS_DFT_FACTORY<Exe::Stmt::Assignment>::PtrHolder

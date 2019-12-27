@@ -112,26 +112,6 @@ bool XPathExprFamily::isArray() const{
 	return false;
 }
 /*************************************************************************/
-bool XPathExprFamily::canAssign(const DM::Type* pType) const{
-  IAS_TRACER;
-
-  IAS_CHECK_IF_VALID(pType);
-
-  const DM::Type *pPropertyType = ptrXPathAccessor->getValueProperty()->getType();
-
-  if(pType->getTypeEnum() == DM::Type::AnyType ||
-    pPropertyType->getTypeEnum() == DM::Type::AnyType)
-    return true;
-
-  if(pType->isDataObjectType() != pPropertyType->isDataObjectType())
-    return false;
-
-  if(!pType->isDataObjectType())
-    return true;
-
-  return pType->isAssignableTo(pPropertyType);
-}
-/*************************************************************************/
 ExprResultSetter XPathExprFamily::getTargetObjectSetter(Context *pCtx) const{
 	IAS_TRACER;
 

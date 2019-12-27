@@ -1,8 +1,8 @@
-// A Bison parser, made by GNU Bison 3.0.4.
+// A Bison parser, made by GNU Bison 3.0.5.
 
 // Skeleton interface for Bison LALR(1) parsers in C++
 
-// Copyright (C) 2002-2015 Free Software Foundation, Inc.
+// Copyright (C) 2002-2015, 2018 Free Software Foundation, Inc.
 
 // This program is free software: you can redistribute it and/or modify
 // it under the terms of the GNU General Public License as published by
@@ -40,7 +40,7 @@
 #ifndef YY_YY_SRC_LANG_SCRIPT_PARSER_AUTOGENPARSER_HPP_INCLUDED
 # define YY_YY_SRC_LANG_SCRIPT_PARSER_AUTOGENPARSER_HPP_INCLUDED
 // //                    "%code requires" blocks.
-#line 5 "src/lang/script/parser/AutoGenParser.yy" // lalr1.cc:377
+#line 5 "src/lang/script/parser/AutoGenParser.yy" // lalr1.cc:379
 
 #include <string>
 #include <commonlib/commonlib.h>
@@ -54,11 +54,11 @@ namespace IAS{
 namespace Lang{
 namespace Script{
 namespace Parser{
-class Parser; 
+class Parser;
 }}}}
 
 
-#line 62 "src/lang/script/parser/AutoGenParser.hpp" // lalr1.cc:377
+#line 62 "src/lang/script/parser/AutoGenParser.hpp" // lalr1.cc:379
 
 
 # include <cstdlib> // std::abort
@@ -130,7 +130,7 @@ class Parser;
 
 
 namespace yy {
-#line 134 "src/lang/script/parser/AutoGenParser.hpp" // lalr1.cc:377
+#line 134 "src/lang/script/parser/AutoGenParser.hpp" // lalr1.cc:379
 
 
 
@@ -144,39 +144,39 @@ namespace yy {
     /// Symbol semantic values.
     union semantic_type
     {
-    #line 34 "src/lang/script/parser/AutoGenParser.yy" // lalr1.cc:377
+    #line 34 "src/lang/script/parser/AutoGenParser.yy" // lalr1.cc:379
 
   ::IAS::String                                  *sval;
   ::IAS::StringList                              *pStringList;
-  
+
   ::IAS::Lang::Model::ProgramNode                *pProgramNode;
   ::IAS::Lang::Model::Stmt::StatementNode        *pStatementNode;
-  
+
   ::IAS::Lang::Model::Dec::ParametersNode        *pParametersNode;
   ::IAS::Lang::Model::Dec::DeclarationNode       *pDeclarationNode;
   ::IAS::Lang::Model::Dec::QualifiedNameNode     *pQualifiedNameNode;
-  
+
   ::IAS::Lang::Model::Stmt::StatementsListNode   *pStatementsListNode;
   ::IAS::Lang::Model::Stmt::LeftSideNode         *pLeftSideNode;
-  
+
   ::IAS::Lang::Model::Stmt::CatchListNode        *pCatchListNode;
   ::IAS::Lang::Model::Stmt::CatchNode            *pCatchNode;
-  
+
   ::IAS::Lang::Model::Expr::ExprListNode         *pExprListNode;
-  
+
   ::IAS::Lang::Model::Expr::LogicalExprNode      *pLogicalExprNode;
   ::IAS::Lang::Model::Expr::ExprNode             *pExprNode;
-  
+
   ::IAS::Lang::Model::Expr::XPath::XPathAccessNode  *pXPathAccessNode;
-  
+
   ::IAS::Lang::Model::Expr::XPath::XPathNode     *pXPathNode;
-  
+
   ::IAS::Lang::Model::Dec::TypeInfoNode          *pTypeInfo;
   ::IAS::Lang::Model::Dec::TypeDefinitionNode    *pTypeDefinitionNode;
   ::IAS::Lang::Model::Dec::NamespaceAliasNode    *pNamespaceAliasNode;
-  
 
-#line 180 "src/lang/script/parser/AutoGenParser.hpp" // lalr1.cc:377
+
+#line 180 "src/lang/script/parser/AutoGenParser.hpp" // lalr1.cc:379
     };
 #else
     typedef YYSTYPE semantic_type;
@@ -549,6 +549,8 @@ namespace yy {
       typedef basic_symbol<by_state> super_type;
       /// Construct an empty symbol.
       stack_symbol_type ();
+      /// Copy construct.
+      stack_symbol_type (const stack_symbol_type& that);
       /// Steal the contents from \a sym to build this.
       stack_symbol_type (state_type s, symbol_type& sym);
       /// Assignment, needed by push_back.
@@ -577,7 +579,7 @@ namespace yy {
     void yypush_ (const char* m, state_type s, symbol_type& sym);
 
     /// Pop \a n symbols the three stacks.
-    void yypop_ (unsigned int n = 1);
+    void yypop_ (unsigned n = 1);
 
     /// Constants.
     enum
@@ -599,7 +601,7 @@ namespace yy {
 
 
 } // yy
-#line 603 "src/lang/script/parser/AutoGenParser.hpp" // lalr1.cc:377
+#line 605 "src/lang/script/parser/AutoGenParser.hpp" // lalr1.cc:379
 
 
 

@@ -59,6 +59,12 @@ Expr* BinaryExprFamily::Create(Expr* pLeft, Expr* pRight, TypeInfoProxy aTypeInf
 
 	DM::Type::Types iTypeId = pLeft->getType()->getTypeEnum();
 
+  if(pLeft->getType()->isDataObjectType() != pRight->getType()->isDataObjectType())
+    IAS_THROW(ScriptUsageException(String("Cannot convert [")
+			+ pRight->getType()->getFullName() + "] to ["
+      + pLeft->getType()->getFullName()
+      + "] when using a binary operator."));
+
 	switch(iTypeId){
 
 		case DM::Type::TextType:     return BinaryStringExpr::Create(pLeft,pRight,aTypeInfoProxy);
@@ -75,8 +81,8 @@ Expr* BinaryExprFamily::Create(Expr* pLeft, Expr* pRight, TypeInfoProxy aTypeInf
 
 	}
 
-	IAS_THROW(ScriptUsageException(String("No factory for binary operator for ")
-			+pLeft->getType()->getURI()+"#"+pLeft->getType()->getName()));
+	IAS_THROW(ScriptUsageException(String("No factory for binary operators for ")
+			+pLeft->getType()->getFullName()));
 }
 /*************************************************************************/
 }

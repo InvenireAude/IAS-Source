@@ -53,9 +53,26 @@ void Expr::setType(const DM::Type* pType){
 	IAS_CHECK_IF_VALID(pType);
 	this->pType=pType;
 }
-/*************************************************************************
-bool Expr::isArray()const{
-	return false;
+/*************************************************************************/
+bool Expr::canCastTo(const DM::Type* pType) const{
+  IAS_TRACER;
+
+  IAS_CHECK_IF_VALID(pType);
+
+  if(pType->getTypeEnum() == DM::Type::AnyType ||
+    this->pType->getTypeEnum() == DM::Type::AnyType)
+    return true;
+
+  if(pType->isDataObjectType() != this->pType->isDataObjectType())
+    return false;
+
+  if(!pType->isDataObjectType())
+    return true;
+
+  if(this->pType->isAssignableTo(pType))
+    return true;
+
+  return pType->isAssignableTo(this->pType);
 }
 /*************************************************************************/
 void Expr::evaluate(Context *pCtx,

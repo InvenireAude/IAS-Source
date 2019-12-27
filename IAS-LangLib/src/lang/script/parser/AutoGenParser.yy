@@ -1,4 +1,4 @@
-%skeleton "lalr1.cc"    
+%skeleton "lalr1.cc"
 %require "2.4.1"
 %defines
 %define parser_class_name { AutoGenParser }
@@ -15,7 +15,7 @@ namespace IAS{
 namespace Lang{
 namespace Script{
 namespace Parser{
-class Parser; 
+class Parser;
 }}}}
 
 }
@@ -34,33 +34,33 @@ class Parser;
 {
   ::IAS::String                                  *sval;
   ::IAS::StringList                              *pStringList;
-  
+
   ::IAS::Lang::Model::ProgramNode                *pProgramNode;
   ::IAS::Lang::Model::Stmt::StatementNode        *pStatementNode;
-  
+
   ::IAS::Lang::Model::Dec::ParametersNode        *pParametersNode;
   ::IAS::Lang::Model::Dec::DeclarationNode       *pDeclarationNode;
   ::IAS::Lang::Model::Dec::QualifiedNameNode     *pQualifiedNameNode;
-  
+
   ::IAS::Lang::Model::Stmt::StatementsListNode   *pStatementsListNode;
   ::IAS::Lang::Model::Stmt::LeftSideNode         *pLeftSideNode;
-  
+
   ::IAS::Lang::Model::Stmt::CatchListNode        *pCatchListNode;
   ::IAS::Lang::Model::Stmt::CatchNode            *pCatchNode;
-  
+
   ::IAS::Lang::Model::Expr::ExprListNode         *pExprListNode;
-  
+
   ::IAS::Lang::Model::Expr::LogicalExprNode      *pLogicalExprNode;
   ::IAS::Lang::Model::Expr::ExprNode             *pExprNode;
-  
+
   ::IAS::Lang::Model::Expr::XPath::XPathAccessNode  *pXPathAccessNode;
-  
+
   ::IAS::Lang::Model::Expr::XPath::XPathNode     *pXPathNode;
-  
+
   ::IAS::Lang::Model::Dec::TypeInfoNode          *pTypeInfo;
   ::IAS::Lang::Model::Dec::TypeDefinitionNode    *pTypeDefinitionNode;
   ::IAS::Lang::Model::Dec::NamespaceAliasNode    *pNamespaceAliasNode;
-  
+
 };
 
 %code {
@@ -79,7 +79,7 @@ using namespace Parser;
 /***************************************************************************************/
 
 //%token        END           0
- 
+
 %token  T_NONE
 %token  T_EOF				0	"end of file"
 %token	T_IMPORT				"IMPORT"
@@ -146,7 +146,7 @@ using namespace Parser;
 %token	T_ISINSTANCE			"ISINSTANCE"
 
 %token	T_STRLEN				"STRLEN"
-	
+
 %token	T_OPEN_SQUARE           "["
 %token	T_CLOSE_SQUARE          "]"
 
@@ -246,78 +246,78 @@ globals : | globals global
 global: import
 global: typeDefinition { myParser.addTypeDefinition($1); }
 global: program {
-    $1->setSourceLocation(myParser.getLexer()->getCachedLocation()); 
-	myParser.addProgram($1); 
+    $1->setSourceLocation(myParser.getLexer()->getCachedLocation());
+	myParser.addProgram($1);
 };
 
 global : namespaceDeclaration {
   myParser.addNamespaceAlias($1);
 }
 
-import : T_IMPORT qname T_SEMICOLON 
-           {  myParser.open($2->getQualifiedName()); 
-           	 IAS_DFT_FACTORY<Dec::QualifiedNameNode>::Free($2); 
-           	 }; 
+import : T_IMPORT qname T_SEMICOLON
+           {  myParser.open($2->getQualifiedName());
+           	 IAS_DFT_FACTORY<Dec::QualifiedNameNode>::Free($2);
+           	 };
 
-typeDefinition : T_DEFINE T_SYMBOL T_COLON T_STRING T_AS typeDefinitionPropertiesEnclosed T_SEMICOLON 
+typeDefinition : T_DEFINE T_SYMBOL T_COLON T_STRING T_AS typeDefinitionPropertiesEnclosed T_SEMICOLON
 				{ $$ = $6;
-				  $$->setName(*$2); _SVAL_DELETE($2); 
+				  $$->setName(*$2); _SVAL_DELETE($2);
 				  $$->setNamespace(*$4); _SVAL_DELETE($4); };
-	
-typeDefinition : T_DEFINE T_SYMBOL T_COLON T_STRING T_AS T_EXTENSION T_OF baseType typeDefinitionPropertiesEnclosed T_SEMICOLON 
+
+typeDefinition : T_DEFINE T_SYMBOL T_COLON T_STRING T_AS T_EXTENSION T_OF baseType typeDefinitionPropertiesEnclosed T_SEMICOLON
 				{ $$ = $9;
 				  $$->setBaseTypeNode($8);
-				  $$->setName(*$2); _SVAL_DELETE($2); 
+				  $$->setName(*$2); _SVAL_DELETE($2);
 				  $$->setNamespace(*$4); _SVAL_DELETE($4); };
 
-typeDefinition : T_DEFINE T_SYMBOL T_COLON T_STRING T_SEMICOLON 
-				{ $$ = IAS_DFT_FACTORY<Dec::TypeDefinitionNode>::Create(); 				  
-				  $$->setName(*$2); _SVAL_DELETE($2); 
+typeDefinition : T_DEFINE T_SYMBOL T_COLON T_STRING T_SEMICOLON
+				{ $$ = IAS_DFT_FACTORY<Dec::TypeDefinitionNode>::Create();
+				  $$->setName(*$2); _SVAL_DELETE($2);
 				  $$->setNamespace(*$4); _SVAL_DELETE($4); };
-				  
-typeDefinition : T_DEFINE T_SYMBOL T_COLON T_STRING T_AS T_EXTENSION T_OF baseType T_SEMICOLON 
-				{ $$ = IAS_DFT_FACTORY<Dec::TypeDefinitionNode>::Create(); 
+
+typeDefinition : T_DEFINE T_SYMBOL T_COLON T_STRING T_AS T_EXTENSION T_OF baseType T_SEMICOLON
+				{ $$ = IAS_DFT_FACTORY<Dec::TypeDefinitionNode>::Create();
 				  $$->setBaseTypeNode($8);
-				  $$->setName(*$2); _SVAL_DELETE($2); 
+				  $$->setName(*$2); _SVAL_DELETE($2);
 				  $$->setNamespace(*$4); _SVAL_DELETE($4); };
 
 
-baseType: T_SYMBOL  
+baseType: T_SYMBOL
 		{ $$ = IAS_DFT_FACTORY<Dec::TypeInfoNode>::Create(*$1); _SVAL_DELETE($1);};
-		
-baseType: T_SYMBOL T_COLON T_STRING 
+
+baseType: T_SYMBOL T_COLON T_STRING
 		{ $$ = IAS_DFT_FACTORY<Dec::TypeInfoNode>::Create(*$1,*$3);  _SVAL_DELETE($1); _SVAL_DELETE($3);};
-		
+
 typeDefinitionPropertiesEnclosed: T_BEGIN typeDefinitionProperties T_END { $$ = $2; }
 				|  T_BEGIN T_END { $$ = IAS_DFT_FACTORY<Dec::TypeDefinitionNode>::Create();  }
 
 typeDefinitionProperties: typeDefinitionProperties  property T_SEMICOLON { $$ = $1; $$->addDeclaration($2); }
  		        |   { $$ = IAS_DFT_FACTORY<Dec::TypeDefinitionNode>::Create();};
- 		        
+
 property : T_SYMBOL T_AS T_SYMBOL { $$ = IAS_DFT_FACTORY<Dec::DeclarationNode>::Create(*$1,*$3); _SVAL_DELETE($1); _SVAL_DELETE($3); }
-property : T_SYMBOL T_AS T_SYMBOL T_COLON T_STRING { $$ = IAS_DFT_FACTORY<Dec::DeclarationNode>::Create(*$1,*$3,*$5); 
+property : T_SYMBOL T_AS T_SYMBOL T_COLON T_STRING { $$ = IAS_DFT_FACTORY<Dec::DeclarationNode>::Create(*$1,*$3,*$5);
 												                _SVAL_DELETE($1); _SVAL_DELETE($3); _SVAL_DELETE($5);}
-property : T_SYMBOL T_AS T_ARRAY T_OF T_SYMBOL { $$ = IAS_DFT_FACTORY<Dec::DeclarationNode>::Create(*$1,*$5); 
-												 $$->setIsArray(true); 
-												 _SVAL_DELETE($1); _SVAL_DELETE($5); }												 
-property : T_SYMBOL T_AS T_ARRAY T_OF T_SYMBOL T_COLON T_STRING { $$ = IAS_DFT_FACTORY<Dec::DeclarationNode>::Create(*$1,*$5,*$7); 
-																  $$->setIsArray(true); 
+property : T_SYMBOL T_AS T_ARRAY T_OF T_SYMBOL { $$ = IAS_DFT_FACTORY<Dec::DeclarationNode>::Create(*$1,*$5);
+												 $$->setIsArray(true);
+												 _SVAL_DELETE($1); _SVAL_DELETE($5); }
+property : T_SYMBOL T_AS T_ARRAY T_OF T_SYMBOL T_COLON T_STRING { $$ = IAS_DFT_FACTORY<Dec::DeclarationNode>::Create(*$1,*$5,*$7);
+																  $$->setIsArray(true);
 												                  _SVAL_DELETE($1); _SVAL_DELETE($5); _SVAL_DELETE($7);}
 
-namespaceDeclaration : T_CREATE T_ALIAS T_STRING T_AS T_STRING T_SEMICOLON 
-				{ $$ = IAS_DFT_FACTORY<Dec::NamespaceAliasNode>::Create(*$3,*$5); 
-					_SVAL_DELETE($3); _SVAL_DELETE($5); };	        
-           
-program : T_PROGRAM qname parametersListPar statementsListBeginEnd T_SEMICOLON 
+namespaceDeclaration : T_CREATE T_ALIAS T_STRING T_AS T_STRING T_SEMICOLON
+				{ $$ = IAS_DFT_FACTORY<Dec::NamespaceAliasNode>::Create(*$3,*$5);
+					_SVAL_DELETE($3); _SVAL_DELETE($5); };
+
+program : T_PROGRAM qname parametersListPar statementsListBeginEnd T_SEMICOLON
 			{ $$ = IAS_DFT_FACTORY<StandardProgramNode>::Create($2,$4,$3); };
 
-program : T_PROGRAM qname parametersListPar programResult statementsListBeginEnd T_SEMICOLON 
+program : T_PROGRAM qname parametersListPar programResult statementsListBeginEnd T_SEMICOLON
 			{ $$ = IAS_DFT_FACTORY<StandardProgramNode>::Create($2,$5,$3,$4); };
 
-program : T_PROGRAM qname parametersListPar T_EXTERNAL T_STRING externalParametersPar T_SEMICOLON 
+program : T_PROGRAM qname parametersListPar T_EXTERNAL T_STRING externalParametersPar T_SEMICOLON
 			{ $$ = IAS_DFT_FACTORY<ExternalProgramNode>::Create($2,*$5,$3,*$6); _SVAL_DELETE($5); _SVAL_DELETE_StringList($6);};
 
-program : T_PROGRAM qname parametersListPar programResult T_EXTERNAL T_STRING externalParametersPar T_SEMICOLON 
+program : T_PROGRAM qname parametersListPar programResult T_EXTERNAL T_STRING externalParametersPar T_SEMICOLON
 			{ $$ = IAS_DFT_FACTORY<ExternalProgramNode>::Create($2,*$6,$3,$4,*$7); _SVAL_DELETE($6); _SVAL_DELETE_StringList($7);};
 
 programResult : T_RETURNS T_SYMBOL { $$ = IAS_DFT_FACTORY<Dec::ResultDeclarationNode>::Create(*$2); _SVAL_DELETE($2); }
@@ -327,14 +327,14 @@ programResult : T_RETURNS T_ARRAY T_OF T_SYMBOL T_COLON T_STRING { $$ = IAS_DFT_
 
 parametersListPar: T_OPEN_PAR parametersList T_CLOSE_PAR { $$ = $2; }
 				|  T_OPEN_PAR T_CLOSE_PAR { $$ = IAS_DFT_FACTORY<Dec::ParametersNode>::Create();  }
-				   
+
 parametersList: parametersList T_COMMA declaration  { $$ = $1; $$->addDeclaration($3); }
 		      |  declaration  { $$ = IAS_DFT_FACTORY<Dec::ParametersNode>::Create(); $$->addDeclaration($1); };
-	
+
 statementsListBeginEnd: T_BEGIN statementsList T_END{ $$ = $2; }
 
-statementsList: statementsList statement T_SEMICOLON { 
-$$ = $1; 
+statementsList: statementsList statement T_SEMICOLON {
+$$ = $1;
 $2->setSourceLocation(myParser.getLexer()->getCachedLocation());
 $$->addStatement($2);
  }
@@ -343,14 +343,14 @@ statementsList: statementsList declaration T_SEMICOLON { $$ = $1; $$->addDeclara
 
 declaration : T_VAR T_SYMBOL T_AS T_SYMBOL { $$ = IAS_DFT_FACTORY<Dec::DeclarationNode>::Create(*$2,*$4); _SVAL_DELETE($2); _SVAL_DELETE($4); }
 declaration : T_VAR T_SYMBOL T_AS T_SYMBOL T_COLON T_STRING { $$ = IAS_DFT_FACTORY<Dec::DeclarationNode>::Create(*$2,*$4,*$6); _SVAL_DELETE($2); _SVAL_DELETE($4); _SVAL_DELETE($6);}
-declaration : T_VAR T_SYMBOL T_AS T_ARRAY T_OF T_SYMBOL 
+declaration : T_VAR T_SYMBOL T_AS T_ARRAY T_OF T_SYMBOL
 		{ $$ = IAS_DFT_FACTORY<Dec::DeclarationNode>::Create(*$2,*$6);     $$->setIsArray(true); _SVAL_DELETE($2);  _SVAL_DELETE($6); }
-declaration : T_VAR T_SYMBOL T_AS T_ARRAY T_OF T_SYMBOL T_COLON T_STRING 
+declaration : T_VAR T_SYMBOL T_AS T_ARRAY T_OF T_SYMBOL T_COLON T_STRING
         { $$ = IAS_DFT_FACTORY<Dec::DeclarationNode>::Create(*$2,*$6,*$8); $$->setIsArray(true); _SVAL_DELETE($2);  _SVAL_DELETE($6); _SVAL_DELETE($8);}
 
 
 statement: statementsListBeginEnd        { $$ =$1; } ;
-statement: assignment                    { $$ =$1; } ;
+statement: assignment                    { $$ =$1; $$->setSourceLocation(myParser.getLexer()->getCachedLocation()); } ;
 statement: condassign                    { $$ =$1; } ;
 statement: merge                         { $$ =$1; } ;
 statement: forLoop                       { $$ =$1; } ;
@@ -371,7 +371,7 @@ assignment: lvalue T_ASSIGN expr  { $$ = IAS_DFT_FACTORY<Stmt::AssignmentNode>::
 condassign: lvalue T_CONDASSIGN xpathAccess  { $$ = IAS_DFT_FACTORY<Stmt::ConditionalAssignmentNode>::Create($1,$3); } ;
 merge:      lvalue T_MERGE  expr  { $$ = IAS_DFT_FACTORY<Stmt::MergeNode>::Create($1,$3); } ;
 
-lvalue : xpathAccess { $$ = IAS_DFT_FACTORY<Stmt::LeftSideNode>::Create($1); } ; 
+lvalue : xpathAccess { $$ = IAS_DFT_FACTORY<Stmt::LeftSideNode>::Create($1); } ;
 
 %left T_PLUS T_MINUS;
 %left T_ASTERISK T_SLASH T_PERCENT;
@@ -389,9 +389,9 @@ exprFactor:  exprFactor T_PERCENT  exprFactor { $$ = IAS_DFT_FACTORY<Expr::Modul
 
 exprFactor: exprPrimaryOrXPath { $$ = $1; } ;
 
-exprPrimaryOrXPath :  exprPrimary    { $$ = $1; } 
+exprPrimaryOrXPath :  exprPrimary    { $$ = $1; }
 exprPrimaryOrXPath :  xpathAccess    { $$ = IAS_DFT_FACTORY<Expr::XPath::XPathExprNode>::Create($1); };
-					  
+
 exprPrimary: T_OPEN_PAR expr T_CLOSE_PAR { $$ = $2; } ;
 exprPrimary: T_INTEGER  { $$ = IAS_DFT_FACTORY<Expr::ConstNode>::Create(Expr::ConstNode::CN_INTEGER,*$1); _SVAL_DELETE($1); } ;
 exprPrimary: T_FLOAT    { $$ = IAS_DFT_FACTORY<Expr::ConstNode>::Create(Expr::ConstNode::CN_FLOAT,*$1);   _SVAL_DELETE($1); } ;
@@ -400,7 +400,7 @@ exprPrimary: T_BOOLEAN  { $$ = IAS_DFT_FACTORY<Expr::ConstNode>::Create(Expr::Co
 exprPrimary: T_NULL     { $$ = IAS_DFT_FACTORY<Expr::ConstNode>::Create(Expr::ConstNode::CN_NULL,*$1);    _SVAL_DELETE($1); } ;
 
 exprPrimary: T_NEW T_SYMBOL T_COLON T_STRING { $$ = IAS_DFT_FACTORY<Expr::ConstructorNode>::Create(*$2,*$4); _SVAL_DELETE($2); _SVAL_DELETE($4); } ;
-exprPrimary: T_NEW T_SYMBOL T_COLON T_STRING statementsListBeginEnd 
+exprPrimary: T_NEW T_SYMBOL T_COLON T_STRING statementsListBeginEnd
 	{ $$ = IAS_DFT_FACTORY<Expr::ConstructorNode>::Create(*$2,*$4, $5); _SVAL_DELETE($2); _SVAL_DELETE($4); } ;
 
 exprPrimary: T_OPEN_PAR exprPrimaryOrXPath T_AS baseType T_CLOSE_PAR
@@ -411,7 +411,7 @@ exprPrimary: T_OPEN_PAR xpathAccess T_OR exprPrimaryOrXPath T_CLOSE_PAR
 
 exprPrimary: T_OPEN_PAR logicalExpr T_QMARK exprPrimaryOrXPath T_COLON exprPrimaryOrXPath T_CLOSE_PAR
 		{ $$ = IAS_DFT_FACTORY<Expr::CondValueNode>::Create($2,$4,$6); };
- 
+
 exprPrimary:  qname exprListPar                    { $$ = IAS_DFT_FACTORY<Expr::FunCallNode>::Create($1, $2); };
 exprPrimary:  T_COPYOF T_OPEN_PAR xpathAccess T_CLOSE_PAR { $$ = IAS_DFT_FACTORY<Expr::CopyOfNode>::Create($3); };
 exprPrimary:  T_DETACH T_OPEN_PAR xpathAccess T_CLOSE_PAR { $$ = IAS_DFT_FACTORY<Expr::DetachNode>::Create($3); };
@@ -421,20 +421,20 @@ exprPrimary:  T_TYPE   T_OPEN_PAR expr T_CLOSE_PAR { $$ = IAS_DFT_FACTORY<Expr::
 exprPrimary:  T_TYPENS T_OPEN_PAR expr T_CLOSE_PAR { $$ = IAS_DFT_FACTORY<Expr::GetTypeNSNode>::Create($3);}
 exprPrimary:  T_STRLEN T_OPEN_PAR expr T_CLOSE_PAR { $$ = IAS_DFT_FACTORY<Expr::StrLenNode>::Create($3);}
 
-relationalOper: expr T_EQ expr { $$ = IAS_DFT_FACTORY<Expr::RelationalEqNode>::Create($1,$3); }; 
+relationalOper: expr T_EQ expr { $$ = IAS_DFT_FACTORY<Expr::RelationalEqNode>::Create($1,$3); };
 
 relationalOper: expr T_DIFF expr       { $$ = IAS_DFT_FACTORY<Expr::RelationalDiffNode>::Create($1,$3); };
-relationalOper: expr T_GREATER_EQ expr { $$ = IAS_DFT_FACTORY<Expr::RelationalEqGtNode>::Create($1,$3); }; 
-relationalOper: expr T_LESS_EQ expr    { $$ = IAS_DFT_FACTORY<Expr::RelationalEqLessNode>::Create($1,$3); }; 
-relationalOper: expr T_GREATER expr    { $$ = IAS_DFT_FACTORY<Expr::RelationalGtNode>::Create($1,$3); }; 
-relationalOper: expr T_LESS expr       { $$ = IAS_DFT_FACTORY<Expr::RelationalLessNode>::Create($1,$3); }; 
+relationalOper: expr T_GREATER_EQ expr { $$ = IAS_DFT_FACTORY<Expr::RelationalEqGtNode>::Create($1,$3); };
+relationalOper: expr T_LESS_EQ expr    { $$ = IAS_DFT_FACTORY<Expr::RelationalEqLessNode>::Create($1,$3); };
+relationalOper: expr T_GREATER expr    { $$ = IAS_DFT_FACTORY<Expr::RelationalGtNode>::Create($1,$3); };
+relationalOper: expr T_LESS expr       { $$ = IAS_DFT_FACTORY<Expr::RelationalLessNode>::Create($1,$3); };
 
-relationalOper: expr T_ISTYPE T_OPEN_PAR baseType T_CLOSE_PAR 
+relationalOper: expr T_ISTYPE T_OPEN_PAR baseType T_CLOSE_PAR
 		{ $$ = IAS_DFT_FACTORY<Expr::RelationalIsTypeNode>::Create($1,$4); };
 
-relationalOper: expr T_ISINSTANCE T_OPEN_PAR baseType T_CLOSE_PAR 
+relationalOper: expr T_ISINSTANCE T_OPEN_PAR baseType T_CLOSE_PAR
 		{ $$ = IAS_DFT_FACTORY<Expr::RelationalIsInstanceNode>::Create($1,$4); };
-			   		
+
 logicalExprPrimary : relationalOper { $$ = $1; };
 logicalExprPrimary : T_OPEN_PAR logicalExpr T_CLOSE_PAR{ $$ = $2; };
 logicalExprPrimary : T_NOT logicalExprPrimary { $$ = IAS_DFT_FACTORY<Expr::LogicalNotNode>::Create($2); };
@@ -449,11 +449,11 @@ logicalExprTerm :  logicalExprTerm T_OR logicalExprTerm { $$ = IAS_DFT_FACTORY<E
 
 logicalExpr :  logicalExprTerm { $$ = $1; };
 
-//TODO resolve conflicting recursion 
+//TODO resolve conflicting recursion
 xpathAccess : xpath { $$ = IAS_DFT_FACTORY<Expr::XPath::XPathAccessNode>::Create(
 								IAS_DFT_FACTORY<Expr::XPath::XPathVariableAccessNode>::Create(
-										(*($1->getElements().begin()))->getName()),$1);} ;													
-xpathAccess : exprPrimary T_DOT xpath 
+										(*($1->getElements().begin()))->getName()),$1);} ;
+xpathAccess : exprPrimary T_DOT xpath
 			{ $$ = IAS_DFT_FACTORY<Expr::XPath::XPathAccessNode>::Create(
 						IAS_DFT_FACTORY<Expr::XPath::XPathExprAccessNode>::Create($1),$3); } ;
 
@@ -463,25 +463,25 @@ xpath: xpath T_DOT T_SYMBOL T_OPEN_SQUARE
 
 xpath: xpath T_DOT T_SYMBOL T_DOUBLE_OPEN_SQUARE
                      expr  T_DOUBLE_CLOSE_SQUARE{ $$ = $1; $$->addHashIndexElement(*$3,$5); _SVAL_DELETE($3); }
-                     
+
 xpath: T_SYMBOL { $$ = IAS_DFT_FACTORY<Expr::XPath::XPathNode>::Create(); $$->addSingleElement(*$1); _SVAL_DELETE($1); }
 xpath: T_SYMBOL T_OPEN_SQUARE
          expr  T_CLOSE_SQUARE{ $$ = IAS_DFT_FACTORY<Expr::XPath::XPathNode>::Create(); $$->addMultiElement(*$1,$3); _SVAL_DELETE($1); }
-                     
+
 xpath: T_SYMBOL T_DOUBLE_OPEN_SQUARE
                      expr  T_DOUBLE_CLOSE_SQUARE{ $$ = IAS_DFT_FACTORY<Expr::XPath::XPathNode>::Create(); $$->addHashIndexElement(*$1,$3); _SVAL_DELETE($1); }
-           
+
 with : T_WITH xpathAccess T_DO statement     { $$ = IAS_DFT_FACTORY<Stmt::WithNode>::Create("",$2,$4); } ;
 with : T_WITH T_SYMBOL T_AS xpathAccess T_DO statement     { $$ = IAS_DFT_FACTORY<Stmt::WithNode>::Create(*$2,$4,$6); _SVAL_DELETE($2); } ;
 
 whileLoop : T_WHILE logicalExpr T_DO statement   { $$ = IAS_DFT_FACTORY<Stmt::WhileLoopNode>::Create($2,$4); } ;
 
-forLoop : T_FOR xpathAccess T_ASSIGN expr T_TO expr T_DO statement   
+forLoop : T_FOR xpathAccess T_ASSIGN expr T_TO expr T_DO statement
 				{ $$ = IAS_DFT_FACTORY<Stmt::ForLoopNode>::Create($2,$8,$4,$6); } ;
 
-forLoop : T_FOR xpathAccess T_ASSIGN expr T_TO expr T_STEP expr T_DO statement   
+forLoop : T_FOR xpathAccess T_ASSIGN expr T_TO expr T_STEP expr T_DO statement
 			  { $$ = IAS_DFT_FACTORY<Stmt::ForLoopNode>::Create($2,$10,$4,$6,$8); } ;
-			  
+
 ifThenElse: T_IF logicalExpr T_THEN statement   { $$ = IAS_DFT_FACTORY<Stmt::IfThenElseNode>::Create($2,$4); } ;
 
 ifThenElse: T_IF logicalExpr T_THEN statement T_ELSE statement
@@ -507,23 +507,23 @@ index: T_INDEX xpathAccess T_USING xpathAccess { $$ = IAS_DFT_FACTORY<Stmt::Inde
 tryCatch: T_TRY statementsListBeginEnd catchList { $$ = IAS_DFT_FACTORY<Stmt::TryCatchNode>::Create($2,$3);  }
 catchList: catchList catch              { $$ = $1; $$->addCatchNode($2);           }
 		   | catch                      { $$ = IAS_DFT_FACTORY<Stmt::CatchListNode>::Create(); $$->addCatchNode($1); }
-		    
+
 catch : T_CATCH T_OPEN_PAR declaration T_CLOSE_PAR statementsListBeginEnd
 			{ $$ = IAS_DFT_FACTORY<Stmt::CatchNode>::Create($3,$5); }
 
 exprListPar : T_OPEN_PAR T_CLOSE_PAR { $$ = IAS_DFT_FACTORY<Expr::ExprListNode>::Create(); }
-	       | T_OPEN_PAR exprList T_CLOSE_PAR{ $$=$2; } 
-	       
+	       | T_OPEN_PAR exprList T_CLOSE_PAR{ $$=$2; }
+
 exprList : exprList T_COMMA expr  { $$=$1; $$->addExprNode($3); };
 		| expr    { $$ = IAS_DFT_FACTORY<Expr::ExprListNode>::Create();  $$->addExprNode($1); };
 
 externalParametersPar : T_OPEN_PAR T_CLOSE_PAR { $$ = new StringList;}
-		| T_OPEN_PAR externalParameters T_CLOSE_PAR{ $$=$2; }  
+		| T_OPEN_PAR externalParameters T_CLOSE_PAR{ $$=$2; }
 
 externalParameters : externalParameters T_COMMA T_STRING  { $$=$1; $$->push_back(*$3); _SVAL_DELETE($3);};
 		| T_STRING    { $$ = new StringList; $$->push_back(*$1); _SVAL_DELETE($1); };
 
-		
+
 qname : T_SYMBOL { $$= IAS_DFT_FACTORY<Dec::QualifiedNameNode>::Create(*$1); _SVAL_DELETE($1); }
 qname : qname T_DOUBLECOLON T_SYMBOL { $$=$1; $$->addNextSymbol(*$3); _SVAL_DELETE($3); }
 

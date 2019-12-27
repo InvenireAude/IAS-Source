@@ -35,10 +35,12 @@ Messages::Messages(){
 	UpdateCatalog(MSGE_LangScriptParseError,    "IASE-1002 Script Parse Error: &1 ");
 	UpdateCatalog(MSGE_LangScriptNotFoundError, "IASE-1003 Source cannot be found: &1 ");
 	UpdateCatalog(MSGE_LangScriptUsageError,    "IASE-1004 Bad script usage: &1 ");
-  UpdateCatalog(MSGE_LangScriptAmbiguousParameters,    "IASE-1005 Ambiguous parameters: &1[&2] vs &3[&4]");
 	UpdateCatalog(MSGE_LangScriptRuntimeError,  "IASE-1010 Script Runtime Error: &1");
 	UpdateCatalog(MSGE_LangInternalError,       "IASE-1999 Script Engine Internal Error: &1");
 
+  UpdateCatalog(MSGW_LangScriptAmbiguousParameters,       "IASW-1001 Ambiguous parameters[&1]: &2[&3] vs &4[&5], IAS is using the first one.");
+  UpdateCatalog(MSGW_LangScriptImplicitCast,              "IASW-1002 Implicit Cast: [&1] ==> [&2]," );
+  // TODO (L) new operator or flag " consider the cast operator '(_ AS _)', or use the '@=' assignment.");
 }
 /*************************************************************************/
 Messages::~Messages(){

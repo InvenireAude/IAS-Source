@@ -142,11 +142,12 @@ bool ExecStore::matchExecutable(const Model::Model::ProgramList& lstProgramsForN
     				                                      <<pModel->resolve(pProgramNode->getSourceLocation().getSourceID())<<":"
 					                                        <<pProgramNode->getSourceLocation().getLineNumber());
         }else{
-          UserMessage(UI::Messages::MSGE_LangScriptAmbiguousParameters)
+          UserMessage(UI::Messages::MSGW_LangScriptAmbiguousParameters)
+                  <<(bAllowUpcast ? String("pass1") : String("pass0"))
                   <<pModel->resolve(pProgramNode->getSourceLocation().getSourceID())<<pProgramNode->getSourceLocation().getLineNumber()
                   <<pModel->resolve(pMatchingProgramNode->getSourceLocation().getSourceID())<<pMatchingProgramNode->getSourceLocation().getLineNumber();
 
-          IAS_THROW(ScriptUsageException("Ambiguous Parameters"));
+         // IAS_THROW(ScriptUsageException("Ambiguous Parameters[pass"+(bAllowUpcast ? String("1") : String("0"))+"]"));
         }
     	}
 

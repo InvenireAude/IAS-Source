@@ -53,8 +53,6 @@ public:
 	void deleteDataObject(Context* pCtx)const;
 	DM::DataObject* createDataObject(Context* pCtx)const;
 
-  bool canAssign(const DM::Type* pType) const;
-
 protected:
 	XPathExprFamily(Expr* pExpr, XPathAccessor  *pXPathAccessor);
 

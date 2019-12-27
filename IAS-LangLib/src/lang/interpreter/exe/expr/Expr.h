@@ -74,6 +74,8 @@ public:
 
 	const DM::Type* getType()const;
 
+  bool canCastTo(const DM::Type* pType) const;
+
 protected:
 	Expr()throw();
 

@@ -40,9 +40,11 @@ public:
 	static const MessageCatalog::MsgId	MSGE_LangScriptParseError      = 21002;
 	static const MessageCatalog::MsgId	MSGE_LangScriptNotFoundError   = 21003;
 	static const MessageCatalog::MsgId	MSGE_LangScriptUsageError      = 21004;
-  static const MessageCatalog::MsgId	MSGE_LangScriptAmbiguousParameters = 21005;
 	static const MessageCatalog::MsgId	MSGE_LangScriptRuntimeError    = 21010;
 	static const MessageCatalog::MsgId	MSGE_LangInternalError         = 21999;
+
+  static const MessageCatalog::MsgId	MSGW_LangScriptAmbiguousParameters      = 31001;
+  static const MessageCatalog::MsgId	MSGW_LangScriptImplicitCast             = 31002;
 
 	Messages();
 	virtual ~Messages();
