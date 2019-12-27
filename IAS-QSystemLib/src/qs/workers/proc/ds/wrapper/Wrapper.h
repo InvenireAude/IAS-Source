@@ -51,6 +51,7 @@ public:
 
   void setReusable(bool bReusable){ this->bReusable = bReusable; }
 	bool isReusable()const{ return bReusable; }
+  const String& getSQLText()const{ return strSQLText; }
 
 protected:
 	Wrapper();

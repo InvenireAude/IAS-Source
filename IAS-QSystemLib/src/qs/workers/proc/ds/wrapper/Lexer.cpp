@@ -49,6 +49,16 @@ Lexer::SymbolMap::SymbolMap(){
 	(*this)["LIKE"]  = T_LIKE;
 	(*this)["IN"]    = T_IN;
 	(*this)["FOR"]   = T_FOR;
+	(*this)["ORDER"] = T_ORDER;
+  (*this)["BY"]    = T_BY;
+
+  (*this)["ASC"]    = T_ASC;
+  (*this)["DESC"]   = T_DESC;
+  (*this)["NOT"]    = T_NOT;
+
+  (*this)["NULL"]    = T_NULL;
+  (*this)["IS"]      = T_IS;
+  (*this)["GROUP"]   = T_GROUP;
 
 	(*this)["PAGE"]       = T_PAGE;
 	(*this)["DISTINCT"]   = T_DISTINCT;
@@ -101,6 +111,18 @@ Lexer::PrintableSymbolMap::PrintableSymbolMap(){
 
 	(*this)[T_LIKE]   = "LIKE";
 	(*this)[T_IN]     = "IN";
+  (*this)[T_FOR]    = "FOR";
+  (*this)[T_ORDER]  = "ORDER";
+  (*this)[T_BY]     = "BY";
+  (*this)[T_ASC]    = "ASC";
+  (*this)[T_DESC]   = "DESC";
+  (*this)[T_NOT]    = "NOT";
+
+  (*this)[T_NULL]    = "NULL";
+  (*this)[T_IS]     = "IS";
+  (*this)[T_GROUP]  = "GROUP";
+
+
 	(*this)[T_END]    = "<end of text>";
 
 
@@ -292,11 +314,23 @@ void Lexer::assetToken(Token iToken){
 	IAS_TRACER;
 	if(iToken != this->iToken){
 		StringStream ssMsg;
-		ssMsg<<"Expected token: \""<<PrintableSymbolMap::GetInstance()->find(iToken)->second;
-		ssMsg<<"\", got: \""<<PrintableSymbolMap::GetInstance()->find(this->iToken)->second<<"\"";
+		ssMsg<<"Expected token: \""<<getPrintable(iToken);
+		ssMsg<<"\", got: \""<<getPrintable(this->iToken)<<"\"";
 		IAS_THROW(ParseException(ssMsg.str(),iLine));
 	}
 
+}
+/*************************************************************************/
+String Lexer::getPrintable(Token iToken){
+	IAS_TRACER;
+  IAS_LOG(true,"TOKEN?"<<iToken);
+  PrintableSymbolMap::const_iterator it = PrintableSymbolMap::GetInstance()->find(iToken);
+
+  if(it != PrintableSymbolMap::GetInstance()->end()){
+    return it->second;
+  }
+
+  return "<unknown>";
 }
 /*************************************************************************/
 void Lexer::assetNext(Token iToken){

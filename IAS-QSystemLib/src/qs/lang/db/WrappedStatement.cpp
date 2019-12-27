@@ -50,7 +50,8 @@ namespace QS {
 namespace Lang {
 namespace DB {
 
-const String WrappedStatement::C_ENV_VERIFY_SQL("IAS_DS_VERIFY_SQL");
+const String WrappedStatement::CEnvStrVerifySQL("IAS_DS_VERIFY_SQL");
+const String WrappedStatement::CEnvStrDumpVerifiedSQL("IAS_DS_DUMP_VERIFIED_SQL");
 
 /*************************************************************************/
 WrappedStatement::WrappedStatement(const DM::Type* pType, const StringList& lstParamaters, const ::IAS::Lang::Interpreter::Extern::ModuleProxy* pModuleProxy){
@@ -65,7 +66,7 @@ WrappedStatement::WrappedStatement(const DM::Type* pType, const StringList& lstP
   if(it != lstParamaters.end())
     strDataSourceIdx=*it++;
 
-  if(EnvTools::GetBooleanEnv(C_ENV_VERIFY_SQL))
+  if(EnvTools::GetBooleanEnv(CEnvStrVerifySQL))
     verifySQL(pType);
 
 }
@@ -139,6 +140,11 @@ void WrappedStatement::verifySQL(const DM::Type* pType){
 
     try{
   	  DSDriver::WrapperHolder ptrWrapper(pDriver->getStatement(strSQL2Verify, dmFakeObject.getPointer(), true),pDriver);
+
+      if(EnvTools::GetBooleanEnv(CEnvStrDumpVerifiedSQL)){
+        std::cout<<"VerifySQL:["<<ptrWrapper->getSQLText()<<"]"<<std::endl;
+      }
+
     }catch(Exception& e){
       IAS_THROW(BadUsageException("SQL preverification failed:"+e.toString()));
     }

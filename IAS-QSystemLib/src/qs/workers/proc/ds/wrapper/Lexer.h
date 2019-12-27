@@ -77,8 +77,16 @@ public:
 		T_LE_EQ   = 75,
 		T_LIKE    = 76,
 		T_IN      = 77,
-		T_FOR     = 77,
-    T_PMATCH  = 78,
+		T_FOR     = 78,
+    T_PMATCH  = 79,
+    T_ORDER   = 80,
+    T_BY      = 81,
+    T_ASC     = 82,
+    T_DESC    = 83,
+    T_NOT     = 84,
+    T_NULL    = 85,
+    T_IS      = 86,
+    T_GROUP   = 87,
 
 		T_END     = 99
 	};
@@ -100,6 +108,8 @@ public:
 	void         unGet();
 
 	bool isQuoted()const { return bQuoted; }
+
+  String       getPrintable(Token iToken);
 
 protected:
 	Lexer(const String& strText);
@@ -148,3 +158,4 @@ protected:
 }
 
 #endif /* _IAS_QS_Proc_Workers_DS_Wrapper_Lexer_H_ */
+

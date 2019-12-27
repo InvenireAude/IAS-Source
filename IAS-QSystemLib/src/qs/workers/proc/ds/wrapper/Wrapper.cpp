@@ -247,7 +247,9 @@ void Wrapper::handleWhere(Lexer *pLexer,
 		switch(iToken) {
 
 			case Lexer::T_AND: strSQLText+=" AND "; iNumExpr=1; break;
-			case Lexer::T_OR: strSQLText+=" OR "; iNumExpr=1; break;
+			case Lexer::T_OR:  strSQLText+=" OR "; iNumExpr=1; break;
+
+			case Lexer::T_NOT:  strSQLText+=" NOT "; break;
 
 			case Lexer::T_OPENPAR: strSQLText+=" ( "; iNumPar++; break;
 
@@ -270,7 +272,7 @@ void Wrapper::handleWhere(Lexer *pLexer,
 
 			default:
 
-				if(iNumPar)
+				if(iNumExpr)
 					IAS_THROW(ParseException(String("Mismatched AND / OR arguments."),pLexer->getLine()));
 
 				if(iNumPar)
@@ -324,7 +326,11 @@ void Wrapper::handleWhereCondition(Lexer *pLexer,
 	bool bQuote=pLexer->isQuoted();
 
 	Lexer::Token iComparatorToken = pLexer->nextToken();
-	pLexer->assetNext(Lexer::T_SYMBOL);
+
+  if(iComparatorToken != Lexer::T_IS){
+	  pLexer->assetNext(Lexer::T_SYMBOL);
+  }
+
 
 	if(iComparatorToken == Lexer::T_IN){
 
@@ -395,11 +401,23 @@ void Wrapper::handleWhereCondition(Lexer *pLexer,
 					bReusable=false;
 				}break;
 
+    case Lexer::T_IS:
+      strSQLText+=" IS";
+      pLexer->nextToken();
+      if(pLexer->getToken() == Lexer::T_NOT){
+        pLexer->nextToken();
+        strSQLText+=" NOT ";
+      }
+      pLexer->assetToken(Lexer::T_NULL);
+      strSQLText+=" NULL ";
+    break;
+
 		default:
 		IAS_THROW(ParseException(String("Unknown comparator: ")+TypeTools::IntToString(iComparatorToken),pLexer->getLine()));
 	}
 
-	if(iComparatorToken != Lexer::T_IN)
+	if(iComparatorToken != Lexer::T_IN &&
+     iComparatorToken != Lexer::T_IS)
 		strSQLText += tabInputSetters.addXPath(pLexer->getXPathValue());
 
 }

@@ -51,7 +51,8 @@ protected:
 	String strDataSource;
   String strDataSourceIdx;
 
-  static const String C_ENV_VERIFY_SQL;
+  static const String CEnvStrVerifySQL;
+  static const String CEnvStrDumpVerifiedSQL;
 
   void verifySQL(const DM::Type* pType);
 
