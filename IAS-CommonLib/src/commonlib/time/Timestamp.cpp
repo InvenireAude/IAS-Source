@@ -430,7 +430,7 @@ void Timestamp::fromString(const String& strValue, const String& strFormat, bool
 	tmpTime.tm_isdst=-1;
 
   // tmpTime.tm_gmtoff does not work.
-  tmpTime.tm_min += iZoneOff ;
+  tmpTime.tm_min -= iZoneOff ;
 
 
 	if (toLocalTime) {
