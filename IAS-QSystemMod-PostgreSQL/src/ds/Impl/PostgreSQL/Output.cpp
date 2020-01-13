@@ -59,7 +59,7 @@ void Output::fetch(DM::DataObjectPtr& dm){
 
     const char* sValue;
 
-  	IAS_LOG(LogLevel::INSTANCE.isDetailedInfo()||true,"fetching: "<<" iCurrentIdx: "<<iIdx);
+  	IAS_LOG(LogLevel::INSTANCE.isDetailedInfo(),"fetching: "<<" iCurrentIdx: "<<iIdx);
 
 
     if((sValue = PQgetvalue(statement.getPGResult(), iCurrentRow, iIdx)) == NULL) {

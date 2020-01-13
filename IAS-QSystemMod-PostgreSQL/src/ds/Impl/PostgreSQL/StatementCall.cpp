@@ -60,7 +60,7 @@ void StatementCall::execute(){
 	 int nFields = PQnfields(rh);
 	 iNumRows = PQntuples(rh);
 
-	 IAS_LOG(LogLevel::INSTANCE.isData()||true,"rows:"<<iNumRows<<" fields: "<<nFields);
+	 IAS_LOG(LogLevel::INSTANCE.isData(),"rows:"<<iNumRows<<" fields: "<<nFields);
 
 }
 /*************************************************************************/

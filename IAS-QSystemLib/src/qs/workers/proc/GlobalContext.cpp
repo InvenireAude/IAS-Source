@@ -145,7 +145,7 @@ GlobalContext::GlobalContext(const Parameters* pParameters):
   String strMemTrimPeriod;
   if(EnvTools::GetEnv(CEnvMemoryTrimPeriod, strMemTrimPeriod)){
     iMemoryTrimPeriod = TypeTools::StringToInt(strMemTrimPeriod);
-    IAS_LOG(IAS::QS::LogLevel::INSTANCE.isInfo()||true,"I will trim memory, "<<CEnvMemoryTrimPeriod<<"="<<iMemoryTrimPeriod);
+    IAS_LOG(IAS::QS::LogLevel::INSTANCE.isInfo(),"I will trim memory, "<<CEnvMemoryTrimPeriod<<"="<<iMemoryTrimPeriod);
   }
 }
 /*************************************************************************/
