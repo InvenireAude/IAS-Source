@@ -66,7 +66,7 @@ void LexerBase::popIStreamWrapper(){
 
 	if(stackStreams.size() > 0){
     LexerIStreamWrapper* pWrapper = stackStreams.top();
-    phcStreams.deleteObject(pWrapper);
+    phcStreams.delPointer(pWrapper);
   }
 
   stackStreams.pop();

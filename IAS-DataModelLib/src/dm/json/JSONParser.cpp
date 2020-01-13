@@ -189,7 +189,7 @@ char* JSONParser::copyStringValue(){
 	return sCopy;
 }
 /*************************************************************************/
-DM::DataObject* JSONParser::buildObject(const Node& node, const DM::Type* pTypeHint){
+DM::DataObjectPtr JSONParser::buildObject(const Node& node, const DM::Type* pTypeHint){
 	IAS_TRACER;
 
 	if(node.getType() == Node::T_Value){
@@ -239,7 +239,7 @@ DM::DataObject* JSONParser::buildObject(const Node& node, const DM::Type* pTypeH
 	String strType;
 	String strURI;
 
-	Impl::DataAllocator<DataObject>::PtrHolder dm;
+	DataObjectPtr dm;
 
 
 	if(!pTypeHint)
@@ -278,7 +278,7 @@ DM::DataObject* JSONParser::buildObject(const Node& node, const DM::Type* pTypeH
 
 	}/* FOR: properties */
 
-	return dm.pass();
+	return dm;
 }
 /*************************************************************************/
 const DM::Type* JSONParser::getDMType(ValuesMap *pMap)const{
@@ -298,7 +298,7 @@ const DM::Type* JSONParser::getDMType(ValuesMap *pMap)const{
 		return NULL;
 }
 /*************************************************************************/
-DM::DataObject* JSONParser::parse(const DM::Type* pTypeHint){
+DM::DataObjectPtr JSONParser::parse(const DM::Type* pTypeHint){
 	IAS_TRACER
 
 	ptrJSONLexer->asset(JSONLexer::T_LeftBrace);

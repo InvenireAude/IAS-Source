@@ -1,14 +1,14 @@
 /*
  * File: IAS-CommonLib/src/commonlib/logger/Logger.cpp
- * 
+ *
  * Copyright (C) 2015, Albert Krzymowski
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  * http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -18,7 +18,7 @@
 /* IAS_COPYRIGHT */
 
 /* ChangeLog:
- * 
+ *
  */
 
 #include "Logger.h"
@@ -145,17 +145,17 @@ inline void Logger::addEntryPrefix(const char* sFun,
 
 
 /*************************************************************************/
-void  Logger::tokenize(const String& strInput, StringList& refOutput, char cDelimiter)  const {
+void  Logger::tokenize(const std::string& strInput, std::list<std::string>& refOutput, char cDelimiter)  const {
 
 	size_t iStart = 0;
 	size_t iCursor = 0;
 
 	refOutput.clear();
-	while (iCursor != String::npos) {
+	while (iCursor != std::string::npos) {
 
 		iCursor = strInput.find(cDelimiter, iStart);
 
-		if (iCursor == String::npos){
+		if (iCursor == std::string::npos){
 			refOutput.push_back(strInput.substr(iStart, String::npos));
 		} else {
 			refOutput.push_back(strInput.substr(iStart, iCursor - iStart));
@@ -173,7 +173,7 @@ void Logger::addEntry(const char* sFun,
 				 	  int         iLine,
 				 	  const char* sText){
 
-	StringList lstLines;
+	std::list<std::string> lstLines;
 	tokenize(sText,lstLines,'\n');
 
 	LOGGER::LoggerFileLock::Locker locker(_fileLock);
@@ -187,7 +187,7 @@ void Logger::addEntry(const char* sFun,
 	if(!pos->good())
 		pos->clear();
 
-	for(StringList::const_iterator it=lstLines.begin();
+	for(std::list<std::string>::const_iterator it=lstLines.begin();
 			it != lstLines.end(); it++){
 
 		addEntryPrefix(sFun,sFile,iLine);

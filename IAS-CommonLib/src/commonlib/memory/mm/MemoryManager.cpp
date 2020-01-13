@@ -28,10 +28,31 @@
 #include <stdlib.h>
 #include <cstring>
 
+#ifdef __GLIBC__
+#include <execinfo.h>
+#include <malloc.h>
+#endif
+
 namespace IAS {
 
 MemoryManager* MemoryManager::pInstance = NULL;
 Allocator*     MemoryManager::pAllocator = NULL;
+const char*    MemoryManager::CDefaultName = "Default";
+
+/*************************************************************************/
+
+void MemoryManager::Entry::printBackTrace(std::ostream& os) const{
+
+  char **strings;
+  size_t i;
+
+  strings = backtrace_symbols (back_trace_array, back_trace_array_size);
+
+  for (i = 0; i < back_trace_array_size; i++)
+     os<<strings[i]<<std::endl;
+
+  ::free (strings);
+}
 
 /*************************************************************************/
 MemoryManager::MemoryManager(const char* sName):
@@ -79,6 +100,11 @@ void MemoryManager::addEntry(const char* sFile, const char* sFun, int iLine, uns
 	entry.bNewFlag = true;
 	entry.lPtr = lPtr;
 	entry.iNumBytes = iNumBytes;
+#ifdef __GLIBC__
+  void *back_trace_array[12];
+  entry.back_trace_array_size = backtrace(back_trace_array,12) - 2;
+  memcpy(entry.back_trace_array, back_trace_array + 2, entry.back_trace_array_size*sizeof(void*));
+#endif
 
 	bool bCheck = false;
 	{
@@ -94,10 +120,14 @@ void MemoryManager::addEntry(const char* sFile, const char* sFun, int iLine, uns
 
 	if (bCheck) {
 		IAS_LOG(LogLevel::INSTANCE.isError(),"Duplicated entry: "<<((void*)lPtr));
+#ifdef __GLIBC__
+      entry.printBackTrace(std::cerr);
+#else
 		IAS_LOG(LogLevel::INSTANCE.isStackTrace(),"Stack: ");
 		if (LogLevel::INSTANCE.isStackTrace()) {
 			IAS_MY_STACK().printStack(std::cerr);
 		}
+#endif
 	}
 
 	IAS_LOG(IAS::LogLevel::INSTANCE.isMemory(), "N["<<(void*)lPtr<<"]:"<<sFile<<","<<sFun<<"("<<iLine<<"),s="<<hmEntries.size()
@@ -126,6 +156,7 @@ bool MemoryManager::removeEntry(unsigned long lPtr) {
 			iCurEntries--;
 		}
 	}
+
 
 	if (iCount == 0) {
 		IAS_LOG(LogLevel::INSTANCE.isError(),"Missing entry: "<<((void*)lPtr));
@@ -180,14 +211,82 @@ void MemoryManager::printToStream(std::ostream& os, bool bNewOnly, bool bStatsOn
 				os << std::endl;
 			}
 
+#ifdef __GLIBC__
+      entry.printBackTrace(os);
+#endif
 		}/* for */
 
 		os << std::endl;
 
 	}/* !bStatsOnly */
 
+#ifdef __GLIBC__
+
+
+    struct Stats{
+      long  iNumBytes;
+      long  iNumEntries;
+      Entry* pEntry;
+    };
+
+    typedef std::map<long, Stats> EntryStatMap;
+    EntryStatMap hmStats;
+
+		 for (EntryMap::iterator iter = hmEntries.begin(); iter != hmEntries.end(); iter++){
+       long iHash = 0;
+		 	Entry& entry = iter->second;
+	    if (!bNewOnly || entry.bNewFlag) {
+       for(int i=0; i<entry.back_trace_array_size; i++){
+        iHash = 17 * iHash + 13 * (long)entry.back_trace_array[i];
+       }
+
+       if(hmStats.find(iHash) == hmStats.end()){
+          hmStats[iHash].iNumBytes = entry.iNumBytes;
+          hmStats[iHash].iNumEntries = 1;
+          hmStats[iHash].pEntry = &entry;
+       }else{
+          hmStats[iHash].iNumBytes += entry.iNumBytes;
+          hmStats[iHash].iNumEntries++;
+       }
+      }
+    }
+
+		for (EntryStatMap::iterator iter = hmStats.begin(); iter != hmStats.end(); iter++){
+			Stats& stat = iter->second;
+      os<<"\nBytes: "<<stat.iNumBytes<<", entries: "<<stat.iNumEntries<<std::endl;
+      stat.pEntry->printBackTrace(os);
+    };
+
+
+#endif
+		os << std::endl;
+
+
   clearNewFlagNoLock();
 	os<<"Waits:  "<<tsrMutexWaits<<std::endl;
+
+#ifdef __GLIBC__
+
+  if(sName == "Default"){
+
+    struct mallinfo info = mallinfo();
+    os<<"System glibc malloc() stats:"<<std::endl;
+    os<<" arena:  "<<info.arena<<std::endl;
+    os<<" ordblks:  "<<info.ordblks<<std::endl;
+    os<<" smblks:   "<<info.smblks<<std::endl;
+    os<<" hblks:    "<<info.hblks<<std::endl;
+    os<<" hblkhd:   "<<info.hblkhd<<std::endl;
+    os<<" usmblks:  "<<info.usmblks<<std::endl;
+    os<<" fsmblks:  "<<info.fsmblks<<std::endl;
+    os<<" uordblks: "<<info.uordblks<<std::endl;
+    os<<" fordblks: "<<info.fordblks<<std::endl;
+    os<<" keepcost: "<<info.keepcost<<std::endl;
+    os<<std::endl;
+
+    // malloc_info(0,stderr);
+    // malloc_trim(1024);
+  }
+#endif
 }
 
 /*************************************************************************/
@@ -216,7 +315,7 @@ void* MemoryManager::allocate(size_t iNumBytes) {
 			const StackTrace::Entry& entry = stack.top();
 			addEntry(entry.sFile, entry.sFun, entry.iLine, (unsigned long) p, iNumBytes);
 		} else {
-			addEntry("noline", "nofun", 1, (unsigned long) p, iNumBytes);
+  addEntry("noline", "nofun", 1, (unsigned long) p, iNumBytes);
 		}
 
 	}
@@ -274,8 +373,18 @@ void MemoryManager::free(const void* p) {
 	}
 }
 /*************************************************************************/
+void MemoryManager::trim(){
+#ifdef __GLIBC__
+  Mutex::Locker locker(theLock);
+  TimeSample ts(true);
+  malloc_trim(1024);
+  trsMemoryTrim.addSample(ts);
+  IAS_LOG(LogLevel::INSTANCE.isProfile(),"Memory trim: "<<trsMemoryTrim);
+#endif
+}
+/*************************************************************************/
 void MemoryManager::handleUserSignal(){
-    printToStream(std::cerr,false,true);
+    printToStream(std::cerr,true,true);
 }
 /*************************************************************************/
 }/* namespace IAS */

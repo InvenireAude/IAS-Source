@@ -45,7 +45,8 @@ public:
 
 	static void SignalHandler(int iSignal = 0);
 	static void SignalHandlerStopOnly(int iSignal = 0);
-  static void UserSignalHandler(int iSignal = 0);
+  static void User1SignalHandler(int iSignal = 0);
+  static void User2SignalHandler(int iSignal = 0);
 
 	static Signal* GetInstance();
 

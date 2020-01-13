@@ -24,6 +24,9 @@
 #include<unistd.h>
 #include<commonlib/threads/Thread.h>
 
+#ifdef __GLIBC__
+#include <malloc.h>
+#endif
 namespace IAS {
 namespace SYS {
 
@@ -56,7 +59,7 @@ void Signal::SignalHandlerStopOnly(int iSignal){
 	bStopping=true;
 }
 /*************************************************************************/
-void Signal::UserSignalHandler(int iSignal){
+void Signal::User1SignalHandler(int iSignal){
 
 	Mutex::Locker locker(_SignalMutex);
 
@@ -64,6 +67,19 @@ void Signal::UserSignalHandler(int iSignal){
 		return;
 
 		Signal::GetInstance()->handleUserSignal();
+}
+/*************************************************************************/
+void Signal::User2SignalHandler(int iSignal){
+
+	Mutex::Locker locker(_SignalMutex);
+
+	if(bStopping)
+		return;
+
+#ifdef __GLIBC__
+  malloc_info(0, stderr);
+#endif
+
 }
 /*************************************************************************/
 Signal::Signal(){
@@ -95,10 +111,16 @@ Signal::Signal(){
 	if(sigaction(SIGTERM, &new_action,old_action+SIGTERM) == -1)
 		IAS_THROW(SystemException("Signal SIGTERM"));
 
-  new_action.sa_handler = Signal::UserSignalHandler;
+  new_action.sa_handler = Signal::User1SignalHandler;
 
 	if(sigaction(SIGUSR1, &new_action,old_action+SIGUSR1) == -1)
 		IAS_THROW(SystemException("Signal SIGUSR1"));
+
+  new_action.sa_handler = Signal::User2SignalHandler;
+
+	if(sigaction(SIGUSR2, &new_action,old_action+SIGUSR2) == -1)
+		IAS_THROW(SystemException("Signal SIGUSR2"));
+
 }
 /*************************************************************************/
 Signal::~Signal() throw(){

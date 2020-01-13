@@ -48,7 +48,7 @@ public:
 	virtual ~JSONParser() throw();
 
 
-	DM::DataObject* parse(const DM::Type* pTypeHint=NULL);
+	DM::DataObjectPtr parse(const DM::Type* pTypeHint=NULL);
   void parseList(DM::DataObjectList& lstDataObject);
 
 protected:
@@ -133,7 +133,7 @@ protected:
 	typedef STLAllocator<ValuesMap>         MapsAllocator;
 
 
-	DM::DataObject* buildObject(const Node& node, const DM::Type* pTypeHint);
+	DM::DataObjectPtr buildObject(const Node& node, const DM::Type* pTypeHint);
 
 	void buildTree(ValuesMap *pMap);
 	void buildValuesTable(ValuesTable *pValues);

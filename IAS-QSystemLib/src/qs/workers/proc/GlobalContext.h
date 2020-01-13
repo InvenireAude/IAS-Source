@@ -150,6 +150,8 @@ protected:
 	unsigned int iMsgLeft;
 	unsigned int iMsgTotal;
 	bool         bAbort;
+  time_t       tLastMemoryTrim;
+  int          iMemoryTrimPeriod;
 
 	::IAS::DM::DataFactory* ptrDataFactory;
 
@@ -174,6 +176,8 @@ protected:
 	void loadXSD();
 
 	static void InitializeDataFactories();
+  static int  CMemoryTrimPeriod;
+  static const String& CEnvMemoryTrimPeriod;
 
 	friend class Factory<GlobalContext>;
 };

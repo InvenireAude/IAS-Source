@@ -47,7 +47,7 @@ class MemoryManager :
    {
 
 public:
-	MemoryManager(const char *sName = "Default");
+	MemoryManager(const char *sName = CDefaultName);
 	virtual ~MemoryManager()throw();
 
 	void addEntry(const char*   sFile,
@@ -83,6 +83,7 @@ public:
  	 virtual void* allocate(size_t n);
 	 virtual void  free(const void* p);
 	 virtual bool check(const void* p);
+   virtual void trim();
 
 	inline static Allocator *GetAllocator(){
 			GetInstance();
@@ -91,11 +92,19 @@ public:
 
   virtual void handleUserSignal();
 
+  static const char* CDefaultName;
+
+
  private:
 
 	 struct Entry{
 		const char *sFun;
 		const char *sFile;
+#ifdef __GLIBC__
+    void *back_trace_array[10];
+    int  back_trace_array_size;
+    void printBackTrace(std::ostream& os) const;
+#endif
 		int        iLine;
 		bool       bNewFlag;
 		int        iTID;
@@ -126,6 +135,7 @@ public:
 	int           iFree;
   const char    *sName;
 	TimeSamplesResults  tsrMutexWaits;
+  TimeSamplesResults trsMemoryTrim;
 
   void clearNewFlagNoLock();
 };

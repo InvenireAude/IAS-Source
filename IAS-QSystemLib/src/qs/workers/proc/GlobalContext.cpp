@@ -86,12 +86,17 @@ namespace QS {
 namespace Workers {
 namespace Proc {
 
+int  GlobalContext::CMemoryTrimPeriod(-1);
+const String& GlobalContext::CEnvMemoryTrimPeriod("IAS_PROC_MEM_TRIM");
+
 /*************************************************************************/
 GlobalContext::GlobalContext(const Parameters* pParameters):
 	ptrDataFactory(org::invenireaude::qsystem::workers::DataFactory::GetInstance()->getContaingDataFactory()),
 	ptrLogicFactory(IAS_DFT_FACTORY<Logic::LogicFactory>::Create()),
 	bAbort(pParameters->getDontRun()),
-	dmSpecification(NULL){
+	dmSpecification(NULL),
+  tLastMemoryTrim(time(NULL)),
+  iMemoryTrimPeriod(-1){
 
 	IAS_TRACER;
 
@@ -137,6 +142,11 @@ GlobalContext::GlobalContext(const Parameters* pParameters):
 		ptrStatsPublisherStore->start();
 	}
 
+  String strMemTrimPeriod;
+  if(EnvTools::GetEnv(CEnvMemoryTrimPeriod, strMemTrimPeriod)){
+    iMemoryTrimPeriod = TypeTools::StringToInt(strMemTrimPeriod);
+    IAS_LOG(IAS::QS::LogLevel::INSTANCE.isInfo()||true,"I will trim memory, "<<CEnvMemoryTrimPeriod<<"="<<iMemoryTrimPeriod);
+  }
 }
 /*************************************************************************/
 GlobalContext::~GlobalContext() throw(){
@@ -203,6 +213,12 @@ bool GlobalContext::allDone(){
 	if(iMsgLeft == 0 || bAbort)
     return true;
 
+  time_t tCurrentTime = time(NULL);
+
+  if(iMemoryTrimPeriod > 0 && (tCurrentTime / iMemoryTrimPeriod) > (tLastMemoryTrim / iMemoryTrimPeriod) ){
+    MemoryManager::GetInstance()->trim();
+    tLastMemoryTrim = tCurrentTime;
+  }
 	iMsgLeft--;
 	return false;
 }
