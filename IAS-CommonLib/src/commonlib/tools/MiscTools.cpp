@@ -275,18 +275,22 @@ void  MiscTools::BinaryToBase64(const unsigned  char *sData, size_t iDataLen, St
 /*************************************************************************/
 void MiscTools::Base64ToBinary(const String& strInput, unsigned char *sData, size_t iBufferLen, size_t &iDataLen){
 
-  int iLeft = strInput.size();
+  int iLeft = strInput.length();
   int i = 0;
   int j = 0;
   int ii = 0;
   unsigned char bytes4[4], bytes3[3];
-
+  bool bValid = true;
   iDataLen = 0;
 
-  while (iLeft-- && ( strInput[ii] != '=') && isBase64((unsigned char)strInput[ii])) {
-    bytes4[i++] = strInput[ii]; ii++;
-    if (i ==4) {
-      for (i = 0; i <4; i++)
+  while (iLeft && ( strInput[ii] != '=') && (bValid = isBase64((unsigned char)strInput[ii]))) {
+
+    bytes4[i++] = strInput[ii++];
+    iLeft--;
+
+    if (i == 4) {
+
+      for (i = 0; i < 4; i++)
         bytes4[i] = CBase64.find(bytes4[i]);
 
       bytes3[0] = (bytes4[0] << 2) + ((bytes4[1] & 0x30) >> 4);
@@ -296,7 +300,7 @@ void MiscTools::Base64ToBinary(const String& strInput, unsigned char *sData, siz
       iDataLen += 3;
 
       if(iDataLen > iBufferLen)
-    	  IAS_THROW(BadUsageException("Error when coping streams."));
+    	  IAS_THROW(BadUsageException("Error when coping base64 streams."));
 
 
       for (i = 0; (i < 3); i++)
@@ -306,7 +310,6 @@ void MiscTools::Base64ToBinary(const String& strInput, unsigned char *sData, siz
       i = 0;
     }
   }
-
 
 
   if (i) {
@@ -324,13 +327,20 @@ void MiscTools::Base64ToBinary(const String& strInput, unsigned char *sData, siz
     	iDataLen++;
 
         if(iDataLen > iBufferLen)
-          IAS_THROW(BadUsageException("Error when coping streams."));
+          IAS_THROW(BadUsageException("Error when coping base64 streams."));
 
         *sData++ = bytes3[j];
     }
 
   }
 
+  while (iLeft && ( strInput[ii] == '=')){
+    iLeft--;
+    ii++;
+  }
+
+  if(iLeft != 0 || (ii % 4 != 0) || !bValid )
+    IAS_THROW(BadUsageException("Error in a base64 stream."));
 }
 
 /*************************************************************************/
