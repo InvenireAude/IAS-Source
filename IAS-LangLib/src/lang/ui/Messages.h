@@ -35,6 +35,7 @@ class Messages : public IAS::MessageCatalog::MessageCatalogUpdater{
 public:
 
 	static const MessageCatalog::MsgId	MSGI_LangEnvInfo               = 11001;
+  static const MessageCatalog::MsgId	MSGI_LangScriptLog             = 11901;
 
 	static const MessageCatalog::MsgId	MSGE_LangEnvError              = 21001;
 	static const MessageCatalog::MsgId	MSGE_LangScriptParseError      = 21002;
@@ -45,6 +46,7 @@ public:
 
   static const MessageCatalog::MsgId	MSGW_LangScriptAmbiguousParameters      = 31001;
   static const MessageCatalog::MsgId	MSGW_LangScriptImplicitCast             = 31002;
+
 
 	Messages();
 	virtual ~Messages();

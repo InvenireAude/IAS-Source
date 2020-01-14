@@ -1,4 +1,4 @@
-#Fri 27 Dec 2019 07:11:15 PM CET
+#Mon 13 Jan 2020 06:46:56 PM CET
 FILES+=Impl/DataFactory
 FILES+=Impl/org/invenireaude/lang/builtin/DataObjects
 FILES+=lang/exception/ParseErrorException
@@ -251,6 +251,7 @@ FILES+=lang/interpreter/extern/std/SubString2
 FILES+=lang/interpreter/extern/std/SubString3
 FILES+=lang/interpreter/extern/std/system/ExecuteAdHoc
 FILES+=lang/interpreter/extern/std/system/Load
+FILES+=lang/interpreter/extern/std/system/Print
 FILES+=lang/interpreter/extern/std/system/Save
 FILES+=lang/interpreter/extern/std/system/StandardModuleProxy
 FILES+=lang/interpreter/extern/std/system/SysLog

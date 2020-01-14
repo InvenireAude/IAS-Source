@@ -31,6 +31,8 @@ Messages::Messages(){
 	IAS_TRACER;
 
 	UpdateCatalog(MSGI_LangEnvInfo,             "IASI-1001 Script Environment: &1");
+  UpdateCatalog(MSGI_LangScriptLog,           "IASI-1901 Script SysLog[&1]: &2");
+
 	UpdateCatalog(MSGE_LangEnvError,            "IASE-1001 Script Engine Error: &1");
 	UpdateCatalog(MSGE_LangScriptParseError,    "IASE-1002 Script Parse Error: &1 ");
 	UpdateCatalog(MSGE_LangScriptNotFoundError, "IASE-1003 Source cannot be found: &1 ");

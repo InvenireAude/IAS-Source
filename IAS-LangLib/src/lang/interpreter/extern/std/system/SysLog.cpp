@@ -21,6 +21,7 @@
 #include <commonlib/commonlib.h>
 #include <lang/interpreter/exe/Context.h>
 #include <lang/model/dec/ResultDeclarationNode.h>
+#include <lang/ui/Messages.h>
 
 #include <dm/datamodel.h>
  #include <syslog.h>
@@ -78,6 +79,9 @@ void SysLog::executeExternal(Exe::Context *pCtx) const{
 	const String strMessage  = pParameters->getString("message");
 
 	::syslog(_priorityMapper[strPriority], strMessage.c_str());
+
+  UserMessage um(Lang::UI::Messages::MSGI_LangScriptLog);
+  um<<strPriority<<strMessage;
 
 	IAS_LOG(LogLevel::INSTANCE.isInfo()||
 			(LogLevel::INSTANCE.isError() && _priorityMapper[strPriority] <= LOG_ERR),"LOG:"<<strMessage);

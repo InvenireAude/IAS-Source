@@ -1,5 +1,5 @@
 /*
- * File: IAS-LangLib/src/lang/interpreter/extern/std/StandardModuleProxy.cpp
+ * File: IAS-LangLib/src/lang/interpreter/extern/std/Print.cpp
  *
  * Copyright (C) 2015, Albert Krzymowski
  *
@@ -15,16 +15,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#include "StandardModuleProxy.h"
+#include "Print.h"
 #include<lang/log/LogLevel.h>
 
 #include <commonlib/commonlib.h>
+#include <lang/interpreter/exe/Context.h>
+#include <lang/model/dec/ResultDeclarationNode.h>
+#include <lang/ui/Messages.h>
 
-#include "ExecuteAdHoc.h"
-#include "Load.h"
-#include "Save.h"
-#include "SysLog.h"
-#include "Print.h"
+#include <dm/datamodel.h>
+ #include <syslog.h>
 
 namespace IAS {
 namespace Lang {
@@ -32,46 +32,44 @@ namespace Interpreter {
 namespace Extern {
 namespace Std {
 namespace System {
-
 /*************************************************************************/
-StandardModuleProxy::StandardModuleProxy(){
+Print::Print(const DM::Type* pType, const StringList& lstParamaters, const ModuleProxy* pModuleProxy){
 	IAS_TRACER;
 }
 /*************************************************************************/
-StandardModuleProxy::~StandardModuleProxy() throw(){
+Print::~Print() throw(){
 	IAS_TRACER;
 }
 /*************************************************************************/
-void StandardModuleProxy::setupImpl(){
-
+void Print::executeExternal(Exe::Context *pCtx) const{
 	IAS_TRACER;
 
-	registerSymbol("ExecuteAdHoc",&(ExecuteAdHoc::Create));
-	registerSymbol("Load",&(Load::Create));
-	registerSymbol("Save",&(Save::Create));
-  registerSymbol("SysLog",&(SysLog::Create));
-  registerSymbol("Print",&(Print::Create));
-}
-/*************************************************************************/
-void StandardModuleProxy::cleanUpImpl(){
-	IAS_TRACER;
-}
-/*************************************************************************/
-StandardModuleProxy* StandardModuleProxy::Create(){
-	IAS_TRACER;
-	return IAS_DFT_FACTORY<StandardModuleProxy>::Create();
-}
-/*************************************************************************/
-}
-}
-}
-}
-}
-}
-/*************************************************************************/
-void* ias_lang_std_system_proxy(){
-	IAS_TRACER;
-	return ::IAS::Lang::Interpreter::Extern::Std::System::StandardModuleProxy::Create();
-}
-/*************************************************************************/
+	DM::DataObject* pParameters = pCtx->getBlockVariables(0);
 
+	const String strStreamName  = pParameters->getType()->asComplexType()->getProperties().hasProperty("stream") ?
+                                   pParameters->getString("stream") : "stdout";
+
+  const String strMessage  = pParameters->getString("message");
+
+  if(strStreamName.compare("stdout")==0){
+    std::cout<<strMessage<<std::endl;
+  }else if(strStreamName.compare("stderr")==0){
+    std::cout<<strMessage<<std::endl;
+  } else {
+    OutputFile::SaveString(strStreamName, strMessage+"\n", true);
+  }
+
+
+}
+/*************************************************************************/
+Statement* Print::Create(const DM::Type* pType, const StringList& lstParamaters, const ModuleProxy* pModuleProxy){
+	IAS_TRACER;
+	return IAS_DFT_FACTORY<Print>::Create(pType, lstParamaters, pModuleProxy);
+}
+/*************************************************************************/
+}
+}
+}
+}
+}
+}

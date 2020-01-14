@@ -72,6 +72,14 @@ EXTERNAL "libIASLangLib:ias_lang_std_system_proxy:SysLog"();
 
 /* ********************************************************************************* */
 
+PROGRAM std::print(VAR stream AS String, VAR message AS String)
+EXTERNAL "libIASLangLib:ias_lang_std_system_proxy:Print"();
+
+PROGRAM std::print(VAR message AS String)
+EXTERNAL "libIASLangLib:ias_lang_std_system_proxy:Print"();
+
+/* ********************************************************************************* */
+
 PROGRAM std::round(VAR arg AS Float)
 RETURNS Float
 BEGIN

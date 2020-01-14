@@ -1,14 +1,14 @@
 /*
  * File: IAS-CommonLib/src/commonlib/streams/OutputFile.h
- * 
+ *
  * Copyright (C) 2015, Albert Krzymowski
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  * http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -28,7 +28,7 @@ namespace IAS {
 class OutputFile : public File {
 public:
 
-	OutputFile(const String& strName);
+	OutputFile(const String& strName, bool bAppend = false);
 	virtual ~OutputFile();
 
 	virtual void open();
@@ -38,11 +38,12 @@ public:
 
 	virtual bool isOpenedAndGood();
 
-	static void SaveString(const String& strFileName, const String& strValue);
+	static void SaveString(const String& strFileName, const String& strValue, bool bAppend = false);
 
 protected:
 
 	std::ofstream os;
+  bool bAppend;
 	friend class ::IAS::Factory<OutputFile>;
 };
 
