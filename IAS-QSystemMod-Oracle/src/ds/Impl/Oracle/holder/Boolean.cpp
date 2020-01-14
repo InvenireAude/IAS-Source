@@ -58,8 +58,10 @@ void Boolean::feed(DM::DataObjectPtr& dm){
     *(bufData.getBuffer<int>())=(pSetter->getValue(dm)->toBoolean() ? 1 : 0);
 		bNull=0;
 
+    IAS_LOG(LogLevel::INSTANCE.isData(),"value:["<<pSetter->getValue(dm)->toBoolean()<<"]");
+
 	}else{
-		IAS_LOG(LogLevel::INSTANCE.isDetailedInfo(),"is NULL");
+		IAS_LOG(LogLevel::INSTANCE.isData(),"is NULL");
 		bNull=-1;
 	}
 

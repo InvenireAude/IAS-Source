@@ -147,6 +147,7 @@ GlobalContext::GlobalContext(const Parameters* pParameters):
     iMemoryTrimPeriod = TypeTools::StringToInt(strMemTrimPeriod);
     IAS_LOG(IAS::QS::LogLevel::INSTANCE.isInfo(),"I will trim memory, "<<CEnvMemoryTrimPeriod<<"="<<iMemoryTrimPeriod);
   }
+
 }
 /*************************************************************************/
 GlobalContext::~GlobalContext() throw(){
@@ -325,9 +326,10 @@ spec::Ext::SpecificationPtr GlobalContext::readParameters(const Parameters* pPar
 
 	}
 
-	if(pParameters->hasInputSpecs()){
+	if(pParameters->hasInputSpecs() || !pParameters->hasFullConfig()){
 
-		io::Ext::InputSpecificationPtr dmParametersInputSpecification(IO::IOFactory::InputSpecsToDM(pParameters->getInputSpecs()));
+		io::Ext::InputSpecificationPtr dmParametersInputSpecification(
+      IO::IOFactory::InputSpecsToDM(pParameters->hasInputSpecs() ? pParameters->getInputSpecs() : "file:stdin?format=String"));
 
 		io::InputSpecification *pInputSpecification = dmSpecification->isSetInputSpec() ?
 			dmSpecification->getInputSpec() : dmSpecification->createInputSpec();
@@ -338,25 +340,23 @@ spec::Ext::SpecificationPtr GlobalContext::readParameters(const Parameters* pPar
 			pInputSpecification->setInputs(lstInputs.at(iIdx)->duplicateInput());
 	}
 
-	if(pParameters->hasOutputSpecs()){
 
-		io::Ext::OutputSpecificationPtr dmParametersOutputSpecification(IO::IOFactory::OutputSpecsToDM(pParameters->getOutputSpecs()));
+  if(pParameters->hasOutputSpecs() || !pParameters->hasFullConfig()){
 
-		io::OutputSpecification *pOutputSpecification = dmSpecification->isSetOutputSpec() ?
-			dmSpecification->getOutputSpec() : dmSpecification->createOutputSpec();
+	  io::Ext::OutputSpecificationPtr dmParametersOutputSpecification(
+      IO::IOFactory::OutputSpecsToDM(pParameters->hasOutputSpecs() ? pParameters->getOutputSpecs() :  "file:stdout"));
 
-		const io::Ext::OutputList& lstOutputs(dmParametersOutputSpecification->getOutputsList());
+	  io::OutputSpecification *pOutputSpecification = dmSpecification->isSetOutputSpec() ?
+		  dmSpecification->getOutputSpec() : dmSpecification->createOutputSpec();
 
-		for(int iIdx=0; iIdx < lstOutputs.size(); iIdx++)
-			pOutputSpecification->setOutputs(lstOutputs.at(iIdx)->duplicateOutput());
-	}
+	  const io::Ext::OutputList& lstOutputs(dmParametersOutputSpecification->getOutputsList());
 
-	if(!dmSpecification->isSetOutputSpec())
-		dmSpecification->createOutputSpec();
+	  for(int iIdx=0; iIdx < lstOutputs.size(); iIdx++)
+		  pOutputSpecification->setOutputs(lstOutputs.at(iIdx)->duplicateOutput());
+  }
 
 	if(!dmSpecification->isSetInputSpec())
 		dmSpecification->createInputSpec();
-
 
 	if(!dmSpecification->getInputSpec()->isSetNumMsgs())
 		dmSpecification->getInputSpec()->setNumMsgs(pParameters->getNumMessages());

@@ -198,6 +198,7 @@ void XMLSerializer::serializeElement(const DataObject* pDataObject,
 		case ::IAS::DM::Type::FloatType:
 		case ::IAS::DM::Type::DateType:
 		case ::IAS::DM::Type::TimeType:
+    case ::IAS::DM::Type::RawType:
 			pWriter->writeString(pDataObject->toString());
 		break;
 

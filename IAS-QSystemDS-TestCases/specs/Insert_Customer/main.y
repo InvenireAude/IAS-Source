@@ -13,6 +13,7 @@ BEGIN
 
   customer.id=data.id;
   customer.lastname="Novacek";
+  customer.photo=std::copyStringToRaw("ABCDEF");
   customer.age=71;
   customer.money="123.45";
   customer.birthDate = "1999-01-02";
@@ -28,6 +29,9 @@ BEGIN
   address.street="Old potatoes";
   address.block=21;
   customer.address=address;
+
+  std::save("/tmp/customer.xml",customer);
+  std::save("/tmp/type.xml",TYPE(customer.photo));
 
   wrap::insertCustomer(ctx,customer);
 

@@ -2,7 +2,7 @@
  * Copyright (C) 2017, Albert Krzymowski
  * Copyright (C) 2017, Invenire Aude Limited
  *
- * File: IAS-QSystemMod-Oracle/src/ds/Impl/Oracle/holder/DataObjectLOB.cpp
+ * File: IAS-QSystemMod-Oracle/src/ds/Impl/Oracle/holder/RawBLOB.cpp
  *
  * Licensed under the Invenire Aude Commercial License (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,7 +13,7 @@
  * executable, represents the Confidential Materials.
  *
  */
-#include "DataObjectLOB.h"
+#include "RawBLOB.h"
 
 #include <qs/fmt/FmtFactory.h>
 #include "../Session.h"
@@ -26,11 +26,10 @@ namespace Oracle {
 namespace Holder {
 
 /*************************************************************************/
-DataObjectLOB::DataObjectLOB(Statement* pStatement,
+RawBLOB::RawBLOB(Statement* pStatement,
 		 DM::Tools::Setter* pSetter,
-		 bool bOptional,
-		 ub2    iOCIType):
-		Base(pStatement, pSetter, bOptional, CBufferLen, iOCIType){
+		 bool bOptional):
+		Base(pStatement, pSetter, bOptional, CBufferLen, SQLT_BLOB){
 	IAS_TRACER;
 
 
@@ -42,20 +41,20 @@ DataObjectLOB::DataObjectLOB(Statement* pStatement,
 								   (size_t)0,
 							       (dvoid **)0);
 
-	OracleException::ThrowOnError(pStatement->getSQLText()+", clob allocation.",
+	OracleException::ThrowOnError(pStatement->getSQLText()+", BLOB allocation.",
 				pStatement->getSession()->getErrorHandle(),
 				rc);
 
 }
 /*************************************************************************/
-DataObjectLOB::~DataObjectLOB() throw(){
+RawBLOB::~RawBLOB() throw(){
 	IAS_TRACER;
 	if(bufData.getBuffer<OCILobLocator*>() != 0)
 		OCIDescriptorFree( bufData.getBuffer<void*>(), (ub4) OCI_DTYPE_LOB);
 }
 
 /*************************************************************************/
-void DataObjectLOB::fetch(DM::DataObjectPtr& dm){
+void RawBLOB::fetch(DM::DataObjectPtr& dm){
 	IAS_TRACER;
 
 	IAS_LOG(LogLevel::INSTANCE.isDetailedInfo(),pSetter->getXPath());
@@ -67,24 +66,26 @@ void DataObjectLOB::fetch(DM::DataObjectPtr& dm){
 
 	}else{
 
-		 Tools::LobOpener clobOpener(pStatement->getSession(), *bufData.getBuffer<OCILobLocator*>(), OCI_LOB_READONLY);
+		 Tools::LobOpener BLOBOpener(pStatement->getSession(), *bufData.getBuffer<OCILobLocator*>(), OCI_LOB_READONLY);
 
 		 sword rc = OCI_NEED_DATA;
 
-		 Buffer       bufCLobData(32000);
-		 StringStream ssValue;
+		 Buffer          bufBLOBData(32000);
+     DM::RawContent  bufResult(32000);
+
+     size_t       iDataLen = 0;
 
 		 while(rc == OCI_NEED_DATA){
 
-			 ub4 iCLobDataLen = 0;
+			 ub4 iBLOBDataLen = 0;
 
 			 rc = OCILobRead(pStatement->getSession()->getSvcCtxHandle(),
                  	 	 	 pStatement->getSession()->getErrorHandle(),
-							 clobOpener,
-							 &iCLobDataLen,
+							 BLOBOpener,
+							 &iBLOBDataLen,
 							 1,
-							 bufCLobData.getBuffer<void>(),
-							 (ub4)bufCLobData.getSize(),
+							 bufBLOBData.getBuffer<void>(),
+							 (ub4)bufBLOBData.getSize(),
 							 NULL,
 							 NULL,
 							 0,
@@ -92,68 +93,68 @@ void DataObjectLOB::fetch(DM::DataObjectPtr& dm){
 
 
 				if(rc != OCI_NEED_DATA)
-						OracleException::ThrowOnError(pStatement->getSQLText()+", error when reading the clob.",
+						OracleException::ThrowOnError(pStatement->getSQLText()+", error when reading the BLOB.",
 						 				pStatement->getSession()->getErrorHandle(),
 						 				rc);
 
-				IAS_LOG(LogLevel::INSTANCE.isDetailedInfo(),"value="<<String((char*)bufCLobData,iCLobDataLen));
-				IAS_LOG(LogLevel::INSTANCE.isDetailedInfo(),"len="<<iCLobDataLen);
+				IAS_LOG(LogLevel::INSTANCE.isDetailedInfo(),"value="<<String((char*)bufBLOBData,iBLOBDataLen));
+				IAS_LOG(LogLevel::INSTANCE.isDetailedInfo(),"len="<<iBLOBDataLen);
 
-				if(iCLobDataLen)
-					ssValue.write((char*)bufCLobData,iCLobDataLen);
+        if(iBLOBDataLen > 0){
 
+          if(bufResult.getSize() < iDataLen + iBLOBDataLen ){
+            bufResult.resize(iDataLen + iBLOBDataLen + 32000);
+          }
+          memcpy(bufResult.getBuffer<char>() + iDataLen, bufBLOBData.getBuffer<char>(), iBLOBDataLen);
+          iDataLen += iBLOBDataLen;
+        }
+
+        bufResult.resize(iDataLen);
 
 		 }
 
 
-		DM::DataObjectPtr dmValue;
-		QS::Fmt::Formatter *pFormatter=pStatement->getSession()->getFormatter();
-
-		pFormatter->read(dmValue,ssValue);
-		pSetter->setDataObject(dm,dmValue);
+		pSetter->setRaw(dm,&bufResult);
 
 
 	}
 
 }
 /*************************************************************************/
-void DataObjectLOB::feed(DM::DataObjectPtr& dm){
+void RawBLOB::feed(DM::DataObjectPtr& dm){
 	IAS_TRACER;
 
 	IAS_LOG(LogLevel::INSTANCE.isDetailedInfo(),pSetter->getXPath());
 
+
 	if(pSetter->isNotNull(dm)){
 
-		DM::DataObjectPtr dmValue;
-		QS::Fmt::Formatter *pFormatter=pStatement->getSession()->getFormatter();
-
-		StringStream ssValue;
-		pFormatter->write(pSetter->getValue(dm),ssValue);
+    DM::RawContent  bufResult;
+		pSetter->getValue(dm)->toRaw(&bufResult);
 
 		sword rc = OCILobCreateTemporary(pStatement->getSession()->getSvcCtxHandle(),
     	 	 	   pStatement->getSession()->getErrorHandle(), *bufData.getBuffer<OCILobLocator*>(),
 				   (ub2)0,
-				   SQLCS_IMPLICIT,
-                   OCI_TEMP_BLOB,
-				   OCI_ATTR_NOCACHE,
-                   OCI_DURATION_SESSION);
+				        SQLCS_IMPLICIT,
+                OCI_TEMP_BLOB,
+				        OCI_ATTR_NOCACHE,
+                OCI_DURATION_SESSION);
 
-		OracleException::ThrowOnError(pStatement->getSQLText()+", error when writing to the clob.",
+		OracleException::ThrowOnError(pStatement->getSQLText()+", error when writing to the BLOB.",
 						 				pStatement->getSession()->getErrorHandle(),
 						 				rc);
 
-		String strData(ssValue.str());
-		ub4    iCLobDataLen = strData.length();
+		ub4    iBLOBDataLen = bufResult.getSize();
 
-		Tools::LobOpener clobOpener(pStatement->getSession(), *bufData.getBuffer<OCILobLocator*>(), OCI_LOB_READWRITE);
+		Tools::LobOpener BLOBOpener(pStatement->getSession(), *bufData.getBuffer<OCILobLocator*>(), OCI_LOB_READWRITE);
 
 		rc = OCILobWrite(pStatement->getSession()->getSvcCtxHandle(),
 		           	 	 	   pStatement->getSession()->getErrorHandle(),
 							   *bufData.getBuffer<OCILobLocator*>(),
-							   &iCLobDataLen,
+							   &iBLOBDataLen,
 							   1,
-							   (void*)strData.c_str(),
-							   iCLobDataLen,
+							   (void*)bufResult.getBuffer<char>(),
+							   iBLOBDataLen,
 							   OCI_ONE_PIECE,
 							   NULL,
 							   NULL,
@@ -162,14 +163,14 @@ void DataObjectLOB::feed(DM::DataObjectPtr& dm){
 
 
 
-				OracleException::ThrowOnError(pStatement->getSQLText()+", error when writing to the clob.",
+				OracleException::ThrowOnError(pStatement->getSQLText()+", error when writing to the BLOB.",
 						 				pStatement->getSession()->getErrorHandle(),
 						 				rc);
 
 
 		bNull=0;
 
-    IAS_LOG(LogLevel::INSTANCE.isData(),"value:["<<strData<<"]");
+    IAS_LOG(LogLevel::INSTANCE.isData(),"value: BLOB, "<<iBLOBDataLen<<" bytes.");
 
 	}else{
 		IAS_LOG(LogLevel::INSTANCE.isData(),"is NULL");

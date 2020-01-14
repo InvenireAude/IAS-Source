@@ -48,7 +48,7 @@ Wrapper::Wrapper():
 Wrapper::~Wrapper() throw(){
 	IAS_TRACER;
 
-	if(bReusable){
+	if(bReusable && tsrExe.iNumSamples){
 		IAS_LOG(LogLevel::INSTANCE.isProfile() , strSQLText<<"\n"<<tsrExe);
 	}
 }

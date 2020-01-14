@@ -54,6 +54,7 @@ DataObjectRaw::~DataObjectRaw() throw(){
 void DataObjectRaw::setString(const ::IAS::String& strValue){
 	IAS_TRACER;
 
+  IAS_LOG(true,"TERAZ:"<<strValue);
   if(strValue.length() == 0){
     ptrRawContentValue->resize(0);
     return;
@@ -67,6 +68,7 @@ void DataObjectRaw::setString(const ::IAS::String& strValue){
             ptrRawContentValue->getSize(),
             iDataLen);
 
+  IAS_LOG(true,"TERAZ:"<<ptrRawContentValue->getBuffer<unsigned char>());
   ptrRawContentValue->resize(iDataLen);
 }
 /*************************************************************************/

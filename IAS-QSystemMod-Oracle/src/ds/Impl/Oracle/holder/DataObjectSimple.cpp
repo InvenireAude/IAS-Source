@@ -2,16 +2,16 @@
  * Copyright (C) 2017, Albert Krzymowski
  * Copyright (C) 2017, Invenire Aude Limited
  *
- * File: IAS-QSystemMod-Oracle/src/ds/Impl/Oracle/holder/DataObjectSimple.cpp 
+ * File: IAS-QSystemMod-Oracle/src/ds/Impl/Oracle/holder/DataObjectSimple.cpp
  *
  * Licensed under the Invenire Aude Commercial License (the "License");
- * you may not use this file except in compliance with the License. 
+ * you may not use this file except in compliance with the License.
  * You may find the license terms and conditions in the LICENSE.txt file.
  * or at http://www.invenireaude.com/licenses/license.txt
- * 
+ *
  * This file and any derived form, including but not limited to object
  * executable, represents the Confidential Materials.
- * 
+ *
  */
 #include "DataObjectSimple.h"
 
@@ -86,8 +86,8 @@ void DataObjectSimple::feed(DM::DataObjectPtr& dm){
 
 		iLen = iSize -1 ;
 
-		IAS_LOG(LogLevel::INSTANCE.isDetailedInfo(),"value="<<(char*)bufData);
-		IAS_LOG(LogLevel::INSTANCE.isDetailedInfo(),"value="<<iLen);
+		IAS_LOG(LogLevel::INSTANCE.isData(),"value="<<(char*)bufData);
+		IAS_LOG(LogLevel::INSTANCE.isData(),"length="<<iLen);
 
 		bNull=0;
 

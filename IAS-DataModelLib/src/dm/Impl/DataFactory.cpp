@@ -77,6 +77,7 @@ DataFactory::DataFactory(const DM::DataFactory* pParentFactory)
 		declareXSDType(Impl::Default::Ext::DateType::GetInstance(),    "date");
 		declareXSDType(Impl::Default::Ext::TimeType::GetInstance(),    "time");
 		declareXSDType(Impl::Default::Ext::RawType::GetInstance(),     "binary");
+    //declareXSDType(Impl::Default::Ext::RawType::GetInstance(),     "base64Binary");
 		declareXSDType(Impl::Default::Ext::DecimalType::GetInstance(), "decimal");
 
 		IAS_LOG(IAS::DM::LogLevel::INSTANCE.isInfo(),"Initialized:"<<(void*)this);

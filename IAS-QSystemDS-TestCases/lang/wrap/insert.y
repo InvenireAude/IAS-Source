@@ -14,7 +14,8 @@ EXTERNAL "libIASQSystemLib:ias_qs_lang_db_proxy:WrappedStatement"
    ? data.money      => money,
    ? data.birthDate  => birthDate,
    ? data.wakeup     => wakeup,
-   ? data.updated    => updated
+   ? data.updated    => updated,
+   ? data.photo      => rawdata
 ");
 
 //   ? data            => rawdata

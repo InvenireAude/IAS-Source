@@ -1045,6 +1045,10 @@ void XSDParser::defineTargetNSElements(){
 			return pDataFactory->getDefaultType(DM::Type::DateType);
 		}else if(!strName.compare("time")){
 			return pDataFactory->getDefaultType(DM::Type::TimeType);
+		}else if(!strName.compare("binary")){
+			return pDataFactory->getDefaultType(DM::Type::RawType);
+		}else if(!strName.compare("base64Binary")){
+			return pDataFactory->getDefaultType(DM::Type::RawType);
 		}else if(!strName.compare("anyType")){
 			return pDataFactory->getDefaultType(DM::Type::AnyType);
 		}

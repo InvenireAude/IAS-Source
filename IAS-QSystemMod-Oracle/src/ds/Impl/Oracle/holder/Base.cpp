@@ -27,6 +27,7 @@
 #include"Float.h"
 #include"Boolean.h"
 #include"Integer.h"
+#include"RawBLOB.h"
 #include"Text.h"
 
 #include "../Session.h"
@@ -119,6 +120,10 @@ Base* Base::Create(Statement* pStatement, DM::Tools::Setter* pSetter, bool bOpti
 
 		case DM::Type::BooleanType:
 			return IAS_DFT_FACTORY<Boolean>::Create(pStatement,pSetter,bOptional);
+			break;
+
+		case DM::Type::RawType:
+			return IAS_DFT_FACTORY<RawBLOB>::Create(pStatement,pSetter,bOptional);
 			break;
 
 		case DM::Type::TextType:

@@ -2,22 +2,21 @@
  * Copyright (C) 2015, Albert Krzymowski
  * Copyright (C) 2015, Invenire Aude Limited
  *
- * File: IAS-QSystemMod-Oracle/src/ds/Impl/Oracle/exception/OracleException.cpp 
+ * File: IAS-QSystemMod-Oracle/src/ds/Impl/Oracle/exception/OracleException.cpp
  *
  * Licensed under the Invenire Aude Commercial License (the "License");
- * you may not use this file except in compliance with the License. 
+ * you may not use this file except in compliance with the License.
  * You may find the license terms and conditions in the LICENSE.txt file.
  * or at http://www.invenireaude.com/licenses/license.txt
- * 
+ *
  * This file and any derived form, including but not limited to object
  * executable, represents the Confidential Materials.
- * 
+ *
  */
 #include "OracleException.h"
 #include <ds/api/exception/ConstraintViolationException.h>
 
 #include <commonlib/commonlib.h>
-#include <sqlite3.h>
 
 namespace IAS{
 namespace DS{
@@ -26,7 +25,7 @@ namespace Oracle{
 
 /*************************************************************************/
 OracleException::OracleException(){
-	IAS_TRACER;		
+	IAS_TRACER;
 }
 /*************************************************************************/
 OracleException::OracleException(const String& strInfo){
@@ -63,9 +62,34 @@ public:
 	}
 };
 /*************************************************************************/
+static String _getDiagnostics(const String& strInfo, OCIError *errhp, sword status, sb4* pErrcode){
+
+  String strResult;
+
+  if(errhp){
+    int iIdx = 1;
+    text errbuf[4096];
+    errbuf[0]=0;
+    sb4 errcode;
+	  while(OCIErrorGet((dvoid *)errhp, (ub4) iIdx, (text *) NULL, &errcode,
+		                   errbuf, (ub4) sizeof(errbuf), OCI_HTYPE_ERROR) == OCI_SUCCESS){
+            strResult += " ";
+            strResult += (const char*) errbuf;
+            errbuf[0]=0;
+            if(iIdx == 1){
+	            *pErrcode = errcode;
+            }
+            iIdx++;
+          }
+  }
+
+  return strResult;
+}
 /*************************************************************************/
 void OracleException::ThrowOnError(const String& strInfo, OCIError *errhp, sword status){
 	IAS_TRACER;
+
+  sb4 errcode;
 
 	switch(status){
 
@@ -73,16 +97,7 @@ void OracleException::ThrowOnError(const String& strInfo, OCIError *errhp, sword
 			return;
 
 		case OCI_SUCCESS_WITH_INFO:
-		{
-			text errbuf[4096];
-			errbuf[0]=0;
-			sb4 errcode = 0;
-		    if(errhp)
-		    	(void) OCIErrorGet((dvoid *)errhp, (ub4) 1, (text *) NULL, &errcode,
-			                        errbuf, (ub4) sizeof(errbuf), OCI_HTYPE_ERROR);
-
-		    IAS_LOG(LogLevel::INSTANCE.isError(),"Info: "<<errbuf);
-		}
+	    IAS_LOG(LogLevel::INSTANCE.isError(),"Info: "<<_getDiagnostics(strInfo, errhp, status, &errcode));
 			return;
 
 		case OCI_STILL_EXECUTING:
@@ -99,14 +114,9 @@ void OracleException::ThrowOnError(const String& strInfo, OCIError *errhp, sword
 
 		case OCI_ERROR:
 			{
-				text errbuf[4096];
-				errbuf[0]=0;
-				sb4 errcode = 0;
-			    if(errhp)
-			    	(void) OCIErrorGet((dvoid *)errhp, (ub4) 1, (text *) NULL, &errcode,
-				                        errbuf, (ub4) sizeof(errbuf), OCI_HTYPE_ERROR);
-			    String strMsg((const char*)errbuf);
-			    strMsg+=strInfo;
+
+			  String strMsg(_getDiagnostics(strInfo, errhp, status, &errcode));
+			  strMsg+=strInfo;
 
 				IAS_LOG(LogLevel::INSTANCE.isError() && errcode != 1,"Execute:["<<strInfo<<"]:"<<strMsg<<", errcode="<<errcode);
 
@@ -118,8 +128,7 @@ void OracleException::ThrowOnError(const String& strInfo, OCIError *errhp, sword
 			break;
 
 		case OCI_INVALID_HANDLE:
-			//IAS::LogLevel::INSTANCE.bIsTrace=true;
-
+			// IAS::LogLevel::INSTANCE.bIsTrace=true;
 			IAS_THROW(OracleException("OCI_INVALID_HANDLE"));
 		return;
 	}

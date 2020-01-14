@@ -11,7 +11,8 @@ EXTERNAL "libIASQSystemLib:ias_qs_lang_db_proxy:WrappedStatement"
 ?  wakeup     => data.wakeup,
 ?  updated    => data.updated,
    age   	  => data.age,
-?  money  => data.money
+?  money  => data.money,
+?  rawdata => data.photo
  FROM 'CUSTOMER_VW'
  WHERE
    id = data.id
@@ -30,7 +31,8 @@ EXTERNAL "libIASQSystemLib:ias_qs_lang_db_proxy:WrappedStatement"
  ? wakeup     => data.wakeup,
  ? updated    => data.updated,
    age        => data.age,
- ? money      => data.money
+ ? money      => data.money,
+ ? rawdata    => data.photo
  FROM 'CUSTOMER_VW'
  WHERE
    id = data.id

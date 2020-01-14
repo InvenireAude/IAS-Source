@@ -8,13 +8,13 @@
       "address" : [ {
          "street" : "Eastwoods",
          "block" : 123
-      } ,{
+         } ,{
          "street" : "Westwoods",
          "block" : 321,
          "country" : "Canada",
-      "_dmType" : "http://www.examples.org/akcf#Address"
-      }]
-   } ,{
+         "_dmType" : "http://www.examples.org/akcf#Address"
+         }]
+      } ,{
       "id" : "2",
       "firstname" : "Walter",
       "middlename" : "Junior",
@@ -24,9 +24,9 @@
          "street" : "Sunset",
          "block" : 1009,
          "country" : "USA",
-      "_dmType" : "http://www.examples.org/akcf#Address"
-      }]
-   } ,{
+         "_dmType" : "http://www.examples.org/akcf#Address"
+         }]
+      } ,{
       "id" : "3",
       "firstname" : "Sammy",
       "middlename" : "Nova",
@@ -35,7 +35,7 @@
       "address" : [ {
          "street" : "Sunrise",
          "block" : 91
-      }]
-   }],
-"_dmType" : "http://www.examples.org/akc#GetCustomerList"
-}
+         }]
+      }],
+   "_dmType" : "http://www.examples.org/akc#GetCustomerList"
+   }

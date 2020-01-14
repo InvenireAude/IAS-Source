@@ -41,7 +41,7 @@
       <xsd:element minOccurs="1" maxOccurs="unbounded" name="address" type="akc:Address"/>
 <!--      <xsd:element name="address" type="akc:Address"/> -->
       <xsd:element name="mailingAddress" type="akcf:Address"/>
-<!--  <xsd:element name="photo"  type="xsd:base64Binary"/> -->
+    <xsd:element name="photo"  type="xsd:base64Binary"/>
 		<xsd:element name="misc" type="xsd:anyType" />
 		<xsd:element name="info" type="xsd:string"/>
     </xsd:sequence>
