@@ -42,8 +42,9 @@ Find::~Find() throw(){
 void Find::executeExternal(Exe::Context *pCtx) const{
 	IAS_TRACER;
 	DM::DataObject* pParameters = pCtx->getBlockVariables(0);
-	const String strArgument = pParameters->getString("strArgument");
-	const String strPattern  = pParameters->getString("strPattern");
+	const WString strArgument = TypeTools::ToWString(pParameters->getString("strArgument"));
+  const WString strPattern = TypeTools::ToWString(pParameters->getString("strPattern"));
+
 	pParameters->setInteger(Model::Dec::ResultDeclarationNode::CStrResultVariable,
 				strArgument.find(strPattern.c_str(), 0));
 }

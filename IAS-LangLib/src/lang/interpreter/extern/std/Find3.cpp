@@ -42,8 +42,8 @@ Find3::~Find3() throw(){
 void Find3::executeExternal(Exe::Context *pCtx) const{
 	IAS_TRACER;
 	DM::DataObject* pParameters = pCtx->getBlockVariables(0);
-	const String strArgument = pParameters->getString("strArgument");
-	const String strPattern  = pParameters->getString("strPattern");
+	const WString strArgument = TypeTools::ToWString(pParameters->getString("strArgument"));
+  const WString strPattern = TypeTools::ToWString(pParameters->getString("strPattern"));
 	const int iStart         = pParameters->getInteger("iStart");
 
 
