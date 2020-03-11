@@ -38,7 +38,7 @@ XSDParser::PropertyInfo::PropertyInfo() throw():
  bIsXMLAttribute(false)
 {}
 /*************************************************************************/
-XSDParser::XSDParser(XSDHelper* pXSDHelper, LibXMLLexer *pLibXMLLexer): iInlineCount(1){
+XSDParser::XSDParser(XSDHelper* pXSDHelper, LibXMLLexer *pLibXMLLexer){
 	IAS_TRACER;
 	this->pXSDHelper=pXSDHelper;
 	ptrLibXMLLexer=pLibXMLLexer;
@@ -69,7 +69,7 @@ void XSDParser::pushCurrentType(TypeInfo* pTypeInfo){
 	IAS_TRACER;
 
 	if(hmTypeInfo.count(pTypeInfo->strName))
-		IAS_THROW(BadUsageException("Type alread defined: ["+pTypeInfo->strName+"]"));
+  	IAS_THROW(BadUsageException("Type alread defined: ["+pTypeInfo->strName+"]"));
 
 	hmTypeInfo[pTypeInfo->strName]=pTypeInfo;
 
@@ -88,7 +88,8 @@ XSDParser::TypeInfo* XSDParser::getCurrentType(){
 /*************************************************************************/
 void XSDParser::updateInlineTypeName(PropertyInfo* pPropertyInfo){
 	StringStream ssTmp;
-	ssTmp << "Inline" << iInlineCount++ << pPropertyInfo->strName;
+
+	ssTmp << (stackTypeInfo.size() == 0 ? "_" : getCurrentType()->strName + "_")<< pPropertyInfo->strName;
 	pPropertyInfo->strTypeName=ssTmp.str();
 	pPropertyInfo->strTypeURI=strTargetNamespace;
 }
@@ -119,29 +120,36 @@ XSDParser::PropertyInfo* XSDParser::readPropertyInfo(bool bCheckMulti){
 
 	if(!ptrLibXMLLexer->getOptionalAttribute("type", strType)){
 
-		while(true) {
+    if(bCheckMulti){
 
-			if(!ptrLibXMLLexer->nextElement())
-				IAS_THROW(XMLHelperException("Unexpected end of xsd stream."))
+        while(true) {
 
-			if(ptrLibXMLLexer->checkType(XML_READER_TYPE_ELEMENT)) {
+          if(!ptrLibXMLLexer->nextElement())
+            IAS_THROW(XMLHelperException("Unexpected end of xsd stream."))
 
-				if(ptrLibXMLLexer->checkLocalName("complexType")) {
+          if(ptrLibXMLLexer->checkType(XML_READER_TYPE_ELEMENT)) {
 
-					updateInlineTypeName(ptrPropertyInfo);
-					parse_xsd_complexType(ptrPropertyInfo->strTypeName);
-					break;
+            if(ptrLibXMLLexer->checkLocalName("complexType")) {
 
-				} else if(ptrLibXMLLexer->checkLocalName("simpleType")) {
+              updateInlineTypeName(ptrPropertyInfo);
+              parse_xsd_complexType(ptrPropertyInfo->strTypeName);
+              break;
 
-					updateInlineTypeName(ptrPropertyInfo);
-					parse_xsd_simpleType(ptrPropertyInfo->strTypeName);
-					break;
+            } else if(ptrLibXMLLexer->checkLocalName("simpleType")) {
 
-				}
+              updateInlineTypeName(ptrPropertyInfo);
+              parse_xsd_simpleType(ptrPropertyInfo->strTypeName);
+              break;
 
-			}
-		}
+            }
+
+          }
+        }
+
+    }else{ //attribute has a default type string
+      ptrPropertyInfo->strTypeURI  = StrXSDSchema;
+      ptrPropertyInfo->strTypeName = "string";
+    }
 
 	}else{
 
@@ -296,10 +304,17 @@ void XSDParser::parse_xsd_sequence(){
 
 		if(ptrLibXMLLexer->checkLocalName("element")){
 				parse_xsd_complexTypeElement();
-		} else if(ptrLibXMLLexer->checkType(XML_READER_TYPE_END_ELEMENT) &&
-		   ptrLibXMLLexer->checkLocalName("sequence"))
-			return;
 
+    }else if(ptrLibXMLLexer->checkType(XML_READER_TYPE_ELEMENT) &&
+       ptrLibXMLLexer->checkLocalName("sequence") ){
+				parse_xsd_sequence();
+    }else if(ptrLibXMLLexer->checkType(XML_READER_TYPE_ELEMENT) &&
+       ptrLibXMLLexer->checkLocalName("choice") ){
+				parse_xsd_choice();
+		} else if(ptrLibXMLLexer->checkType(XML_READER_TYPE_END_ELEMENT) &&
+		   ptrLibXMLLexer->checkLocalName("sequence")){
+  			return;
+       }
 	}
 
 }
@@ -318,9 +333,16 @@ void XSDParser::parse_xsd_choice(){
 
 		if(ptrLibXMLLexer->checkLocalName("element")){
 				parse_xsd_complexTypeElement();
+    }else if(ptrLibXMLLexer->checkType(XML_READER_TYPE_ELEMENT) &&
+       ptrLibXMLLexer->checkLocalName("sequence") ){
+				parse_xsd_sequence();
+    }else if(ptrLibXMLLexer->checkType(XML_READER_TYPE_ELEMENT) &&
+       ptrLibXMLLexer->checkLocalName("choice") ){
+				parse_xsd_choice();
 		} else if(ptrLibXMLLexer->checkType(XML_READER_TYPE_END_ELEMENT) &&
-		   ptrLibXMLLexer->checkLocalName("choice"))
-			return;
+		   ptrLibXMLLexer->checkLocalName("choice")){
+			  return;
+       }
 
 	}
 
@@ -645,7 +667,7 @@ void XSDParser::parse_xsd_fractionDigits(){
 	String strValue = ptrLibXMLLexer->getMandatoryAttribute("value");
 	pCurrentTypeInfo->iFractionDigits = TypeTools::StringToInt(strValue);
 
-	IAS_LOG(IAS::DM::LogLevel::INSTANCE.isInfo(),pCurrentTypeInfo->strName<<", fractionDigits: "<<pCurrentTypeInfo->iMaxLength);
+	IAS_LOG(IAS::DM::LogLevel::INSTANCE.isInfo(),pCurrentTypeInfo->strName<<", fractionDigits: "<<pCurrentTypeInfo->iFractionDigits);
 
 }
 /*************************************************************************/

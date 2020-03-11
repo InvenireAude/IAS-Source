@@ -141,7 +141,6 @@ protected:
 	typedef std::stack<TypeInfo*> TypeInfoStack;
 
 	TypeInfoStack stackTypeInfo;
-	unsigned int  iInlineCount;
 
 	DM::Type* defineType(TypeInfo* pTypeInfo, bool bSkipProperties = false);
 	void createProperties(TypeInfo* pTypeInfo);
