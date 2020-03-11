@@ -29,7 +29,7 @@ namespace Holder {
 
 /*************************************************************************/
 Date::Date(Statement* pStatement,  DM::Tools::Setter* pSetter, bool bOptional):
-	 Base(pStatement, pSetter, bOptional, CBufferLen, SQLT_DATE),
+	 Base(pStatement, pSetter, bOptional, CBufferLen, SQLT_TIMESTAMP),
 	 descDate(pStatement->getSession()->getConnection()->getSystem()->getEnvHandle()){
 	IAS_TRACER;
 	*(bufData.getBuffer<OCIDateTime*>())=descDate.get();
