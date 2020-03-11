@@ -35,15 +35,18 @@ public:
 	 }
 
 	static int    StringToInt(const String& strValue);
+  static Long   StringToLong(const String& strValue);
 	static Float  StringToFloat(const String& strValue);
 	static bool   StringToBoolean(const String& strValue, bool bAllowNumeric = false);
 
 	static void IntToString(int         iValue, String& strValue, int iWidth = -1);
+  static void LongToString(Long       lValue, String& strValue, int iWidth = -1);
 	static void FloatToString(Float     fValue, String& strValue, int iWidth = -1);
 
 	static void BoolToString(bool bValue, String& strValue);
 
 	static String IntToString(int iValue, int iWidth = -1);
+  static String LongToString(Long lValue, int iWidth = -1);
 	static String FloatToString(Float     fValue, int iWidth = -1);
 	static String BoolToString(bool bValue);
 

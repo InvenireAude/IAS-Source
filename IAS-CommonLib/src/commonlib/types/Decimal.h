@@ -55,7 +55,7 @@ public:
   bool operator!=(const Decimal& d1) const;
 
   operator Float() const;
-  operator long() const;
+  operator Long() const;
   operator String() const;
   String toString() const;
 

@@ -27,7 +27,7 @@
 #include <string>
 #include <codecvt>
 #include <locale>
-
+#include <exception>
 
 namespace IAS {
 
@@ -56,6 +56,33 @@ int TypeTools::StringToInt(const String& strValue) {
 
 
 	return iResult;
+
+}
+/*************************************************************************/
+Long TypeTools::StringToLong(const String& strValue) {
+	IAS_TRACER;
+
+	Long lResult;
+
+#if __cplusplus >= 201103L
+
+	try{
+		lResult = std::stoll(strValue.c_str(),0,10);
+	}catch(std::exception& e){
+		IAS_THROW(BadUsageException("Conversion error: [" + strValue + "]"));
+	}
+
+#else
+
+ 	StringStream ss(strValue);
+ 	ss >> iResult;
+ 	if(ss.fail())
+ 		IAS_THROW(BadUsageException("Conversion error: [" + strValue + "]"));
+
+#endif
+
+
+	return lResult;
 
 }
 
@@ -103,7 +130,16 @@ void TypeTools::IntToString(int iValue, String& strValue, int iWidth) {
 	ss << iValue;
 	strValue = ss.str();
 }
-
+/*************************************************************************/
+void TypeTools::LongToString(Long lValue, String& strValue, int iWidth) {
+	StringStream ss;
+	if (iWidth > 0) {
+		ss.width(iWidth);
+		ss.fill('0');
+	}
+	ss << lValue;
+  strValue = ss.str();
+}
 /*************************************************************************/
 void TypeTools::FloatToString(Float fValue, String& strValue, int iWidth) {
 	StringStream ss;
@@ -142,6 +178,12 @@ String TypeTools::BoolToString(bool bValue) {
 String TypeTools::IntToString(int iValue, int iWidth) {
 	String strValue;
 	IntToString(iValue, strValue, iWidth);
+	return strValue;
+}
+/*************************************************************************/
+String TypeTools::LongToString(Long lValue, int iWidth) {
+	String strValue;
+	LongToString(lValue, strValue, iWidth);
 	return strValue;
 }
 /*************************************************************************/

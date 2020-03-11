@@ -43,6 +43,7 @@
 namespace IAS{
 
 	typedef double Float;
+  typedef long   Long;
 
 	typedef std::basic_string< char,
 		std::char_traits<char>,

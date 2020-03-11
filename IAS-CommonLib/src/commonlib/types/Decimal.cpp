@@ -92,18 +92,18 @@ Decimal::operator Float() const{
   return (Float)getRawValue() / pow(10, getPrecision());
 }
 /*************************************************************************/
-Decimal::operator long() const{
+Decimal::operator Long() const{
   IAS_TRACER;
 
-  long iValue = getRawValue();
+  Long lValue = getRawValue();
 
   Precision iPrecision = getPrecision();
 
   while(iPrecision-- > 0){
-    iValue = iValue / 10;
+    lValue = lValue / 10;
   }
 
-  return iValue;
+  return lValue;
 }
 /*************************************************************************/
 Decimal::operator String() const{
@@ -146,25 +146,25 @@ Decimal::DecimalValueHolder Decimal::getAdjustedRawValue(const Decimal& d) const
 }
 /*************************************************************************/
  Decimal& Decimal::operator*=(const Decimal& d){
-  DecimalValueHolder iValue = getRawValue() * getAdjustedRawValue(d);
+  DecimalValueHolder iValue = getRawValue() * d.getRawValue();
 
-  int iPrecision = getPrecision();
+  int iPrecision = d.getPrecision();
   while(iPrecision-- > 0){
-    iValue/=10;
+    iValue = iValue / 10;
   }
   setValue(iValue);
   return *this;
 }
 /*************************************************************************/
  Decimal& Decimal::operator/=(const Decimal& d){
-  DecimalValueHolder iValue = getRawValue();
-  int iPrecision = getPrecision();
+  DecimalValueHolder iValue = getRawValue() / d.getRawValue();
+
+  int iPrecision = d.getPrecision();
 
   while(iPrecision-- > 0){
-    iValue*=10;
+    iValue = iValue * 10L;
   }
 
-  iValue /= getAdjustedRawValue(d);
   setValue(iValue);
 
   return *this;
