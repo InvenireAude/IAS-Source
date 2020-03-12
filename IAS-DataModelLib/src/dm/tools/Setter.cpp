@@ -268,6 +268,38 @@ void Setter::setFloat(DataObjectPtr& dm,Float fValue)const{
 
 }
 /*************************************************************************/
+void Setter::setDecimal(DataObjectPtr& dm,const Decimal& dValue)const{
+	IAS_TRACER;
+
+	IAS_LOG(LogLevel::INSTANCE.isDetailedInfo(),strXPath<<"="<<dValue);
+
+	if(lstPath.size())
+		getParent(dm,true)->setDecimal(lstPath.back().pProperty,dValue);
+	else{
+		if(!dm)
+			dm=pType->createDataObject(dValue);
+		else
+			dm->setDecimal(dValue);
+	}
+
+}
+/*************************************************************************/
+void Setter::setLong(DataObjectPtr& dm,Long lValue)const{
+	IAS_TRACER;
+
+	IAS_LOG(LogLevel::INSTANCE.isDetailedInfo(),strXPath<<"="<<lValue);
+
+	if(lstPath.size())
+		getParent(dm,true)->setLong(lstPath.back().pProperty,lValue);
+	else{
+		if(!dm)
+			dm=pType->createDataObject(lValue);
+		else
+			dm->setLong(lValue);
+	}
+
+}
+/*************************************************************************/
 void Setter::setBoolean(DataObjectPtr& dm,bool bValue)const{
 	IAS_TRACER;
 

@@ -1,14 +1,14 @@
 /*
  * File: IAS-DataModelLib/src/dm/Impl/DataObjectComplex.cpp
- * 
+ *
  * Copyright (C) 2015, Albert Krzymowski
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  * http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -131,6 +131,16 @@ void  DataObjectComplex::setFloat(const IAS::DM::Property* pProperty, Float fVal
 	createDataObject(pProperty)->setFloat(fValue);
 }
 /*************************************************************************/
+void  DataObjectComplex::setLong(const IAS::DM::Property* pProperty, Long lValue){
+	IAS_TRACER;
+	createDataObject(pProperty)->setLong(lValue);
+}
+/*************************************************************************/
+void  DataObjectComplex::setDecimal(const IAS::DM::Property* pProperty, const Decimal& dValue){
+	IAS_TRACER;
+	createDataObject(pProperty)->setDecimal(dValue);
+}
+/*************************************************************************/
 void  DataObjectComplex::setDate(const IAS::DM::Property* pProperty,const IAS::Date& tValue){
 	IAS_TRACER;
 	createDataObject(pProperty)->setDate(tValue);
@@ -239,6 +249,26 @@ Float  DataObjectComplex::getFloat(const IAS::DM::Property* pProperty) const{
 		IAS_THROW(RuntimeException(pProperty->getName()+" is null!"));
 
 	return pDataObject->toFloat();
+}
+/*************************************************************************/
+Long DataObjectComplex::getLong(const IAS::DM::Property* pProperty) const{
+	IAS_TRACER;
+	const DM::DataObject *pDataObject = getDataObject(pProperty);
+
+	if(!pDataObject)
+		IAS_THROW(RuntimeException(pProperty->getName()+" is null!"));
+
+	return pDataObject->toLong();
+}
+/*************************************************************************/
+Decimal DataObjectComplex::getDecimal(const IAS::DM::Property* pProperty) const{
+	IAS_TRACER;
+	const DM::DataObject *pDataObject = getDataObject(pProperty);
+
+	if(!pDataObject)
+		IAS_THROW(RuntimeException(pProperty->getName()+" is null!"));
+
+	return pDataObject->toDecimal();
 }
 /*************************************************************************/
 IAS::DateTime DataObjectComplex::getDateTime(const IAS::DM::Property* pProperty) const{

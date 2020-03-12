@@ -45,6 +45,8 @@ public:
   void setRaw(DataObjectPtr& dm,const RawContent* pRawContent)const;
 	void setInteger(DataObjectPtr& dm,int iValue)const;
 	void setFloat(DataObjectPtr& dm,Float fValue)const;
+  void setDecimal(DataObjectPtr& dm,const Decimal& dValue)const;
+  void setLong(DataObjectPtr& dm,Long lValue)const;
 	void setBoolean(DataObjectPtr& dm,bool bValue)const;
 
 	void setDate(DataObjectPtr& dm,const IAS::Date& tsValue)const;

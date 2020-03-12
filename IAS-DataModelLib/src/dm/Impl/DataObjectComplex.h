@@ -1,14 +1,14 @@
 /*
  * File: IAS-DataModelLib/src/dm/Impl/DataObjectComplex.h
- * 
+ *
  * Copyright (C) 2015, Albert Krzymowski
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  * http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -48,6 +48,8 @@ public:
 
 	virtual void  setInteger(const IAS::DM::Property* pProperty, int aValue);
 	virtual void  setFloat(const IAS::DM::Property* pProperty, Float fValue);
+  virtual void  setLong(const IAS::DM::Property* pProperty, Long lValue);
+  virtual void  setDecimal(const IAS::DM::Property* pProperty, const Decimal& dValue);
 	virtual void  setDate(const IAS::DM::Property* pProperty,const IAS::Date& tValue);
 	virtual void  setTime(const IAS::DM::Property* pProperty,const IAS::Time& tValue);
 	virtual void  setDateTime(const IAS::DM::Property* pProperty,const IAS::DateTime& tValue);
@@ -62,6 +64,8 @@ public:
 	virtual bool    getBoolean(const IAS::DM::Property* pProperty) const;
 	virtual int     getInteger(const IAS::DM::Property* pProperty) const;
 	virtual Float   getFloat(const IAS::DM::Property* pProperty) const;
+  virtual Decimal getDecimal(const IAS::DM::Property* pProperty) const;
+  virtual Long    getLong(const IAS::DM::Property* pProperty) const;
 	virtual IAS::DateTime  getDateTime(const IAS::DM::Property* pProperty) const;
 	virtual String  getString(const IAS::DM::Property* pProperty) const;
 	virtual void    getRaw(const IAS::DM::Property* pProperty, RawContent* pRawContent)const;

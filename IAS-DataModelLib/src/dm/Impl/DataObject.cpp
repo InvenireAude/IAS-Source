@@ -76,7 +76,7 @@ bool DataObject::isSet(const String& strXPath)const{
 /*************************************************************************/
 bool DataObject::isSet(const IAS::DM::Property* pProperty)const{
 	IAS_TRACER;
-	IAS_THROW(RuntimeException(String("Not a complex type.")));
+	IAS_THROW(RuntimeException(String("Not a complex type:")+pProperty->getType()->getFullName()));
 }
 /*************************************************************************/
 
@@ -102,7 +102,7 @@ const IAS::DM::DataObject* DataObject::getDataObject(const String& strXPath)cons
 /*************************************************************************/
 const IAS::DM::DataObject* DataObject::getDataObject(const IAS::DM::Property *pProperty)const{
 	IAS_TRACER;
-	IAS_THROW(RuntimeException(String("Not a complex type.")));
+	IAS_THROW(RuntimeException(String("Not a complex type:")+pProperty->getType()->getFullName()));
 }
 /*************************************************************************/
 IAS::DM::DataObject* DataObject::getDataObject(const IAS::DM::Property *pProperty){
@@ -112,52 +112,52 @@ IAS::DM::DataObject* DataObject::getDataObject(const IAS::DM::Property *pPropert
 /*************************************************************************/
 bool  DataObject::getBoolean(const IAS::DM::Property* pProperty) const{
 	IAS_TRACER;
-	IAS_THROW(RuntimeException(String("Not a complex type.")));
+	IAS_THROW(RuntimeException(String("Not a complex type:")+pProperty->getType()->getFullName()));
 }
 /*************************************************************************/
 int   DataObject::getInteger(const IAS::DM::Property* pProperty) const{
 	IAS_TRACER;
-	IAS_THROW(RuntimeException(String("Not a complex type.")));
+	IAS_THROW(RuntimeException(String("Not a complex type:")+pProperty->getType()->getFullName()));
 }
 /*************************************************************************/
 Float  DataObject::getFloat(const IAS::DM::Property* pProperty) const{
 	IAS_TRACER;
-	IAS_THROW(RuntimeException(String("Not a complex type.")));
+	IAS_THROW(RuntimeException(String("Not a complex type:")+pProperty->getType()->getFullName()));
 }
 /*************************************************************************/
 IAS::DateTime  DataObject::getDateTime(const IAS::DM::Property* pProperty) const{
 	IAS_TRACER;
-	IAS_THROW(RuntimeException(String("Not a complex type.")));
+	IAS_THROW(RuntimeException(String("Not a complex type:")+pProperty->getType()->getFullName()));
 }
 /*************************************************************************/
 IAS::Date  DataObject::getDate(const IAS::DM::Property* pProperty) const{
 	IAS_TRACER;
-	IAS_THROW(RuntimeException(String("Not a complex type.")));
+	IAS_THROW(RuntimeException(String("Not a complex type:")+pProperty->getType()->getFullName()));
 }
 /*************************************************************************/
 IAS::Time  DataObject::getTime(const IAS::DM::Property* pProperty) const{
 	IAS_TRACER;
-	IAS_THROW(RuntimeException(String("Not a complex type.")));
+	IAS_THROW(RuntimeException(String("Not a complex type:")+pProperty->getType()->getFullName()));
 }
 /*************************************************************************/
 String  DataObject::getString(const IAS::DM::Property* pProperty)const{
 	IAS_TRACER;
-	IAS_THROW(RuntimeException(String("Not a complex type.")));
+	IAS_THROW(RuntimeException(String("Not a complex type:")+pProperty->getType()->getFullName()));
 }
 /*************************************************************************/
 void DataObject::getRaw(const IAS::DM::Property* pProperty, RawContent* pRawContent)const{
 	IAS_TRACER;
-	IAS_THROW(RuntimeException(String("Not a complex type.")));
+	IAS_THROW(RuntimeException(String("Not a complex type:")+pProperty->getType()->getFullName()));
 }
 /*************************************************************************/
 Decimal DataObject::getDecimal(const IAS::DM::Property* pProperty)const{
 	IAS_TRACER;
-	IAS_THROW(RuntimeException(String("Not a complex type.")));
+	IAS_THROW(RuntimeException(String("Not a complex type:")+pProperty->getType()->getFullName()));
 }
 /*************************************************************************/
 Long DataObject::getLong(const IAS::DM::Property* pProperty)const{
 	IAS_TRACER;
-	IAS_THROW(RuntimeException(String("Not a complex type.")));
+	IAS_THROW(RuntimeException(String("Not a complex type:")+pProperty->getType()->getFullName()));
 }
 /*************************************************************************/
 
@@ -205,7 +205,7 @@ IAS::DM::DataObject* DataObject::createDataObject(const String& strXPath){
 /*************************************************************************/
 IAS::DM::DataObject* DataObject::createDataObject(const IAS::DM::Property *pProperty){
 	IAS_TRACER;
-	IAS_THROW(RuntimeException(String("Not a complex type.")));
+	IAS_THROW(RuntimeException(String("Not a complex type:")+pProperty->getType()->getFullName()));
 }
 /*************************************************************************/
 void DataObject::setDataObject(const String& strXPath, IAS::DM::DataObject* pDataObject){
@@ -347,63 +347,63 @@ void DataObject::unset(const String& strXPath){
 /*************************************************************************/
 void DataObject::unset(const ::IAS::DM::Property* pProperty){
 	IAS_TRACER;
-	IAS_THROW(RuntimeException(String("Not a complex type.")));
+	IAS_THROW(RuntimeException(String("Not a complex type:")+pProperty->getType()->getFullName()));
 }
 /*************************************************************************/
 void DataObject::setDataObject(const IAS::DM::Property *pProperty,
 								  IAS::DM::DataObject* pDataObject){
 	IAS_TRACER;
-	IAS_THROW(RuntimeException(String("Not a complex type.")+pType->getName()+":"+pType->getURI()));
+	IAS_THROW(RuntimeException(String("Not a complex type:")+pProperty->getType()->getFullName()+pType->getName()+":"+pType->getURI()));
 }
 /*************************************************************************/
 void  DataObject::setInteger(const IAS::DM::Property* pProperty, int aValue){
 	IAS_TRACER;
-	IAS_THROW(RuntimeException(String("Not a complex type.")));
+	IAS_THROW(RuntimeException(String("Not a complex type:")+pProperty->getType()->getFullName()));
 }
 /*************************************************************************/
 void  DataObject::setFloat(const IAS::DM::Property* pProperty, Float fValue){
 	IAS_TRACER;
-	IAS_THROW(RuntimeException(String("Not a complex type.")));
+	IAS_THROW(RuntimeException(String("Not a complex type:")+pProperty->getType()->getFullName()));
 }
 /*************************************************************************/
 void  DataObject::setDateTime(const IAS::DM::Property* pProperty,const IAS::DateTime& tValue){
 	IAS_TRACER;
-	IAS_THROW(RuntimeException(String("Not a complex type.")));
+	IAS_THROW(RuntimeException(String("Not a complex type:")+pProperty->getType()->getFullName()));
 }
 /*************************************************************************/
 void  DataObject::setDate(const IAS::DM::Property* pProperty,const IAS::Date& tValue){
 	IAS_TRACER;
-	IAS_THROW(RuntimeException(String("Not a complex type.")));
+	IAS_THROW(RuntimeException(String("Not a complex type:")+pProperty->getType()->getFullName()));
 }
 /*************************************************************************/
 void  DataObject::setTime(const IAS::DM::Property* pProperty,const IAS::Time& tValue){
 	IAS_TRACER;
-	IAS_THROW(RuntimeException(String("Not a complex type.")));
+	IAS_THROW(RuntimeException(String("Not a complex type:")+pProperty->getType()->getFullName()));
 }
 /*************************************************************************/
 void  DataObject::setBoolean(const IAS::DM::Property* pProperty, bool bValue){
 	IAS_TRACER;
-	IAS_THROW(RuntimeException(String("Not a complex type.")));
+	IAS_THROW(RuntimeException(String("Not a complex type:")+pProperty->getType()->getFullName()));
 }
 /*************************************************************************/
 void  DataObject::setString(const IAS::DM::Property* pProperty, const String& strValue){
 	IAS_TRACER;
-	IAS_THROW(RuntimeException(String("Not a complex type.")));
+	IAS_THROW(RuntimeException(String("Not a complex type:")+pProperty->getType()->getFullName()));
 }
 /*************************************************************************/
 void DataObject::setRaw(const IAS::DM::Property* pProperty, const RawContent* pRawContent){
 	IAS_TRACER;
-	IAS_THROW(RuntimeException(String("Not a complex type.")));
+	IAS_THROW(RuntimeException(String("Not a complex type:")+pProperty->getType()->getFullName()));
 }
 /*************************************************************************/
 void DataObject::setDecimal(const IAS::DM::Property* pProperty, const Decimal& d){
 	IAS_TRACER;
-	IAS_THROW(RuntimeException(String("Not a complex type.")));
+	IAS_THROW(RuntimeException(String("Not a complex type:")+pProperty->getType()->getFullName()));
 }
 /*************************************************************************/
 void DataObject::setLong(const IAS::DM::Property* pProperty, Long lValue){
 	IAS_TRACER;
-	IAS_THROW(RuntimeException(String("Not a complex type.")));
+	IAS_THROW(RuntimeException(String("Not a complex type:")+pProperty->getType()->getFullName()));
 }
 /*************************************************************************/
 
