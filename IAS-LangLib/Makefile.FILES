@@ -1,4 +1,4 @@
-#Tue 14 Jan 2020 07:22:58 PM CET
+#Wed 11 Mar 2020 04:09:43 PM CET
 FILES+=Impl/DataFactory
 FILES+=Impl/org/invenireaude/lang/builtin/DataObjects
 FILES+=lang/exception/ParseErrorException
@@ -99,6 +99,7 @@ FILES+=lang/interpreter/exe/expr/BinaryExprFamily
 FILES+=lang/interpreter/exe/expr/BinaryFloatExpr
 FILES+=lang/interpreter/exe/expr/BinaryIntegerExpr
 FILES+=lang/interpreter/exe/expr/BinaryListExpr
+FILES+=lang/interpreter/exe/expr/BinaryLongExpr
 FILES+=lang/interpreter/exe/expr/BinaryStringExpr
 FILES+=lang/interpreter/exe/expr/BinaryTimeExpr
 FILES+=lang/interpreter/exe/expr/BooleanExpr
@@ -111,6 +112,7 @@ FILES+=lang/interpreter/exe/expr/ConstDecimalExpr
 FILES+=lang/interpreter/exe/expr/ConstExprFamily
 FILES+=lang/interpreter/exe/expr/ConstFloatExpr
 FILES+=lang/interpreter/exe/expr/ConstIntegerExpr
+FILES+=lang/interpreter/exe/expr/ConstLongExpr
 FILES+=lang/interpreter/exe/expr/ConstNullExpr
 FILES+=lang/interpreter/exe/expr/ConstructorExpr
 FILES+=lang/interpreter/exe/expr/ConstructorWithStatementExpr
@@ -137,6 +139,7 @@ FILES+=lang/interpreter/exe/expr/IsNull
 FILES+=lang/interpreter/exe/expr/IsSet
 FILES+=lang/interpreter/exe/expr/LogicalBinaryOperFamily
 FILES+=lang/interpreter/exe/expr/LogicalUnaryOperFamily
+FILES+=lang/interpreter/exe/expr/LongExpr
 FILES+=lang/interpreter/exe/expr/RelationBooleanExpr
 FILES+=lang/interpreter/exe/expr/RelationDataObjectExpr
 FILES+=lang/interpreter/exe/expr/RelationDateExpr
@@ -174,6 +177,7 @@ FILES+=lang/interpreter/exe/expr/xpath/XPathDecimalExpr
 FILES+=lang/interpreter/exe/expr/xpath/XPathExprFamily
 FILES+=lang/interpreter/exe/expr/xpath/XPathFloatExpr
 FILES+=lang/interpreter/exe/expr/xpath/XPathIntegerExpr
+FILES+=lang/interpreter/exe/expr/xpath/XPathLongExpr
 FILES+=lang/interpreter/exe/expr/xpath/XPathStringExpr
 FILES+=lang/interpreter/exe/expr/xpath/XPathTimeExpr
 FILES+=lang/interpreter/exe/Program

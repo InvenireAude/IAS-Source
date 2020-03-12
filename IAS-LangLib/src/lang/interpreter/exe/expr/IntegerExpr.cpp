@@ -82,6 +82,11 @@ Decimal IntegerExpr::evaluateDecimal(Context *pCtx) const{
 	return evaluateInt(pCtx);
 }
 /*************************************************************************/
+Long IntegerExpr::evaluateLong(Context *pCtx) const{
+	IAS_TRACER;
+	return evaluateInt(pCtx);
+}
+/*************************************************************************/
 void IntegerExpr::evaluate(Context *pCtx, DM::DataObjectPtr& refResult) const{
 
 	const DM::DataFactory *pDataFactory=pCtx->getDataFactory();

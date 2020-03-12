@@ -1,5 +1,5 @@
 /*
- * File: IAS-LangLib/src/lang/interpreter/exe/expr/FloatExpr.cpp
+ * File: IAS-DataModelLib/src/dm/Impl/DataObjectLong.cpp
  *
  * Copyright (C) 2015, Albert Krzymowski
  *
@@ -15,88 +15,93 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#include "FloatExpr.h"
-#include<lang/log/LogLevel.h>
-
+#include "../../dm/Impl/DataObjectLong.h"
 #include <commonlib/commonlib.h>
-
-#include "../Context.h"
+#include "../../dm/Type.h"
+#include "../../dm/log/LogLevel.h"
 
 namespace IAS {
-namespace Lang {
-namespace Interpreter {
-namespace Exe {
-namespace Expr {
+namespace DM {
+namespace Impl {
 
 /*************************************************************************/
-FloatExpr::FloatExpr() throw(){
+DataObjectLong::DataObjectLong(const Type *pType):DataObjectBasic(pType),fValue(0.0){
 	IAS_TRACER;
 }
+/*************************************************************************/
+DataObjectLong::~DataObjectLong() throw(){
+	IAS_TRACER;
+}
+/*************************************************************************/
+String DataObjectLong::toString()const{
+	IAS_TRACER;
+	return TypeTools::LongToString(fValue);
+}
+/*************************************************************************/
+bool DataObjectLong::toBoolean()const{
+	IAS_TRACER;
+	return fValue != 0;
+}
+/*************************************************************************/
+int DataObjectLong::toInteger()const{
+	IAS_TRACER;
+	return (int)fValue;
+}
+/*************************************************************************/
+Long DataObjectLong::toLong()const{
+	IAS_TRACER;
+	return fValue;
+}
+/*************************************************************************/
+Decimal DataObjectLong::toDecimal()const{
+	IAS_TRACER;
+	return fValue;
+}
+/*************************************************************************/
+void DataObjectLong::setString(const String& strValue){
+	IAS_TRACER;
+	fValue=TypeTools::StringToLong(strValue);
+}
+/*************************************************************************/
+void DataObjectLong::setInteger(int iValue){
+	IAS_TRACER;
+	fValue = (int)iValue;
+}
+/*************************************************************************/
+void DataObjectLong::setBoolean(bool bValue){
+	IAS_TRACER;
+	fValue = (Long)bValue;
+}
+/*************************************************************************/
+void DataObjectLong::setLong(Long fValue){
+	IAS_TRACER;
+	this->fValue = fValue;
+}
+/*************************************************************************/
+void DataObjectLong::setDecimal(const Decimal& aValue){
+	IAS_TRACER;
+	this->fValue = (Long)aValue;
+}
+/*************************************************************************/
+void DataObjectLong::setDataObject(const IAS::DM::DataObject* pDataObject){
+	IAS_TRACER;
+	IAS_CHECK_IF_NULL(pDataObject);
+	fValue = pDataObject->toLong();
+}
+/*************************************************************************/
+bool DataObjectLong::equals(const IAS::DM::DataObject* pDataObject)const{
 
-/*************************************************************************/
-FloatExpr::~FloatExpr() throw(){
 	IAS_TRACER;
-}
-/*************************************************************************/
-String FloatExpr::evaluateString(Context *pCtx) const{
-	IAS_TRACER;
-	return TypeTools::FloatToString(evaluateFloat(pCtx));
-}
-/*************************************************************************/
-int FloatExpr::evaluateInt(Context *pCtx) const{
-	IAS_TRACER;
-	return evaluateFloat(pCtx);
-}
-/*************************************************************************/
-bool  FloatExpr::evaluateBoolean(Context *pCtx) const{
-	IAS_TRACER;
-	return evaluateFloat(pCtx);
-}
-/*************************************************************************/
-::IAS::DateTime FloatExpr::evaluateDateTime(Context *pCtx) const{
-	IAS_TRACER;
-	time_t tmpValue=evaluateInt(pCtx);
-	DateTime tsValue;
-	tsValue.fromPosixTime(tmpValue);
-	return tsValue;
-}
-/*************************************************************************/
-::IAS::Date FloatExpr::evaluateDate(Context *pCtx) const{
-	IAS_TRACER;
-	time_t tmpValue=evaluateInt(pCtx);
-	Date tsValue;
-	tsValue.fromPosixTime(tmpValue);
-	return tsValue;
-}
-/*************************************************************************/
-::IAS::Time FloatExpr::evaluateTime(Context *pCtx) const{
-	IAS_TRACER;
-	time_t tmpValue=evaluateInt(pCtx);
-	Time tsValue;
-	tsValue.fromPosixTime(tmpValue);
-	return tsValue;
-}
-/*************************************************************************/
-Decimal FloatExpr::evaluateDecimal(Context *pCtx) const{
-	IAS_TRACER;
-	return evaluateFloat(pCtx);
-}
-/*************************************************************************/
-Long FloatExpr::evaluateLong(Context *pCtx) const{
-	IAS_TRACER;
-	return (Long)evaluateFloat(pCtx);
-}
-/*************************************************************************/
-void FloatExpr::evaluate(Context *pCtx, DM::DataObjectPtr& refResult) const{
 
-	const DM::DataFactory *pDataFactory=pCtx->getDataFactory();
+	if(!pDataObject)
+		return false;
 
-	refResult = getType()->createDataObject(evaluateString(pCtx));
+	if(!pDataObject->getType()->equals(pType))
+		return false;
 
+	return fValue == pDataObject->toLong();
 }
 /*************************************************************************/
-}
-}
 }
 }
 }

@@ -128,6 +128,10 @@ void Expr::evaluate(Context *pCtx,
 			dmResult = pNewObjectType->createDataObject(evaluateDecimal(pCtx));
 			break;
 
+		case DM::Type::LongType:
+			dmResult = pNewObjectType->createDataObject(evaluateLong(pCtx));
+			break;
+
 		case DM::Type::TextType:
 			dmResult = pNewObjectType->createDataObject(evaluateString(pCtx));
 			break;

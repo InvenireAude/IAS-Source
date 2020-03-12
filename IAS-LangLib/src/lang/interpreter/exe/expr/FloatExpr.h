@@ -41,6 +41,8 @@ public:
 	virtual ::IAS::Date evaluateDate(Context *pCtx) const;
 	virtual ::IAS::Time evaluateTime(Context *pCtx) const;
   virtual ::IAS::Decimal evaluateDecimal(Context *pCtx) const;
+  virtual ::IAS::Long evaluateLong(Context *pCtx) const;
+
 	virtual void evaluate(Context *pCtx, DM::DataObjectPtr& refResult) const;
 
 protected:

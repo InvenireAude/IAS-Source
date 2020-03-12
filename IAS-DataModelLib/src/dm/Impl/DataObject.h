@@ -61,6 +61,7 @@ public:
 	virtual String  getString(const String& strXPath)const;
 	virtual void    getRaw(const String& strXPath, RawContent* pRawContent)const;
   virtual Decimal getDecimal(const String& strXPath)const;
+  virtual Long    getLong(const String& strXPath)const;
 
 	virtual bool    getBoolean(const IAS::DM::Property* pProperty) const;
 	virtual int     getInteger(const IAS::DM::Property* pProperty) const;
@@ -71,6 +72,7 @@ public:
 	virtual String  getString(const IAS::DM::Property* pProperty)const;
 	virtual void    getRaw(const Property* pProperty, RawContent* pRawContent)const;
   virtual Decimal getDecimal(const Property* pProperty)const;
+  virtual Long    getLong(const Property* pProperty)const;
 
 	virtual String  toString() const;
 	virtual bool    toBoolean() const;
@@ -81,6 +83,7 @@ public:
 	virtual IAS::Time  toTime() const;
 	virtual void toRaw(RawContent* pRawContent)const;
   virtual Decimal toDecimal() const;
+  virtual Long    toLong() const;
 
 	virtual const ::IAS::DM::Type*   getType() const;
 
@@ -98,6 +101,7 @@ public:
 	virtual void  setString(const String& strXPath, const String& strValue);
 	virtual void  setRaw(const String& strXPath, const RawContent* pRawContent);
   virtual void  setDecimal(const String& strXPath, const Decimal& d);
+  virtual void  setLong(const String& strXPath, Long lValue);
 
 	virtual void setDataObject(const IAS::DM::Property* pProperty, ::IAS::DM::DataObject *pDataObject);
 
@@ -110,6 +114,7 @@ public:
 	virtual void  setString(const IAS::DM::Property* pProperty, const String& strValue);
 	virtual void  setRaw(const IAS::DM::Property* pProperty, const RawContent* pRawContent);
   virtual void  setDecimal(const Property* pProperty, const Decimal& d);
+  virtual void  setLong(const Property* pProperty, Long lValue);
 
 	virtual void unset(const String& strXPath);
 	virtual void unset(const ::IAS::DM::Property* pProperty);
@@ -124,6 +129,7 @@ public:
 	virtual void setString(const String& strValue);
 	virtual void setRaw(const RawContent* pRawContent);
   virtual void setDecimal(const Decimal& d);
+  virtual void setLong(Long lValue);
 	virtual void setInteger(int iValue);
 	virtual void setBoolean(bool bValue);
 	virtual void setFloat(Float fValue);

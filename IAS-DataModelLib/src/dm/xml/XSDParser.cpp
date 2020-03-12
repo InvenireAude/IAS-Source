@@ -1053,6 +1053,8 @@ void XSDParser::defineTargetNSElements(){
 			return pDataFactory->getDefaultType(DM::Type::IntegerType);
 		}else if(!strName.compare("integer")){
 			return pDataFactory->getDefaultType(DM::Type::IntegerType);
+		}else if(!strName.compare("long")){
+			return pDataFactory->getDefaultType(DM::Type::LongType);
 		}else if(!strName.compare("decimal")){
     	return pDataFactory->getDefaultType(DM::Type::DecimalType);
 		}else if(!strName.compare("bool")){

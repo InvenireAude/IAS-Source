@@ -110,6 +110,8 @@ void JSONSerializer::serializeElement(const DataObject* pDataObject,
 		case ::IAS::DM::Type::RawType:
 		case ::IAS::DM::Type::TimeType:
 		case ::IAS::DM::Type::DateType:
+    case ::IAS::DM::Type::DecimalType:
+    case ::IAS::DM::Type::LongType:
 
 			if(bXSIType){
 				os<<"{"<<prefixes.sEndl<<strPrefix;
@@ -150,7 +152,6 @@ void JSONSerializer::serializeElement(const DataObject* pDataObject,
 
     case ::IAS::DM::Type::BooleanType:
 		case ::IAS::DM::Type::IntegerType:
-    case ::IAS::DM::Type::DecimalType:
 		case ::IAS::DM::Type::FloatType:
 
 			if(bXSIType){

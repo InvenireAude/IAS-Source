@@ -72,6 +72,11 @@ bool  StringExpr::evaluateBoolean(Context *pCtx) const{
 	return evaluateString(pCtx);
 }
 /*************************************************************************/
+Long StringExpr::evaluateLong(Context *pCtx) const{
+	IAS_TRACER;
+	return TypeTools::StringToLong(evaluateString(pCtx));
+}
+/*************************************************************************/
 void StringExpr::evaluate(Context *pCtx, DM::DataObjectPtr& refResult) const{
 
 	const DM::DataFactory *pDataFactory=pCtx->getDataFactory();

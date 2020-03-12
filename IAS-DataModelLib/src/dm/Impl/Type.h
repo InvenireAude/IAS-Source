@@ -71,6 +71,7 @@ public:
     virtual IAS::DM::DataObject* createDataObject(const IAS::Date& tsValue) const;
     virtual IAS::DM::DataObject* createDataObject(const IAS::DateTime& tsValue) const;
     virtual IAS::DM::DataObject* createDataObject(const IAS::Decimal&  aValue) const;
+    virtual IAS::DM::DataObject* createDataObject(Long  lValue) const;
 
 	virtual IAS::DM::DataObject* createDataObject(const IAS::DM::DataObject* pDataObject) const;
 

@@ -57,6 +57,7 @@ public:
 	    FloatType,
 	    IntegerType,
       DecimalType,
+      LongType,
 	    DateTimeType,
 	    DateType,
 	    TimeType,
@@ -97,6 +98,9 @@ public:
 
 	/** Creates a data object and initializes it to a given value. */
 	virtual DataObject* createDataObject(const IAS::Decimal& aValue) const = 0;
+
+	/** Creates a data object and initializes it to a given value. */
+	virtual DataObject* createDataObject(const IAS::Long lValue) const = 0;
 
 	/** Creates a data object and initializes it to a given value. */
 	virtual DataObject* createDataObject(const DataObject* pDataObject) const = 0;

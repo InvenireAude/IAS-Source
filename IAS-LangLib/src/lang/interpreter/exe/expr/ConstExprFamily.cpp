@@ -22,6 +22,7 @@
 
 #include "ConstIntegerExpr.h"
 #include "ConstDecimalExpr.h"
+#include "ConstLongExpr.h"
 #include "ConstBooleanExpr.h"
 #include "ConstStringExpr.h"
 #include "ConstFloatExpr.h"
@@ -49,6 +50,10 @@ Expr* ConstExprFamily::Create(const DM::Type* pType, const String& strValue){
 
 	case DM::Type::TextType:
 		ptrExpr = IAS_DFT_FACTORY<ConstStringExpr>::Create(strValue);
+		break;
+
+	case DM::Type::LongType:
+		ptrExpr = IAS_DFT_FACTORY<ConstDecimalExpr>::Create(TypeTools::StringToLong(strValue));
 		break;
 
 	case DM::Type::BooleanType:
@@ -89,7 +94,7 @@ Expr* ConstExprFamily::Create(const DM::Type* pType, const String& strValue){
 		break;
 
 	default:
-		IAS_THROW(InternalException("No factory for operator!"));
+		IAS_THROW(InternalException("No factory for operator! [ConstExprFamily]"));
 		break;
 	}
 

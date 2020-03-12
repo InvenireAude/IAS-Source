@@ -72,6 +72,11 @@ String DateExpr::evaluateString(Context *pCtx) const{
 	return (long)evaluateDate(pCtx);
 }
 /*************************************************************************/
+Long DateExpr::evaluateLong(Context *pCtx) const{
+	IAS_TRACER;
+	return (Long)evaluateDate(pCtx);
+}
+/*************************************************************************/
 void DateExpr::evaluate(Context *pCtx, DM::DataObjectPtr& refResult) const{
 
 	const DM::DataFactory *pDataFactory=pCtx->getDataFactory();

@@ -195,6 +195,7 @@ void XMLSerializer::serializeElement(const DataObject* pDataObject,
 		case ::IAS::DM::Type::TextType:
 		case ::IAS::DM::Type::IntegerType:
     case ::IAS::DM::Type::DecimalType:
+    case ::IAS::DM::Type::LongType:
 		case ::IAS::DM::Type::FloatType:
 		case ::IAS::DM::Type::DateType:
 		case ::IAS::DM::Type::TimeType:

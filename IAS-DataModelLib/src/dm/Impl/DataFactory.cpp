@@ -24,6 +24,7 @@
 #include "../../dm/Impl/default/DateTime.h"
 #include "../../dm/Impl/default/Float.h"
 #include "../../dm/Impl/default/Integer.h"
+#include "../../dm/Impl/default/Long.h"
 #include "../../dm/Impl/default/String.h"
 #include "../../dm/Impl/default/Time.h"
 #include "../../dm/Impl/default/Raw.h"
@@ -59,6 +60,7 @@ DataFactory::DataFactory(const DM::DataFactory* pParentFactory)
 		declareDefaultType(Impl::Default::Ext::BooleanType::GetInstance());
 		declareDefaultType(Impl::Default::Ext::FloatType::GetInstance());
 		declareDefaultType(Impl::Default::Ext::IntegerType::GetInstance());
+    declareDefaultType(Impl::Default::Ext::LongType::GetInstance());
 		declareDefaultType(Impl::Default::Ext::StringType::GetInstance());
 		declareDefaultType(Impl::Default::Ext::DateTimeType::GetInstance());
 		declareDefaultType(Impl::Default::Ext::DateType::GetInstance());
@@ -70,6 +72,7 @@ DataFactory::DataFactory(const DM::DataFactory* pParentFactory)
 
 		declareXSDType(Impl::Default::Ext::IntegerType::GetInstance(), "int");
 		declareXSDType(Impl::Default::Ext::IntegerType::GetInstance(), "integer");
+    declareXSDType(Impl::Default::Ext::LongType::GetInstance(), "long");
 		declareXSDType(Impl::Default::Ext::StringType::GetInstance(),  "string");
 		declareXSDType(Impl::Default::Ext::BooleanType::GetInstance(), "boolean");
 		declareXSDType(Impl::Default::Ext::FloatType::GetInstance(),   "float");

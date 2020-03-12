@@ -155,6 +155,11 @@ Decimal DataObject::getDecimal(const IAS::DM::Property* pProperty)const{
 	IAS_THROW(RuntimeException(String("Not a complex type.")));
 }
 /*************************************************************************/
+Long DataObject::getLong(const IAS::DM::Property* pProperty)const{
+	IAS_TRACER;
+	IAS_THROW(RuntimeException(String("Not a complex type.")));
+}
+/*************************************************************************/
 
 /*************************************************************************/
 const IAS::DM::DataObjectList& DataObject::getList(const ::IAS::DM::Property *pProperty)const{
@@ -317,6 +322,17 @@ void  DataObject::setDecimal(const String& strXPath, const Decimal& d){
 	pParent->setDecimal(pProperty,d);
 }
 /*************************************************************************/
+void  DataObject::setLong(const String& strXPath, Long  lValue){
+	IAS_TRACER;
+	IAS_LOG(IAS::DM::LogLevel::INSTANCE.isInfo(),"setDataObject:["<<strXPath<<"], "<<lValue);
+
+	IAS::DM::DataObject* pParent;
+	const ::IAS::DM::Property *pProperty;
+	XPathCursor::FindLastParent(this,strXPath,pParent, pProperty);
+
+	pParent->setLong(pProperty,lValue);
+}
+/*************************************************************************/
 void DataObject::unset(const String& strXPath){
 	IAS_TRACER;
 
@@ -385,6 +401,11 @@ void DataObject::setDecimal(const IAS::DM::Property* pProperty, const Decimal& d
 	IAS_THROW(RuntimeException(String("Not a complex type.")));
 }
 /*************************************************************************/
+void DataObject::setLong(const IAS::DM::Property* pProperty, Long lValue){
+	IAS_TRACER;
+	IAS_THROW(RuntimeException(String("Not a complex type.")));
+}
+/*************************************************************************/
 
 /*************************************************************************/
 bool DataObject::getBoolean(const String& strXPath)const{
@@ -432,6 +453,11 @@ Decimal DataObject::getDecimal(const String& strXPath) const{
 	return getDataObject(strXPath)->toDecimal();
 }
 /*************************************************************************/
+Long DataObject::getLong(const String& strXPath) const{
+	IAS_TRACER;
+	return getDataObject(strXPath)->toLong();
+}
+/*************************************************************************/
 String DataObject::toString() const{
 	IAS_TRACER;
 	IAS_THROW(IllegalCastException(pType,"Conversion to string not available."));
@@ -447,6 +473,12 @@ Decimal DataObject::toDecimal() const{
 	IAS_TRACER;
 	IAS_LOG(IAS::DM::LogLevel::INSTANCE.isError(),"toDecimal not allowed:  ["<<pType->getName()<<"]");
 	IAS_THROW(IllegalCastException(pType,"Conversion to Decimal content not available."));
+}
+/*************************************************************************/
+Long DataObject::toLong() const{
+	IAS_TRACER;
+	IAS_LOG(IAS::DM::LogLevel::INSTANCE.isError(),"toLong not allowed:  ["<<pType->getName()<<"]");
+	IAS_THROW(IllegalCastException(pType,"Conversion to Long content not available."));
 }
 /*************************************************************************/
 bool DataObject::toBoolean()const{
@@ -493,6 +525,11 @@ void DataObject::setRaw(const RawContent* pRawContent){
 void DataObject::setDecimal(const Decimal& d){
 	IAS_TRACER;
 	IAS_THROW(IllegalCastException(pType,"Conversion from Decimal content not available."));
+}
+/*************************************************************************/
+void DataObject::setLong(Long lValue){
+	IAS_TRACER;
+	IAS_THROW(IllegalCastException(pType,"Conversion from Long content not available."));
 }
 /*************************************************************************/
 void DataObject::setInteger(int iValue){

@@ -1,5 +1,5 @@
 /*
- * File: IAS-LangLib/src/lang/model/expr/ConstNode.h
+ * File: IAS-LangLib/src/lang/interpreter/exe/expr/BinaryLongExpr.h
  *
  * Copyright (C) 2015, Albert Krzymowski
  *
@@ -15,44 +15,35 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#ifndef _IAS_AS_Lang_Model_Expr_CONSTNODE_H_
-#define _IAS_AS_Lang_Model_Expr_CONSTNODE_H_
+#ifndef _IAS_AS_Lang_Interpreter_Exe_Expr_BinaryLongExpr_H_
+#define _IAS_AS_Lang_Interpreter_Exe_Expr_BinaryLongExpr_H_
 
-#include <commonlib/commonlib.h>
-#include "ExprNode.h"
+#include "BinaryExprFamily.h"
+#include "LongExpr.h"
 
 namespace IAS {
 namespace Lang {
-namespace Model {
+namespace Interpreter {
+namespace Exe {
 namespace Expr {
 
 /*************************************************************************/
 /** The class. */
- class ConstNode : public ExprNode{
+ class BinaryLongExpr :
+	public LongExpr,
+	public BinaryExprFamily{
 public:
 
-	enum Type{
-		CN_INTEGER,
-    CN_LONG,
-		CN_FLOAT,
-		CN_BOOLEAN,
-		CN_STRING,
-		CN_NULL
-	};
+	virtual ~BinaryLongExpr() throw();
 
-	virtual ~ConstNode() throw();
-
-	inline const String& getOriginalText() const { return strValue; };
-	inline Type getType() const { return iType; };
+	static BinaryLongExpr* Create(Expr* pLeft,
+									 Expr* pRight,
+									 TypeInfoProxy aTypeInfoProxy);
 
 protected:
+	BinaryLongExpr(Expr* pLeft, Expr* pRight);
 
-	ConstNode(Type iType, const String& strValue);
-
-	String strValue;
-	Type iType;
-
-	friend class ::IAS::Factory<ConstNode>;
+	friend class ::IAS::Factory<BinaryLongExpr>;
 };
 
 /*************************************************************************/
@@ -60,5 +51,6 @@ protected:
 }
 }
 }
+}
 
-#endif /* _IAS_AS_Lang_Model_Expr_CONSTNODE_H_ */
+#endif /* _IAS_AS_Lang_Interpreter_Exe_Expr_BINARYSTRINGExpr_H_ */

@@ -32,6 +32,7 @@
 #include "../../dm/Impl/TypeFloat.h"
 #include "../../dm/Impl/TypeInteger.h"
 #include "../../dm/Impl/TypeDecimal.h"
+#include "../../dm/Impl/TypeLong.h"
 #include "../../dm/Impl/TypeString.h"
 #include "../../dm/Impl/TypeTime.h"
 #include "../../dm/log/LogLevel.h"
@@ -236,6 +237,14 @@ IAS::DM::DataObject* Type::createDataObject(const IAS::Decimal& aValue) const{
 	return ptrObj.pass();
 }
 /*************************************************************************/
+IAS::DM::DataObject* Type::createDataObject(const IAS::Long lValue) const{
+	IAS_TRACER;
+	IAS_LOG(IAS::DM::LogLevel::INSTANCE.isInfo(),"createDataObject: "<<lValue);
+	Type::PtrHolder ptrObj(createDataObjectImpl());
+	ptrObj->setLong(lValue);
+	return ptrObj.pass();
+}
+/*************************************************************************/
 IAS::DM::DataObject* Type::createDataObject(const IAS::DM::DataObject* pDataObject) const{
 	IAS_TRACER;
 	IAS_LOG(IAS::DM::LogLevel::INSTANCE.isInfo(),"createDataObject: "<<(void*)pDataObject);
@@ -268,6 +277,9 @@ IAS::DM::DataObject* Type::createDataObject(const IAS::DM::DataObject* pDataObje
 		break;
 		case ::IAS::DM::Type::DecimalType:
 			ptrNewType=ModelAllocator<TypeDecimal>::Create(strURI, strName, pBaseType);
+		break;
+		case ::IAS::DM::Type::LongType:
+			ptrNewType=ModelAllocator<TypeLong>::Create(strURI, strName, pBaseType);
 		break;
 		case ::IAS::DM::Type::TextType:
 			ptrNewType=ModelAllocator<TypeString>::Create(strURI, strName, pBaseType);

@@ -30,7 +30,7 @@
       <xsd:element name="firstname" type="xsd:string"/>
       <xsd:element name="middlename" type="xsd:string"/>
       <xsd:element name="lastname" type="xsd:string"/>
-      <xsd:element name="age" type="xsd:integer"/>
+      <xsd:element name="age" type="xsd:long"/>
       <xsd:element name="age1" type="xsd:integer"/>
       <xsd:element name="birth" type="xsd:dateTime"/>
       <xsd:element name="money" type="akc:BigMoney"/>

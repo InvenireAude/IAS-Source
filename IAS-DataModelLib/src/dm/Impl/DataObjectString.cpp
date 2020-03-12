@@ -106,6 +106,11 @@ void DataObjectString::setFloat(Float fValue){
 	strValue = TypeTools::FloatToString(fValue);
 }
 /*************************************************************************/
+void DataObjectString::setLong(Long lValue){
+	IAS_TRACER;
+	strValue = TypeTools::LongToString(lValue);
+}
+/*************************************************************************/
 void DataObjectString::setDateTime(const IAS::DateTime& tValue){
 	IAS_TRACER;
 	strValue=tValue.toString();

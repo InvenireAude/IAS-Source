@@ -95,7 +95,7 @@ BooleanExpr* RelationFamily::Create(const DM::DataFactory* pDataFactory,Expr* pL
 			break;
 
 		default:
-			IAS_THROW(InternalException("No factory for operator!"));
+			IAS_THROW(InternalException("No factory for operator! [RelationFamily]"));
 		break;
 	}
 

@@ -127,6 +127,17 @@ bool  DataObjectExpr::evaluateBoolean(Context *pCtx) const{
 	return ptrResult->toDecimal();
 }
 /*************************************************************************/
+Long DataObjectExpr::evaluateLong(Context *pCtx) const{
+	IAS_TRACER;
+	DM::DataObjectPtr ptrResult;
+	evaluate(pCtx,ptrResult);
+
+	if(!ptrResult)
+		IAS_THROW(NullObjectReferenceException("Null expresion value."));
+
+	return ptrResult->toLong();
+}
+/*************************************************************************/
 }
 }
 }

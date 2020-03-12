@@ -69,7 +69,12 @@ String DateTimeExpr::evaluateString(Context *pCtx) const{
 /*************************************************************************/
 ::IAS::Decimal  DateTimeExpr::evaluateDecimal(Context *pCtx) const{
 	IAS_TRACER;
-	return (long)evaluateDate(pCtx);
+	return (long)evaluateDateTime(pCtx);
+}
+/*************************************************************************/
+Long DateTimeExpr::evaluateLong(Context *pCtx) const{
+	IAS_TRACER;
+	return (Long)evaluateDateTime(pCtx);
 }
 /*************************************************************************/
 void DateTimeExpr::evaluate(Context *pCtx, DM::DataObjectPtr& refResult) const{

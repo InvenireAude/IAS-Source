@@ -64,6 +64,9 @@ public:
 	/** Decimal evaluation method */
 	virtual ::IAS::Decimal      evaluateDecimal(Context *pCtx) const =0;
 
+	/** Decimal evaluation method */
+	virtual ::IAS::Long      evaluateLong(Context *pCtx) const =0;
+
 	/** Main evaluation method */
 	virtual void evaluate(Context *pCtx, DM::DataObjectPtr& refResult) const =0;
 

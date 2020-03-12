@@ -1,5 +1,5 @@
 /*
- * File: IAS-DataModelLib/src/dm/Impl/DataObjectString.h
+ * File: IAS-DataModelLib/src/dm/Impl/DataObjectLong.h
  *
  * Copyright (C) 2015, Albert Krzymowski
  *
@@ -15,13 +15,10 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#ifndef _IAS_DM_Impl_DATAOBJECTSTRING_H_
-#define _IAS_DM_Impl_DATAOBJECTSTRING_H_
+#ifndef _IAS_DM_Impl_DataObjectLong_H_
+#define _IAS_DM_Impl_DataObjectLong_H_
 
 #include "../../dm/Impl/DataObjectBasic.h"
-#include "../../dm/Impl/MemoryManager.h"
-
-#include "StringContent.h"
 
 namespace IAS {
 namespace DM {
@@ -30,44 +27,36 @@ namespace Impl {
 class Type;
 
 /*************************************************************************/
-class DataObjectString :
-	public ::IAS::DM::Impl::DataObjectBasic{
+class DataObjectLong : public ::IAS::DM::Impl::DataObjectBasic {
 public:
 
-	virtual ~DataObjectString() throw();
+	virtual ~DataObjectLong() throw();
 
-	virtual void setString(const ::IAS::String& strValue);
+
+	virtual void setString(const String& strValue);
 	virtual void setInteger(int iValue);
 	virtual void setBoolean(bool bValue);
-	virtual void setFloat(Float fValue);
-  virtual void setLong(Long lValue);
+	virtual void setLong(Long fValue);
   virtual void setDecimal(const Decimal& dValue);
 
-	virtual void setDateTime(const IAS::DateTime& tValue);
-	virtual void setDate(const IAS::Date& tValue);
-	virtual void setTime(const IAS::Time& tValue);
 	virtual void setDataObject(const IAS::DM::DataObject* pDataObject);
 
-	virtual ::IAS::String toString()const;
+
+	virtual String toString()const;
 	virtual bool    toBoolean()const;
 	virtual int     toInteger()const;
-	virtual Float   toFloat()const;
-
-	virtual IAS::Date  toDate()const;
-	virtual IAS::Time  toTime()const;
-	virtual IAS::DateTime  toDateTime()const;
+	virtual Long    toLong()const;
   virtual Decimal toDecimal()const;
 
 	virtual bool    equals(const IAS::DM::DataObject* dmValue)const;
 
 protected:
-	DataObjectString(const Type *pType);
+	DataObjectLong(const Type *pType);
 
 
+	Long fValue;
 
-	StringContent strValue;
-
-	friend class ::IAS::Factory<DataObjectString>;
+	friend class ::IAS::Factory<DataObjectLong>;
 };
 
 /*************************************************************************/
@@ -75,4 +64,4 @@ protected:
 }
 }
 
-#endif /* _IAS_DM_Impl_DATAOBJECTSTRING_H_ */
+#endif /* _IAS_DM_Impl_DATAOBJECTFLOAT_H_ */

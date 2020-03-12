@@ -6,7 +6,7 @@ sedfile.sh "${1}" ${2}.h
 sedfile.sh "${1}" ${2}.cpp
 }
 
-for i in Boolean Float Integer DateTime Date Time Decimal
+for i in Boolean Float Long Integer DateTime Date Time Decimal
 do
 
 cp String.h ${i}.h
@@ -22,5 +22,6 @@ sedsource "s/::IAS::Integer/int/g" Integer
 
 sedsource "s/bool\&/bool/g" Boolean
 sedsource "s/int\&/int/g" Integer
+sedsource "s/Long\&/Long/g" Long
 sedsource "s/Float\&/Float/g" Float
 

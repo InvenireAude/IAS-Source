@@ -23,6 +23,7 @@
 #include "BinaryFloatExpr.h"
 #include "BinaryIntegerExpr.h"
 #include "BinaryDecimalExpr.h"
+#include "BinaryLongExpr.h"
 #include "BinaryStringExpr.h"
 #include "BinaryDateTimeExpr.h"
 #include "BinaryDateExpr.h"
@@ -74,6 +75,7 @@ Expr* BinaryExprFamily::Create(Expr* pLeft, Expr* pRight, TypeInfoProxy aTypeInf
 		case DM::Type::TextType:     return BinaryStringExpr::Create(pLeft,pRight,aTypeInfoProxy);
 		case DM::Type::IntegerType:  return BinaryIntegerExpr::Create(pLeft,pRight,aTypeInfoProxy);
     case DM::Type::DecimalType:  return BinaryDecimalExpr::Create(pLeft,pRight,aTypeInfoProxy);
+    case DM::Type::LongType:     return BinaryLongExpr::Create(pLeft,pRight,aTypeInfoProxy);
 		case DM::Type::BooleanType:  return BinaryBooleanExpr::Create(pLeft,pRight,aTypeInfoProxy);
 		case DM::Type::FloatType:    return BinaryFloatExpr::Create(pLeft,pRight,aTypeInfoProxy);
 		case DM::Type::DateTimeType:

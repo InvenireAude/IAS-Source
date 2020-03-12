@@ -21,6 +21,7 @@
 #include <commonlib/commonlib.h>
 #include "XPathIntegerExpr.h"
 #include "XPathDecimalExpr.h"
+#include "XPathLongExpr.h"
 #include "XPathFloatExpr.h"
 #include "XPathBooleanExpr.h"
 #include "XPathStringExpr.h"
@@ -145,6 +146,10 @@ XPathExprFamily* XPathExprFamily::Create(Expr* pExpr,
 		ptrResult = IAS_DFT_FACTORY<XPathDecimalExpr>::Create(pExpr,pXPathAccessor);
 		break;
 
+	case DM::Type::LongType:
+		ptrResult = IAS_DFT_FACTORY<XPathLongExpr>::Create(pExpr,pXPathAccessor);
+		break;
+
 	case DM::Type::FloatType:
 		ptrResult = IAS_DFT_FACTORY<XPathFloatExpr>::Create(pExpr,pXPathAccessor);
 		break;
@@ -178,7 +183,7 @@ XPathExprFamily* XPathExprFamily::Create(Expr* pExpr,
 	default:
 		IAS_LOG(::IAS::Lang::LogLevel::INSTANCE.isError()," No factory for XPathExpr:" << pValueProperty->getName() << ", multi=" <<pValueProperty->isMulti() << ", array=" <<pXPathAccessor->isArrayExp());
 
-		IAS_THROW(InternalException("No factory for operator!"));
+		IAS_THROW(InternalException("No factory for operator! [XPathExprFamily]"));
 	}
 
 	ptrResult->setType(pValueProperty->getType());

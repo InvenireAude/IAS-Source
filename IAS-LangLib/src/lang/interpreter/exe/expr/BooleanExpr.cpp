@@ -78,6 +78,11 @@ int  BooleanExpr::evaluateInt(Context *pCtx) const{
 	return evaluateBoolean(pCtx);
 }
 /*************************************************************************/
+::IAS::Long BooleanExpr::evaluateLong(Context *pCtx) const{
+	IAS_TRACER;
+	return evaluateBoolean(pCtx);
+}
+/*************************************************************************/
 void BooleanExpr::evaluate(Context *pCtx, DM::DataObjectPtr& refResult) const{
 	IAS_TRACER;
 	const DM::DataFactory *pDataFactory=pCtx->getDataFactory();

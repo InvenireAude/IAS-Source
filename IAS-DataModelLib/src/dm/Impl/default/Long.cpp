@@ -1,5 +1,5 @@
 /*
- * File: IAS-DataModelLib/src/dm/Impl/default/Decimal.cpp
+ * File: IAS-DataModelLib/src/dm/Impl/default/Long.cpp
  * 
  * Copyright (C) 2015, Albert Krzymowski
  * 
@@ -15,7 +15,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#include "../../../dm/Impl/default/Decimal.h"
+#include "../../../dm/Impl/default/Long.h"
 
 #include "../../../dm/Impl/DataFactory.h"
 #include "../../../dm/Impl/exception/IllegalCastException.h"
@@ -27,96 +27,96 @@ namespace Impl {
 namespace Default {
 
 /*************************************************************************/
-::IAS::DM::Default::Decimal* Decimal::duplicateDecimal() const{
-   return Ext::DecimalType::FromDataObject(duplicate());
+::IAS::DM::Default::Long* Long::duplicateLong() const{
+   return Ext::LongType::FromDataObject(duplicate());
 }
 /*************************************************************************/
-Decimal::Decimal(const ::IAS::DM::Impl::Type* pType):
-   Impl::DataObjectDecimal(pType){
+Long::Long(const ::IAS::DM::Impl::Type* pType):
+   Impl::DataObjectLong(pType){
 	IAS_TRACER;
 }
 /*************************************************************************/
-Decimal::~Decimal() throw(){
+Long::~Long() throw(){
 }
 /*************************************************************************/
 namespace Ext{
 /*************************************************************************/
-DecimalList::DecimalList(::IAS::DM::DataObjectList& refList) throw():
+LongList::LongList(::IAS::DM::DataObjectList& refList) throw():
 	::IAS::DM::Gen::DataObjectListProxy(refList){};
 /*************************************************************************/
-void DecimalList::addDataObject(::IAS::DM::Default::Decimal* pValue){
+void LongList::addDataObject(::IAS::DM::Default::Long* pValue){
 	refDataObjectList.add(pValue);
 }
 /*************************************************************************/
-void DecimalList::add(const ::IAS::Decimal& aValue){
+void LongList::add(const ::IAS::Long aValue){
 	IAS_TRACER;
 	refDataObjectList.add(refDataObjectList.getType()->createDataObject(aValue));
 }
 /*************************************************************************/
-::IAS::Decimal DecimalList::at(int iIdx)const{
+::IAS::Long LongList::at(int iIdx)const{
 	IAS_TRACER;
-	return refDataObjectList.at(iIdx)->toDecimal();
+	return refDataObjectList.at(iIdx)->toLong();
 }
 /*************************************************************************/
-int DecimalList::size()const{
+int LongList::size()const{
 	IAS_TRACER;
 	return refDataObjectList.size();
 }
 /*************************************************************************/
-::IAS::DM::Default::Decimal* DecimalList::getDataObject(int iIdx){
-	return DecimalType::FromDataObject(refDataObjectList.at(iIdx));
+::IAS::DM::Default::Long* LongList::getDataObject(int iIdx){
+	return LongType::FromDataObject(refDataObjectList.at(iIdx));
 }
 /*************************************************************************/
 /*************************************************************************/
-DecimalType::DecimalType():
-    ::IAS::DM::Impl::TypeDecimal(::IAS::DM::Impl::DataFactory::BuildInTypesNamespace, "Decimal", NULL){
+LongType::LongType():
+    ::IAS::DM::Impl::TypeLong(::IAS::DM::Impl::DataFactory::BuildInTypesNamespace, "Long", NULL){
 	IAS_TRACER;
 }
 /*************************************************************************/
-DecimalType::DecimalType(const ::IAS::String& strURI, const ::IAS::String& strName,
+LongType::LongType(const ::IAS::String& strURI, const ::IAS::String& strName,
 			  	  	   const ::IAS::DM::Type    *pBaseType):
-		  ::IAS::DM::Impl::TypeDecimal(strURI,strName, pBaseType ? pBaseType :  (::IAS::DM::Type*)GetInstance()){
+		  ::IAS::DM::Impl::TypeLong(strURI,strName, pBaseType ? pBaseType :  (::IAS::DM::Type*)GetInstance()){
 	IAS_TRACER;
 }
 /*************************************************************************/
-DecimalType::~DecimalType() throw(){
+LongType::~LongType() throw(){
 }
 /*************************************************************************/
-::IAS::DM::Impl::DataObject* DecimalType::createDataObjectImpl() const{
-	return createDecimalImpl();
+::IAS::DM::Impl::DataObject* LongType::createDataObjectImpl() const{
+	return createLongImpl();
 }
 /*************************************************************************/
-Decimal* DecimalType::createDecimalImpl() const{
+Long* LongType::createLongImpl() const{
 	IAS_TRACER;
-	return DataAllocator<Decimal>::Create(this);
+	return DataAllocator<Long>::Create(this);
 }
 /*************************************************************************/
-::IAS::DM::Default::Decimal* DecimalType::createDecimal() const{
+::IAS::DM::Default::Long* LongType::createLong() const{
 	IAS_TRACER;
-	return createDecimalImpl();
+	return createLongImpl();
 }
 /*************************************************************************/
-::IAS::DM::Default::Decimal* DecimalType::createDecimal(const ::IAS::Decimal& aValue) const{
+::IAS::DM::Default::Long* LongType::createLong(const ::IAS::Long aValue) const{
 	IAS_TRACER;
-	DataAllocator<Decimal>::PtrHolder ptrTmp(createDecimalImpl());
-	ptrTmp->setDecimal(aValue);
+	DataAllocator<Long>::PtrHolder ptrTmp(createLongImpl());
+	ptrTmp->setLong(aValue);
 	return ptrTmp.pass();
 }
 /*************************************************************************/
-Decimal* DecimalType::FromDataObject(::IAS::DM::DataObject* pDataObject){
-	return dynamic_cast< Decimal* >(pDataObject);
+Long* LongType::FromDataObject(::IAS::DM::DataObject* pDataObject){
+	return dynamic_cast< Long* >(pDataObject);
 }
 /*************************************************************************/
-const Decimal* DecimalType::FromDataObject(const ::IAS::DM::DataObject* pDataObject){
-	return dynamic_cast< const Decimal* >(pDataObject);
+const Long* LongType::FromDataObject(const ::IAS::DM::DataObject* pDataObject){
+	return dynamic_cast< const Long* >(pDataObject);
 }
 /*************************************************************************/
-::IAS::DM::Default::Decimal* DecimalType::cast(::IAS::DM::DataObject* pDataObject) const{
+::IAS::DM::Default::Long* LongType::cast(::IAS::DM::DataObject* pDataObject) const{
 	IAS_TRACER;
-	return const_cast< ::IAS::DM::Default::Decimal*>(cast(static_cast<const ::IAS::DM::DataObject*>(pDataObject)));
+	return const_cast< ::IAS::DM::Default::Long*>(cast(static_cast<const ::IAS::DM::DataObject*>(pDataObject)));
 }
 /*************************************************************************/
-const ::IAS::DM::Default::Decimal* DecimalType::cast(const ::IAS::DM::DataObject* pDataObject) const{
+const ::IAS::DM::Default::Long* LongType::cast(const ::IAS::DM::DataObject* pDataObject) const{
 	IAS_TRACER;
 
 	IAS_CHECK_IF_NULL(pDataObject);

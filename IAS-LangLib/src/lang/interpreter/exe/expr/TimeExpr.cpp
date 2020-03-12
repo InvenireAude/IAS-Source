@@ -72,6 +72,11 @@ String TimeExpr::evaluateString(Context *pCtx) const{
 	return (long)evaluateTime(pCtx);
 }
 /*************************************************************************/
+Long TimeExpr::evaluateLong(Context *pCtx) const{
+	IAS_TRACER;
+	return (Long)evaluateTime(pCtx);
+}
+/*************************************************************************/
 void TimeExpr::evaluate(Context *pCtx, DM::DataObjectPtr& refResult) const{
 
 	const DM::DataFactory *pDataFactory=pCtx->getDataFactory();

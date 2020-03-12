@@ -1,5 +1,5 @@
 /*
- * File: IAS-LangLib/src/lang/model/expr/ConstNode.h
+ * File: IAS-DataModelLib/src/dm/Impl/TypeLong.h
  *
  * Copyright (C) 2015, Albert Krzymowski
  *
@@ -15,50 +15,37 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#ifndef _IAS_AS_Lang_Model_Expr_CONSTNODE_H_
-#define _IAS_AS_Lang_Model_Expr_CONSTNODE_H_
+#ifndef _IAS_DM_Impl_TypeLong_H_
+#define _IAS_DM_Impl_TypeLong_H_
 
-#include <commonlib/commonlib.h>
-#include "ExprNode.h"
+#include "../../dm/Impl/TypeBasic.h"
 
 namespace IAS {
-namespace Lang {
-namespace Model {
-namespace Expr {
+namespace DM {
+namespace Impl {
 
 /*************************************************************************/
-/** The class. */
- class ConstNode : public ExprNode{
+class TypeLong : public ::IAS::DM::Impl::TypeBasic {
 public:
 
-	enum Type{
-		CN_INTEGER,
-    CN_LONG,
-		CN_FLOAT,
-		CN_BOOLEAN,
-		CN_STRING,
-		CN_NULL
-	};
+	virtual ~TypeLong() throw();
 
-	virtual ~ConstNode() throw();
-
-	inline const String& getOriginalText() const { return strValue; };
-	inline Type getType() const { return iType; };
+	virtual ::IAS::DM::Type::Types getTypeEnum() const;
 
 protected:
+	TypeLong(const String& strURI,
+			  const String& strName,
+			  const ::IAS::DM::Type    *pBaseType);
 
-	ConstNode(Type iType, const String& strValue);
 
-	String strValue;
-	Type iType;
+	virtual DataObject* createDataObjectImpl() const;
 
-	friend class ::IAS::Factory<ConstNode>;
+	friend class ::IAS::Factory<TypeLong>;
 };
 
 /*************************************************************************/
 }
 }
 }
-}
 
-#endif /* _IAS_AS_Lang_Model_Expr_CONSTNODE_H_ */
+#endif /* _IAS_DM_Impl_TYPEFLOAT_H_ */

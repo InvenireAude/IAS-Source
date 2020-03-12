@@ -36,47 +36,52 @@ DataObjectListExpr::~DataObjectListExpr() throw(){
 /*************************************************************************/
 String DataObjectListExpr::evaluateString(Context *pCtx) const{
 	IAS_TRACER;
-	IAS_THROW(InternalException("Better exception: list not allowed !!!"));
+	IAS_THROW(InternalException("Expression allowed here (a list expression expected)."));
 }
 /*************************************************************************/
 int    DataObjectListExpr::evaluateInt(Context *pCtx) const{
 	IAS_TRACER;
-	IAS_THROW(InternalException("Better exception: list not allowed !!!"));
+	IAS_THROW(InternalException("Expression allowed here (a list expression expected)."));
 }
 /*************************************************************************/
 Float  DataObjectListExpr::evaluateFloat(Context *pCtx) const{
 	IAS_TRACER;
-	IAS_THROW(InternalException("Better exception: list not allowed !!!"));
+	IAS_THROW(InternalException("Expression allowed here (a list expression expected)."));
 }
 /*************************************************************************/
 bool  DataObjectListExpr::evaluateBoolean(Context *pCtx) const{
 	IAS_TRACER;
-	IAS_THROW(InternalException("Better exception: list not allowed !!!"));
+	IAS_THROW(InternalException("Expression allowed here (a list expression expected)."));
 }
 /*************************************************************************/
 ::IAS::DateTime  DataObjectListExpr::evaluateDateTime(Context *pCtx) const{
 	IAS_TRACER;
-	IAS_THROW(InternalException("Better exception: list not allowed !!!"));
+	IAS_THROW(InternalException("Expression allowed here (a list expression expected)."));
 }
 /*************************************************************************/
 ::IAS::Date  DataObjectListExpr::evaluateDate(Context *pCtx) const{
 	IAS_TRACER;
-	IAS_THROW(InternalException("Better exception: list not allowed !!!"));
+	IAS_THROW(InternalException("Expression allowed here (a list expression expected)."));
 }
 /*************************************************************************/
 ::IAS::Time  DataObjectListExpr::evaluateTime(Context *pCtx) const{
 	IAS_TRACER;
-	IAS_THROW(InternalException("Better exception: list not allowed !!!"));
+	IAS_THROW(InternalException("Expression allowed here (a list expression expected)."));
 }
 /*************************************************************************/
 ::IAS::Decimal  DataObjectListExpr::evaluateDecimal(Context *pCtx) const{
 	IAS_TRACER;
-	IAS_THROW(InternalException("Better exception: list not allowed !!!"));
+	IAS_THROW(InternalException("Expression allowed here (a list expression expected)."));
+}
+/*************************************************************************/
+::IAS::Long  DataObjectListExpr::evaluateLong(Context *pCtx) const{
+	IAS_TRACER;
+	IAS_THROW(InternalException("Expression allowed here (a list expression expected)."));
 }
 /*************************************************************************/
 void DataObjectListExpr::evaluate(Context *pCtx, DM::DataObjectPtr& refResult) const{
 	IAS_TRACER;
-	IAS_THROW(InternalException("Better exception: list not allowed !!!"));
+	IAS_THROW(InternalException("Expression allowed here (a list expression expected)."));
 }
 /*************************************************************************/
 }

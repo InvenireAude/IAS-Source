@@ -1,5 +1,5 @@
 /*
- * File: IAS-LangLib/src/lang/interpreter/exe/expr/FloatExpr.cpp
+ * File: IAS-LangLib/src/lang/interpreter/exe/expr/LongExpr.cpp
  *
  * Copyright (C) 2015, Albert Krzymowski
  *
@@ -15,7 +15,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#include "FloatExpr.h"
+#include "LongExpr.h"
 #include<lang/log/LogLevel.h>
 
 #include <commonlib/commonlib.h>
@@ -29,31 +29,36 @@ namespace Exe {
 namespace Expr {
 
 /*************************************************************************/
-FloatExpr::FloatExpr() throw(){
+LongExpr::LongExpr() throw(){
 	IAS_TRACER;
 }
 
 /*************************************************************************/
-FloatExpr::~FloatExpr() throw(){
+LongExpr::~LongExpr() throw(){
 	IAS_TRACER;
 }
 /*************************************************************************/
-String FloatExpr::evaluateString(Context *pCtx) const{
+String LongExpr::evaluateString(Context *pCtx) const{
 	IAS_TRACER;
-	return TypeTools::FloatToString(evaluateFloat(pCtx));
+	return TypeTools::LongToString(evaluateLong(pCtx));
 }
 /*************************************************************************/
-int FloatExpr::evaluateInt(Context *pCtx) const{
+int LongExpr::evaluateInt(Context *pCtx) const{
 	IAS_TRACER;
-	return evaluateFloat(pCtx);
+	return evaluateLong(pCtx);
 }
 /*************************************************************************/
-bool  FloatExpr::evaluateBoolean(Context *pCtx) const{
+Float LongExpr::evaluateFloat(Context *pCtx) const{
 	IAS_TRACER;
-	return evaluateFloat(pCtx);
+	return (Float)evaluateLong(pCtx);
 }
 /*************************************************************************/
-::IAS::DateTime FloatExpr::evaluateDateTime(Context *pCtx) const{
+bool  LongExpr::evaluateBoolean(Context *pCtx) const{
+	IAS_TRACER;
+	return evaluateLong(pCtx);
+}
+/*************************************************************************/
+::IAS::DateTime LongExpr::evaluateDateTime(Context *pCtx) const{
 	IAS_TRACER;
 	time_t tmpValue=evaluateInt(pCtx);
 	DateTime tsValue;
@@ -61,7 +66,7 @@ bool  FloatExpr::evaluateBoolean(Context *pCtx) const{
 	return tsValue;
 }
 /*************************************************************************/
-::IAS::Date FloatExpr::evaluateDate(Context *pCtx) const{
+::IAS::Date LongExpr::evaluateDate(Context *pCtx) const{
 	IAS_TRACER;
 	time_t tmpValue=evaluateInt(pCtx);
 	Date tsValue;
@@ -69,7 +74,7 @@ bool  FloatExpr::evaluateBoolean(Context *pCtx) const{
 	return tsValue;
 }
 /*************************************************************************/
-::IAS::Time FloatExpr::evaluateTime(Context *pCtx) const{
+::IAS::Time LongExpr::evaluateTime(Context *pCtx) const{
 	IAS_TRACER;
 	time_t tmpValue=evaluateInt(pCtx);
 	Time tsValue;
@@ -77,17 +82,12 @@ bool  FloatExpr::evaluateBoolean(Context *pCtx) const{
 	return tsValue;
 }
 /*************************************************************************/
-Decimal FloatExpr::evaluateDecimal(Context *pCtx) const{
+Decimal LongExpr::evaluateDecimal(Context *pCtx) const{
 	IAS_TRACER;
-	return evaluateFloat(pCtx);
+	return evaluateLong(pCtx);
 }
 /*************************************************************************/
-Long FloatExpr::evaluateLong(Context *pCtx) const{
-	IAS_TRACER;
-	return (Long)evaluateFloat(pCtx);
-}
-/*************************************************************************/
-void FloatExpr::evaluate(Context *pCtx, DM::DataObjectPtr& refResult) const{
+void LongExpr::evaluate(Context *pCtx, DM::DataObjectPtr& refResult) const{
 
 	const DM::DataFactory *pDataFactory=pCtx->getDataFactory();
 

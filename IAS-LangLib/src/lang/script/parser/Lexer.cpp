@@ -386,6 +386,9 @@ void Lexer::handleState_Integer(unsigned char c){
 	}else if(c == '.'){
 		iCurrentState=S_Float;
 		aTokenInfo.addChar(c);
+	}else if(c == 'L'){
+		iCurrentState=S_End;
+		aTokenInfo.setToken(Token::T_LONG,true);
 	}else{
 		getActiveWrapper()->ungetChar();
 		iCurrentState=S_End;

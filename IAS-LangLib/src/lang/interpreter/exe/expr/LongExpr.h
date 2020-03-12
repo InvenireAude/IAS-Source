@@ -1,5 +1,5 @@
 /*
- * File: IAS-LangLib/src/lang/interpreter/exe/expr/StringExpr.h
+ * File: IAS-LangLib/src/lang/interpreter/exe/expr/LongExpr.h
  *
  * Copyright (C) 2015, Albert Krzymowski
  *
@@ -15,8 +15,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#ifndef _IAS_AS_Lang_Interpreter_Exe_Expr_STRINGEXPR_H_
-#define _IAS_AS_Lang_Interpreter_Exe_Expr_STRINGEXPR_H_
+#ifndef _IAS_AS_Lang_Interpreter_Exe_Expr_LongExpr_H_
+#define _IAS_AS_Lang_Interpreter_Exe_Expr_LongExpr_H_
 
 #include "Expr.h"
 
@@ -29,26 +29,25 @@ namespace Expr {
 
 /*************************************************************************/
 /** The class. */
- class StringExpr : public virtual Expr {
+ class LongExpr : public virtual Expr {
 public:
 
-	virtual ~StringExpr() throw();
+	virtual ~LongExpr() throw();
 
+	virtual String evaluateString(Context *pCtx) const;
 	virtual int    evaluateInt(Context *pCtx) const;
-	virtual Float  evaluateFloat(Context *pCtx) const;
+  virtual Float  evaluateFloat(Context *pCtx) const;
 	virtual bool   evaluateBoolean(Context *pCtx) const;
 	virtual ::IAS::DateTime evaluateDateTime(Context *pCtx) const;
 	virtual ::IAS::Date evaluateDate(Context *pCtx) const;
 	virtual ::IAS::Time evaluateTime(Context *pCtx) const;
   virtual ::IAS::Decimal evaluateDecimal(Context *pCtx) const;
-  virtual ::IAS::Long evaluateLong(Context *pCtx) const;
-
-	virtual void   evaluate(Context *pCtx, DM::DataObjectPtr& refResult) const;
+	virtual void evaluate(Context *pCtx, DM::DataObjectPtr& refResult) const;
 
 protected:
-	StringExpr()throw();
+	LongExpr()throw();
 
-	friend class ::IAS::Factory<StringExpr>;
+	friend class ::IAS::Factory<LongExpr>;
 };
 
 /*************************************************************************/

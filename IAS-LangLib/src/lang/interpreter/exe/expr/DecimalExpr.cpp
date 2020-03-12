@@ -82,6 +82,11 @@ bool  DecimalExpr::evaluateBoolean(Context *pCtx) const{
 	return tsValue;
 }
 /*************************************************************************/
+Long DecimalExpr::evaluateLong(Context *pCtx) const{
+	IAS_TRACER;
+	return (Long)evaluateDecimal(pCtx);
+}
+/*************************************************************************/
 void DecimalExpr::evaluate(Context *pCtx, DM::DataObjectPtr& refResult) const{
 
 	const DM::DataFactory *pDataFactory=pCtx->getDataFactory();

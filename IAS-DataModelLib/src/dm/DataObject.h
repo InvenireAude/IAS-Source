@@ -72,7 +72,7 @@ public:
 	virtual String  getString(const String& strXPath)const=0;
 	virtual void    getRaw(const String& strXPath, RawContent* pRawContent)const=0;
 	virtual Decimal getDecimal(const String& strXPath)const=0;
-
+	virtual Long    getLong(const String& strXPath)const=0;
 
 	virtual bool    getBoolean(const Property* pProperty)const=0;
 	virtual int     getInteger(const Property* pProperty)const=0;
@@ -83,6 +83,7 @@ public:
 	virtual String  getString(const Property* pProperty)const=0;
 	virtual void    getRaw(const Property* pProperty, RawContent* pRawContent)const=0;
   virtual Decimal getDecimal(const Property* pProperty)const=0;
+  virtual Long    getLong(const Property* pProperty)const=0;
 
 	virtual void setDataObject(const String& strXPath, DataObject *pDataObject)=0;
 
@@ -97,6 +98,7 @@ public:
 	virtual void  setString(const String& strXPath, const String& strValue)=0;
 	virtual void  setRaw(const String& strXPath, const RawContent* pRawContent)=0;
   virtual void  setDecimal(const String& strXPath, const Decimal& d)=0;
+  virtual void  setLong(const String& strXPath, Long lValue)=0;
 
 	virtual void setDataObject(const Property* pProperty, DataObject *pDataObject)=0;
 
@@ -109,6 +111,7 @@ public:
 	virtual void  setString(const Property* pProperty, const String& strValue)=0;
 	virtual void  setRaw(const Property* pProperty, const RawContent* pRawContent)=0;
 	virtual void  setDecimal(const Property* pProperty, const Decimal& d)=0;
+  virtual void  setLong(const Property* pProperty, Long lValue)=0;
 
 	virtual String  toString()   const = 0;
 	virtual bool    toBoolean()  const = 0;
@@ -119,6 +122,7 @@ public:
 	virtual IAS::Time      toTime() const = 0;
 	virtual void toRaw(RawContent* pRawContent)const=0;
   virtual Decimal toDecimal() const = 0;
+  virtual Long    toLong() const = 0;
 
 	virtual const Type*   getType() const =0;
 
@@ -134,6 +138,7 @@ public:
 	virtual void setString(const String& strValue)=0;
 	virtual void setRaw(const RawContent* pRawContent)=0;
   virtual void setDecimal(const Decimal& d)=0;
+  virtual void setLong(Long lValue)=0;
 	virtual void setInteger(int iValue)=0;
 	virtual void setBoolean(bool bValue)=0;
 	virtual void setFloat(Float fValue)=0;
