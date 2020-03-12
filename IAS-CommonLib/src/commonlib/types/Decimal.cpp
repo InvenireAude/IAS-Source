@@ -35,8 +35,10 @@ Decimal::Decimal(const Decimal& d) {
 /*************************************************************************/
 Decimal::Decimal(Float fValue, Precision iPrecision) {
 	IAS_TRACER;
-  setup(iPrecision == C_DefaultPrecision ?  C_DECIMAL_FLOAT_PREC : iPrecision);
-  setValue(fValue * pow(10, C_DECIMAL_FLOAT_PREC));
+  if(iPrecision == C_DefaultPrecision)
+   iPrecision = C_DECIMAL_FLOAT_PREC;
+  setup(iPrecision);
+  setValue(fValue * pow(10, iPrecision));
 }
 /*************************************************************************/
 Decimal::Decimal(long iValue, Precision iPrecision) {
