@@ -39,7 +39,7 @@ sqlplus -S ${IAS_TEST_DS_CONNECT} <<EOF
         LASTNAME   VARCHAR(128),
         MIDDLENAME VARCHAR(128),
         AGE        INTEGER,
-        MONEY      NUMBER(10,2),
+        MONEY      NUMBER(16,2),
         BIRTHDATE  DATE,
         WAKEUP     TIMESTAMP,
         UPDATED    TIMESTAMP,

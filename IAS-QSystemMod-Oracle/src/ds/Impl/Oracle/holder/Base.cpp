@@ -27,6 +27,8 @@
 #include"Float.h"
 #include"Boolean.h"
 #include"Integer.h"
+#include"Long.h"
+#include"Decimal.h"
 #include"RawBLOB.h"
 #include"Text.h"
 
@@ -127,8 +129,15 @@ Base* Base::Create(Statement* pStatement, DM::Tools::Setter* pSetter, bool bOpti
 			break;
 
 		case DM::Type::TextType:
-    case DM::Type::DecimalType:
 			return IAS_DFT_FACTORY<Text>::Create(pStatement,pSetter,bOptional);
+			break;
+
+		case DM::Type::DecimalType:
+			return IAS_DFT_FACTORY<Decimal>::Create(pStatement,pSetter,bOptional);
+			break;
+
+		case DM::Type::LongType:
+			return IAS_DFT_FACTORY<Long>::Create(pStatement,pSetter,bOptional);
 			break;
 
 		default:

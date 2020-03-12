@@ -1,4 +1,4 @@
-#Tue 14 Jan 2020 06:19:46 PM CET
+#Thu 12 Mar 2020 07:44:34 PM CET
 FILES+=ds/Impl/Oracle/Connection
 FILES+=ds/Impl/Oracle/exception/OracleException
 FILES+=ds/Impl/Oracle/FunctionOutput
@@ -12,8 +12,10 @@ FILES+=ds/Impl/Oracle/holder/DataObjectSimple
 FILES+=ds/Impl/Oracle/holder/DataObjectText
 FILES+=ds/Impl/Oracle/holder/Date
 FILES+=ds/Impl/Oracle/holder/DateTime
+FILES+=ds/Impl/Oracle/holder/Decimal
 FILES+=ds/Impl/Oracle/holder/Float
 FILES+=ds/Impl/Oracle/holder/Integer
+FILES+=ds/Impl/Oracle/holder/Long
 FILES+=ds/Impl/Oracle/holder/RawBLOB
 FILES+=ds/Impl/Oracle/holder/Text
 FILES+=ds/Impl/Oracle/Input
