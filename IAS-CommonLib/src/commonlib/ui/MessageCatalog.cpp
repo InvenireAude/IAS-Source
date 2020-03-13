@@ -143,7 +143,7 @@ void MessageCatalog::fillMessageText(String& strOutput,
 					case '2': if(tabValues.size() >= 2) strOutput+=tabValues[1]; break;
 					case '3': if(tabValues.size() >= 3) strOutput+=tabValues[2]; break;
 					case '4': if(tabValues.size() >= 4) strOutput+=tabValues[3]; break;
-          case '5': if(tabValues.size() >= 5) strOutput+=tabValues[3]; break;
+          case '5': if(tabValues.size() >= 5) strOutput+=tabValues[4]; break;
 				  default:
 					  strOutput+=SPECIAL_DSPMSG_CHAR;
 					  strOutput+=c;
