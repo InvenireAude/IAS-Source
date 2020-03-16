@@ -323,7 +323,6 @@ void Lexer::assetToken(Token iToken){
 /*************************************************************************/
 String Lexer::getPrintable(Token iToken){
 	IAS_TRACER;
-  IAS_LOG(true,"TOKEN?"<<iToken);
   PrintableSymbolMap::const_iterator it = PrintableSymbolMap::GetInstance()->find(iToken);
 
   if(it != PrintableSymbolMap::GetInstance()->end()){
