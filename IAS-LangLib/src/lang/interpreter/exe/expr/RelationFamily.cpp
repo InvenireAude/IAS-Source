@@ -22,6 +22,8 @@
 #include "RelationBooleanExpr.h"
 #include "RelationFloatExpr.h"
 #include "RelationIntegerExpr.h"
+#include "RelationLongExpr.h"
+#include "RelationDecimalExpr.h"
 #include "RelationStringExpr.h"
 #include "RelationDateTimeExpr.h"
 #include "RelationDataObjectExpr.h"
@@ -92,6 +94,14 @@ BooleanExpr* RelationFamily::Create(const DM::DataFactory* pDataFactory,Expr* pL
 
 		case DM::Type::RawType:
 			ptrExpr=RelationRawExpr::Create(pLeft,pRight,aTypeInfoProxy);
+			break;
+
+		case DM::Type::LongType:
+			ptrExpr=RelationLongExpr::Create(pLeft,pRight,aTypeInfoProxy);
+			break;
+
+		case DM::Type::DecimalType:
+			ptrExpr=RelationDecimalExpr::Create(pLeft,pRight,aTypeInfoProxy);
 			break;
 
 		default:

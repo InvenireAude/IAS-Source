@@ -53,6 +53,10 @@ public:
 
   bool operator==(const Decimal& d1) const;
   bool operator!=(const Decimal& d1) const;
+  bool operator<(const Decimal& d1) const;
+  bool operator>(const Decimal& d1) const;
+  bool operator<=(const Decimal& d1) const;
+  bool operator>=(const Decimal& d1) const;
 
   operator Float() const;
   operator Long() const;

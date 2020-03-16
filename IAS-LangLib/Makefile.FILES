@@ -1,4 +1,4 @@
-#Wed 11 Mar 2020 04:09:43 PM CET
+#Mon 16 Mar 2020 03:23:32 PM CET
 FILES+=Impl/DataFactory
 FILES+=Impl/org/invenireaude/lang/builtin/DataObjects
 FILES+=lang/exception/ParseErrorException
@@ -144,11 +144,13 @@ FILES+=lang/interpreter/exe/expr/RelationBooleanExpr
 FILES+=lang/interpreter/exe/expr/RelationDataObjectExpr
 FILES+=lang/interpreter/exe/expr/RelationDateExpr
 FILES+=lang/interpreter/exe/expr/RelationDateTimeExpr
+FILES+=lang/interpreter/exe/expr/RelationDecimalExpr
 FILES+=lang/interpreter/exe/expr/RelationFamily
 FILES+=lang/interpreter/exe/expr/RelationFloatExpr
 FILES+=lang/interpreter/exe/expr/RelationIntegerExpr
 FILES+=lang/interpreter/exe/expr/RelationIsInstance
 FILES+=lang/interpreter/exe/expr/RelationIsType
+FILES+=lang/interpreter/exe/expr/RelationLongExpr
 FILES+=lang/interpreter/exe/expr/RelationRawExpr
 FILES+=lang/interpreter/exe/expr/RelationStringExpr
 FILES+=lang/interpreter/exe/expr/RelationTimeExpr
