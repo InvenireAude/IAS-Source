@@ -1,14 +1,14 @@
 /*
  * File: IAS-LangLib/src/lang/interpreter/ProgramLoader.cpp
- * 
+ *
  * Copyright (C) 2015, Albert Krzymowski
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  * http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -72,17 +72,20 @@ void ProgramLoader::loadModel(const String& strObject, Tools::Parser::LexerIStre
 
 	IAS_LOG(::IAS::Lang::LogLevel::INSTANCE.isInfo(),"Model for: "<<strObject);
 
+  bool bSomethingNewToParse = false;
 	try{
-		ptrLexer->openObject(strObject, pWrapper);
+		bSomethingNewToParse = ptrLexer->openObject(strObject, pWrapper);
 	}catch(ItemNotFoundException& e){
 		IAS_THROW(SourceNotFoundException(strObject));
 	}
-	IAS_DFT_FACTORY<Script::Parser::Parser>::PtrHolder ptrParser(IAS_DFT_FACTORY<Script::Parser::Parser>::Create(ptrModel.getPointer()));
-	IAS_LOG(::IAS::Lang::LogLevel::INSTANCE.isInfo(),"START Parsing:"<<strObject);
-	ptrParser->parse(ptrLexer);
-	IAS_LOG(::IAS::Lang::LogLevel::INSTANCE.isInfo(),"END Parsing:"<<strObject);
 
-	compileAll();
+  if(bSomethingNewToParse){
+	  IAS_DFT_FACTORY<Script::Parser::Parser>::PtrHolder ptrParser(IAS_DFT_FACTORY<Script::Parser::Parser>::Create(ptrModel.getPointer()));
+	  IAS_LOG(::IAS::Lang::LogLevel::INSTANCE.isInfo(),"START Parsing:"<<strObject);
+	  ptrParser->parse(ptrLexer);
+	  IAS_LOG(::IAS::Lang::LogLevel::INSTANCE.isInfo(),"END Parsing:"<<strObject);
+	  compileAll();
+  }
 }
 /*************************************************************************/
 const Interpreter::Exe::Program* ProgramLoader::getExecutable(const String& strProgramName)const{
