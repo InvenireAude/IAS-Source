@@ -1,14 +1,14 @@
 /*
  * File: IAS-CommonLib/src/commonlib/logger/LogLevelHelper.cpp
- * 
+ *
  * Copyright (C) 2015, Albert Krzymowski
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  * http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -18,7 +18,7 @@
 /* IAS_COPYRIGHT */
 
 /* ChangeLog:
- * 
+ *
  */
 
 /*
@@ -45,7 +45,7 @@ namespace IAS{
 void LogLevelHelper::ReadWordSettings(LogLevelBase   *ptrLogLevel, const char *sWord){
 
 	if(ptrLogLevel == NULL || sWord == NULL)
-		return;	
+		return;
 
 	IAS_DBGLEVEL_CHECKWORD("+system",  bIsSystem,    true);
 	IAS_DBGLEVEL_CHECKWORD("-system",  bIsSystem,    false);
@@ -70,7 +70,7 @@ void LogLevelHelper::ReadWordSettings(LogLevelBase   *ptrLogLevel, const char *s
 
 	IAS_DBGLEVEL_CHECKWORD("+stacktrace",  bIsStackTrace,    true);
 	IAS_DBGLEVEL_CHECKWORD("-stacktrace",  bIsStackTrace,    false);
-	
+
 	IAS_DBGLEVEL_CHECKWORD("+throw",  bIsExceptionThrow,    true);
 	IAS_DBGLEVEL_CHECKWORD("-throw",  bIsExceptionThrow,    false);
 
@@ -94,38 +94,38 @@ void LogLevelHelper::ReadWordSettings(LogLevelBase   *ptrLogLevel, const char *s
 /*************************************************************************/
 void LogLevelHelper::ReadSettings(LogLevelBase   *ptrLogLevel,
 								  const char *sSettings){
-	
+
 	if(ptrLogLevel == NULL || sSettings == NULL)
 		return;
-	
+
 	int iIdx;
 	char sBuffer[IAS_LOGLEVEL_MAXWORD_LEN + 1];
 	char *sCur;
-	
+
 	while(*sSettings != 0){
-		
+
 		iIdx = 0;
 		sCur=sBuffer;
-		
-		while(*sSettings != 0 && *sSettings != ','){		
-		
+
+		while(*sSettings != 0 && *sSettings != ','){
+
 			if(iIdx < IAS_LOGLEVEL_MAXWORD_LEN)
-				*(sCur++)=*sSettings;			
-				
+				*(sCur++)=*sSettings;
+
 			iIdx++;
 			sSettings++;
-		
+
 		}/* WHILE: */
-				
+
 		*sCur = 0;
-		
+
 		if(*sSettings == ',')
 			sSettings++;
-		
+
 		if(iIdx > 0 && iIdx < IAS_LOGLEVEL_MAXWORD_LEN)
 			ReadWordSettings(ptrLogLevel, sBuffer);
-	
-	}/* WHILE */	
+
+	}/* WHILE */
 }
 
 /*************************************************************************/
@@ -137,12 +137,16 @@ void LogLevelHelper::SetDefaults(LogLevelBase   *ptrLogLevel){
 	ptrLogLevel->bIsSystem         = false;
 	ptrLogLevel->bIsError          = true;
 	ptrLogLevel->bIsInfo           = false;
+  ptrLogLevel->bIsData           = false;
+  ptrLogLevel->bIsLogic          = false;
 	ptrLogLevel->bIsDetailedInfo   = false;
 	ptrLogLevel->bIsTrace          = false;
+  ptrLogLevel->bIsMemoryTrace    = false;
+  ptrLogLevel->bIsProfile        = false;
 	ptrLogLevel->bIsMemory         = false;
 	ptrLogLevel->bIsStackTrace     = false;
 	ptrLogLevel->bIsExceptionThrow = false;
-	ptrLogLevel->bIsDspMsg         = true;		   
+	ptrLogLevel->bIsDspMsg         = true;
 	ptrLogLevel->bIsReportedExceptions     = true;
 
 
