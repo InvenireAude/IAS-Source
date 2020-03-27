@@ -1,14 +1,14 @@
 /*
  * File: IAS-LangLib/src/lang/interpreter/proc/expr/RelationalBinaryOperNodeHandler.cpp
- * 
+ *
  * Copyright (C) 2015, Albert Krzymowski
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  * http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -25,6 +25,7 @@
 
 #include <lang/interpreter/exe/expr/Expr.h>
 #include <lang/interpreter/exe/expr/RelationFamily.h>
+#include <lang/interpreter/proc/exception/ProcessorException.h>
 
 namespace IAS {
 namespace Lang {
@@ -60,6 +61,24 @@ void RelationalBinaryOperNodeHandler::call(const Model::Node* pNode, CallbackCtx
 													ptrExprLeft.pass(),
 					 							    ptrExprRight.pass(),
 													&typeid(*pRelationalBinaryOperNode));
+}
+/*************************************************************************/
+void RelationalBinaryOperNodeHandler::verifyExpresions(
+  const Exe::Expr::Expr* pExprLeft,
+  const Exe::Expr::Expr* pExprRight
+){
+
+   IAS_TRACER;
+
+   if(!pExprLeft->canCastTo(pExprRight->getType()) ||
+      !pExprRight->canCastTo(pExprLeft->getType())){
+
+      IAS_THROW(ProcessorException("Implicit relation cast error, relation not allowed: [" + pExprLeft->getType()->getFullName()
+        + "] and ["
+        + pExprRight->getType()->getFullName()
+        + "]."));
+
+   }
 }
 /*************************************************************************/
 }
