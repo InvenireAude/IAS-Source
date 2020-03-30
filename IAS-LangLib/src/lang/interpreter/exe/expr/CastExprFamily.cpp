@@ -165,7 +165,7 @@ class CastDataObjectExpr : public CastExprFamily, public DataObjectExpr{
 		DM::DataObjectPtr dmResult;
 		ptrExpr->evaluate(pCtx,dmResult);
 
-		if(dmResult->getType()->isAssignableTo(getType()))
+		if(dmResult.isNull() or dmResult->getType()->isAssignableTo(getType()))
 			refResult=dmResult;
 		else
 			refResult = getType()->createDataObject(dmResult);

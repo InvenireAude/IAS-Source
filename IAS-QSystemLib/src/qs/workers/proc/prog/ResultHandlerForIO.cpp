@@ -64,7 +64,9 @@ void ResultHandlerForIO::handle(::org::invenireaude::qsystem::workers::Ext::Cont
 		DM::DataObjectPtr dmOutput(pProgramContext->getResult());
 
 		IAS_LOG(IAS::QS::LogLevel::INSTANCE.isInfo(),"has Result: null=="<<dmOutput.isNull());
-		pLogic->getOutput()->send(dmContext,dmOutput);
+
+    if(!dmOutput.isNull())
+		  pLogic->getOutput()->send(dmContext,dmOutput);
 
 	}
 }
