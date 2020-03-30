@@ -1,4 +1,4 @@
-#Mon 16 Mar 2020 03:23:32 PM CET
+#Mon 30 Mar 2020 03:28:25 PM CEST
 FILES+=Impl/DataFactory
 FILES+=Impl/org/invenireaude/lang/builtin/DataObjects
 FILES+=lang/exception/ParseErrorException
@@ -257,6 +257,7 @@ FILES+=lang/interpreter/extern/std/StrToUpper
 FILES+=lang/interpreter/extern/std/SubString2
 FILES+=lang/interpreter/extern/std/SubString3
 FILES+=lang/interpreter/extern/std/system/ExecuteAdHoc
+FILES+=lang/interpreter/extern/std/system/GetUUID
 FILES+=lang/interpreter/extern/std/system/Load
 FILES+=lang/interpreter/extern/std/system/Print
 FILES+=lang/interpreter/extern/std/system/Save

@@ -72,6 +72,12 @@ EXTERNAL "libIASLangLib:ias_lang_std_system_proxy:SysLog"();
 
 /* ********************************************************************************* */
 
+PROGRAM std::getUUID()
+RETURNS String
+EXTERNAL "libIASLangLib:ias_lang_std_system_proxy:GetUUID"();
+
+/* ********************************************************************************* */
+
 PROGRAM std::print(VAR stream AS String, VAR message AS String)
 EXTERNAL "libIASLangLib:ias_lang_std_system_proxy:Print"();
 

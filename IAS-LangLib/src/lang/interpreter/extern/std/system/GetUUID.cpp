@@ -1,5 +1,5 @@
 /*
- * File: IAS-LangLib/src/lang/interpreter/extern/std/StandardModuleProxy.cpp
+ * File: IAS-LangLib/src/lang/interpreter/extern/std/GetUUID.cpp
  *
  * Copyright (C) 2015, Albert Krzymowski
  *
@@ -15,17 +15,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#include "StandardModuleProxy.h"
+#include "GetUUID.h"
 #include<lang/log/LogLevel.h>
 
 #include <commonlib/commonlib.h>
+#include <lang/interpreter/exe/Context.h>
+#include <lang/model/dec/ResultDeclarationNode.h>
+#include <lang/ui/Messages.h>
 
-#include "ExecuteAdHoc.h"
-#include "Load.h"
-#include "Save.h"
-#include "SysLog.h"
-#include "Print.h"
-#include "GetUUID.h"
+#include <dm/datamodel.h>
+ #include <syslog.h>
 
 namespace IAS {
 namespace Lang {
@@ -33,47 +32,35 @@ namespace Interpreter {
 namespace Extern {
 namespace Std {
 namespace System {
-
 /*************************************************************************/
-StandardModuleProxy::StandardModuleProxy(){
+GetUUID::GetUUID(const DM::Type* pType, const StringList& lstParamaters, const ModuleProxy* pModuleProxy){
 	IAS_TRACER;
 }
 /*************************************************************************/
-StandardModuleProxy::~StandardModuleProxy() throw(){
+GetUUID::~GetUUID() throw(){
 	IAS_TRACER;
 }
 /*************************************************************************/
-void StandardModuleProxy::setupImpl(){
-
+void GetUUID::executeExternal(Exe::Context *pCtx) const{
 	IAS_TRACER;
 
-	registerSymbol("ExecuteAdHoc",&(ExecuteAdHoc::Create));
-	registerSymbol("Load",&(Load::Create));
-	registerSymbol("Save",&(Save::Create));
-  registerSymbol("SysLog",&(SysLog::Create));
-  registerSymbol("Print",&(Print::Create));
-  registerSymbol("GetUUID",&(GetUUID::Create));
-}
-/*************************************************************************/
-void StandardModuleProxy::cleanUpImpl(){
-	IAS_TRACER;
-}
-/*************************************************************************/
-StandardModuleProxy* StandardModuleProxy::Create(){
-	IAS_TRACER;
-	return IAS_DFT_FACTORY<StandardModuleProxy>::Create();
-}
-/*************************************************************************/
-}
-}
-}
-}
-}
-}
-/*************************************************************************/
-void* ias_lang_std_system_proxy(){
-	IAS_TRACER;
-	return ::IAS::Lang::Interpreter::Extern::Std::System::StandardModuleProxy::Create();
-}
-/*************************************************************************/
+	DM::DataObject* pParameters = pCtx->getBlockVariables(0);
 
+  String strUUID(MiscTools::GetUUID());
+
+  pParameters->setString(Model::Dec::ResultDeclarationNode::CStrResultVariable,strUUID);
+
+
+}
+/*************************************************************************/
+Statement* GetUUID::Create(const DM::Type* pType, const StringList& lstParamaters, const ModuleProxy* pModuleProxy){
+	IAS_TRACER;
+	return IAS_DFT_FACTORY<GetUUID>::Create(pType, lstParamaters, pModuleProxy);
+}
+/*************************************************************************/
+}
+}
+}
+}
+}
+}
