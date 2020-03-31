@@ -23,7 +23,7 @@ namespace IAS {
 namespace Lang {
 void Version::Print(std::ostream& os){
 
-  const String CVersion ("2.2.2");
+  const String CVersion ("2.2.3");
 
   os<<"IAS Script:   "<<CVersion<<std::endl;
   os<<" Complied on: "<<__DATE__<<" "<<__TIME__<<", environment: "<<__VERSION__<<std::endl;
