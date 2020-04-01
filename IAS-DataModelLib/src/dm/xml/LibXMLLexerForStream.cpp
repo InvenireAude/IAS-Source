@@ -1,14 +1,14 @@
 /*
  * File: IAS-DataModelLib/src/dm/xml/LibXMLLexerForStream.cpp
- * 
+ *
  * Copyright (C) 2015, Albert Krzymowski
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  * http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -37,7 +37,7 @@ LibXMLLexerForStream::LibXMLLexerForStream(std::istream& is):is(is){
 	xmlTextReaderPtr pXMLTextReader =
 			xmlReaderForIO(&(LibXMLLexerForStream::OutputReadCallback),
 						   &(LibXMLLexerForStream::OutputCloseCallback),
-						   (void*)this, NULL, NULL, 0);
+						   (void*)this, NULL, NULL, XML_PARSE_HUGE);
 
 	if(pXMLTextReader == NULL)
 		IAS_THROW(XMLHelperException(String("Cannot create xmlReaderForMemory.")));
