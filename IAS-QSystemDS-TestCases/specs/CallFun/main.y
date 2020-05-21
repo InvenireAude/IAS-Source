@@ -7,7 +7,7 @@ PROGRAM main(VAR ctx    AS Context  : "http://www.invenireaude.org/qsystem/worke
 RETURNS Customer : "http://www.examples.org/akc"
 BEGIN
 
-  data.age = wrap::callfun(data);
+  data.age = (wrap::callfun(data) AS Integer);
 
   RETURN data;
 

@@ -26,6 +26,14 @@ namespace Holder {
 Long::Long(Statement* pStatement,  DM::Tools::Setter* pSetter, bool bOptional):
 	 Base(pStatement, pSetter, bOptional, CBufferLen, SQLT_VNU){
 	IAS_TRACER;
+    ::IAS::Long iValue = 0L;
+    sword rc = OCINumberFromInt(
+                pStatement->getSession()->getErrorHandle(),
+                &iValue,
+                sizeof(::IAS::Long),
+                OCI_NUMBER_SIGNED,
+			          bufData.getBuffer<OCINumber>());
+
 }
 /*************************************************************************/
 Long::~Long() throw(){

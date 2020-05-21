@@ -40,7 +40,13 @@ Decimal::Decimal(Statement* pStatement,  DM::Tools::Setter* pSetter, bool bOptio
     }
 
   }
-
+   ::IAS::Long iValue = 0L;
+    sword rc = OCINumberFromInt(
+                pStatement->getSession()->getErrorHandle(),
+                &iValue,
+                sizeof(::IAS::Long),
+                OCI_NUMBER_SIGNED,
+			          bufData.getBuffer<OCINumber>());
 }
 /*************************************************************************/
 Decimal::~Decimal() throw(){
