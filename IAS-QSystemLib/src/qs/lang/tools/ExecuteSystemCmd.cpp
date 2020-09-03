@@ -99,18 +99,25 @@ int ExecuteSystemCmd::execute(const String& strCommand, const StringList& lstArg
 
 		case 0 :
 			::execvp(a.argv[0],(char* const*)a.argv);
+      {
+        String strErrorMessage("Error in execvp(\"" + String(a.argv[0]) + "\", ....)");
+        perror(strErrorMessage.c_str());
+        exit(255);
+      }
 
 		default:
 			IAS_LOG(LogLevel::INSTANCE.isInfo(),"Child PID:"<<iPid);
-
 			int iStatus;
 
-			if( (::waitpid(iPid, &iStatus,0) == -1) && (errno != ECHILD))
+			if( ::waitpid(iPid, &iStatus,0) == -1 && (errno != ECHILD))
 				IAS_THROW(SystemException("wait()"));
 
-//			if(!WIFEXITED(iStatus))
-//				IAS_THROW(BadUsageException(strCommand));
-			return 0;
+      if(errno == ECHILD)
+         return 0;
+
+			if(!WIFEXITED(iStatus))
+		     IAS_THROW(BadUsageException(strCommand));
+
 			return WEXITSTATUS(iStatus);
 	}
 
