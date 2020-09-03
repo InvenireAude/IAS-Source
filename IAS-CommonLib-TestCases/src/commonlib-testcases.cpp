@@ -32,6 +32,7 @@
 #include "testcases/TCCache.h"
 #include "testcases/TCFileLock.h"
 #include "testcases/TCFileSystem.h"
+#include "testcases/TCFixedObjectPoolMemoryManager.h"
 #include "testcases/TCHashMapOfPointers.h"
 #include "testcases/TCFolderBasedContent.h"
 #include "testcases/TCHashMapStrings.h"
@@ -77,8 +78,8 @@ int main(int argc, char* argv[]) {
 			//LogLevel::INSTANCE.bIsMemory=true;
 
 			//IAS_DFT_FACTORY<TCStreamMemoryBuffer>::Create(ptrSuite.getPointer());
-			IAS_DFT_FACTORY<TCMisc>::Create(ptrSuite.getPointer());
-
+			//IAS_DFT_FACTORY<TCMisc>::Create(ptrSuite.getPointer());
+			IAS_DFT_FACTORY<TCFixedObjectPoolMemoryManager>::Create(ptrSuite.getPointer());
 		} else {
 /*
  */

@@ -1,4 +1,4 @@
-#Wed Jun  8 07:19:00 CEST 2016
+#Tue 01 Sep 2020 09:04:13 AM CEST
 FILES+=testcases/TCBackgroundJobs
 FILES+=testcases/TCBitMap
 FILES+=testcases/TCBlockIOBuffer
@@ -7,6 +7,7 @@ FILES+=testcases/TCCache
 FILES+=testcases/TCEmpty
 FILES+=testcases/TCFileLock
 FILES+=testcases/TCFileSystem
+FILES+=testcases/TCFixedObjectPoolMemoryManager
 FILES+=testcases/TCFolderBasedContent
 FILES+=testcases/TCHashMapOfPointers
 FILES+=testcases/TCHashMapStrings
