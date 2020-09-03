@@ -32,11 +32,16 @@ public:
 
 	virtual ~TCPConnectionBase() throw();
 
+	void setNoDelay(bool bValue);
+
 protected:
 	TCPConnectionBase();
 	TCPConnectionBase(const Peer& peerLocal);
 
 	Peer peerLocal;
+    bool bNoDelay;
+
+	void setNoDelayImpl(int iSocket, bool bValue) const;
 
 	friend class Factory<TCPConnectionBase>;
 };

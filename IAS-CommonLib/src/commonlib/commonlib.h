@@ -38,6 +38,8 @@
 #include "commonlib/memory/mm/MemoryManager.h"
 #include "commonlib/memory/mm/RegionMemoryManager.h"
 #include "commonlib/memory/mm/PowerOfTwoMemoryManager.h"
+#include "commonlib/memory/mm/FixedObjectPoolMemoryManager.h"
+#include "commonlib/memory/mm/ContinuousMemoryMananger.h"
 
 #include "commonlib/containers/PtrVector.h"
 #include "commonlib/containers/HashMapOfPointers.h"
@@ -98,6 +100,7 @@
 
 #include "commonlib/types/BitMap.h"
 #include "commonlib/types/Decimal.h"
+#include "commonlib/types/DoubleLinkedList.h"
 
 #include "commonlib/sys/Signal.h"
 #include "commonlib/sys/DynamicLibrary.h"
@@ -118,6 +121,11 @@
 
 #include "net/async/InputDataPump.h"
 #include "net/async/OutputDataPump.h"
+
+#include "commonlib/storage/Logger.h"
+#include "commonlib/storage/AsynchronousLogger.h"
+#include "commonlib/storage/SynchronousLogger.h"
+#include "commonlib/storage/file/LoggerOutput.h"
 
 #include "version/Version.h"
 

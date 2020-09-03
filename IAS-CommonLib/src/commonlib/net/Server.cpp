@@ -29,7 +29,6 @@
 #include <time.h>
 #include <commonlib/logger/logger.h>
 #include <commonlib/threads/Thread.h>
-#include <arpa/inet.h>
 
 #include "PeerAddrInfo.h"
 
@@ -108,6 +107,8 @@ FileHandle* Server::accept()const{
 	char sTmp[INET_ADDRSTRLEN];
 	inet_ntop(AF_INET, &(sinRemote.sin_addr), sTmp, INET_ADDRSTRLEN);
 
+	if(bNoDelay)
+	  setNoDelayImpl(iFileDescriptor, 1);
 
 	IAS_DFT_FACTORY<FileHandle>::PtrHolder ptrFileHandle(IAS_DFT_FACTORY<FileHandle>::Create(iFileDescriptor));
 	ptrFileHandle->setPeer(Peer(String(sTmp),ntohl(sinRemote.sin_port)));

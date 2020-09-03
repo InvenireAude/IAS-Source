@@ -71,7 +71,10 @@ FileHandle* Client::connect()const{
 			IAS_LOG(LogLevel::INSTANCE.isInfo(),"Remote: "<<peerRemote);
 
 			if(::connect(iSocket, (*itRemote)->ai_addr, (*itRemote)->ai_addrlen) == 0){
-
+				
+				if(bNoDelay)
+	 				setNoDelayImpl(iSocket, 1);
+	
 				ptrSocketHandle=IAS_DFT_FACTORY<FileHandle>::Create(iSocket);
 				ptrSocketHandle->setPeer(peerRemote);
 				return ptrSocketHandle.pass();

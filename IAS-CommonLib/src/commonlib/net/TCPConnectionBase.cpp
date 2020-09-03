@@ -18,13 +18,20 @@
 #include "TCPConnectionBase.h"
 
 #include <commonlib/logger/logger.h>
+#include <commonlib/exception/SystemException.h>
+
+#include <sys/socket.h>
+#include <sys/types.h> 
+#include <netinet/in.h>
+#include <netinet/tcp.h>
 
 
 namespace IAS {
 namespace Net {
 
 /*************************************************************************/
-TCPConnectionBase::TCPConnectionBase(){
+TCPConnectionBase::TCPConnectionBase():
+ bNoDelay(false){
 	IAS_TRACER;
 }
 /*************************************************************************/
@@ -34,6 +41,23 @@ TCPConnectionBase::TCPConnectionBase(const Peer& peerLocal):peerLocal(peerLocal)
 /*************************************************************************/
 TCPConnectionBase::~TCPConnectionBase() throw(){
 	IAS_TRACER;
+}
+/*************************************************************************/
+void TCPConnectionBase::setNoDelay(bool bValue){
+	this->bNoDelay = bValue;
+}
+/*************************************************************************/
+void TCPConnectionBase::setNoDelayImpl(int iSocket, bool bValue)const{
+	IAS_TRACER;
+
+	int optval = bValue  ? 1 : 0;
+	IAS_LOG(LogLevel::INSTANCE.isInfo(), "setNoDelay("<<optval<<")");
+
+	int rc = setsockopt(iSocket, IPPROTO_TCP, TCP_NODELAY, &optval, sizeof optval);
+	
+	if(rc < 0)
+		IAS_THROW(SystemException("setNoDelay(...) failed."));
+
 }
 /*************************************************************************/
 }
