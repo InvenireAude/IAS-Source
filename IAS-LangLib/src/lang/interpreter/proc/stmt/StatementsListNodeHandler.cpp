@@ -62,7 +62,8 @@ void StatementsListNodeHandler::call(const Model::Node* pNode,
 	IAS_DFT_FACTORY<Exe::Stmt::StatementLists>::PtrHolder ptrExeStatementList(
 			IAS_DFT_FACTORY<Exe::Stmt::StatementLists>::Create());
 
-	while(itDeclarations != pStatementsListNode->getDeclarationsList().end()){
+	while(itDeclarations != pStatementsListNode->getDeclarationsList().end())
+   try{
 
 		IAS_LOG(::IAS::Lang::LogLevel::INSTANCE.isInfo(),"Declaration ...");
 
@@ -75,7 +76,11 @@ void StatementsListNodeHandler::call(const Model::Node* pNode,
 		ptrExeStatementList->addVariable(aSubCallResult.pVariableDeclaration);
 
 		itDeclarations++;
-	}
+	  } catch(ProcessorLinkedException& e){
+			throw e;
+		}catch(Exception& e){
+			IAS_THROW(ProcessorLinkedException(e,(*itDeclarations)->getSourceLocation(),*itDeclarations));
+		}
 
 	ptrExeStatementList->declareBlockVariables(pCtx->getDataFactory());
 

@@ -321,16 +321,45 @@ program : T_PROGRAM qname parametersListPar T_EXTERNAL T_STRING externalParamete
 program : T_PROGRAM qname parametersListPar programResult T_EXTERNAL T_STRING externalParametersPar T_SEMICOLON
 			{ $$ = IAS_DFT_FACTORY<ExternalProgramNode>::Create($2,*$6,$3,$4,*$7); _SVAL_DELETE($6); _SVAL_DELETE_StringList($7);};
 
-programResult : T_RETURNS T_SYMBOL { $$ = IAS_DFT_FACTORY<Dec::ResultDeclarationNode>::Create(*$2); _SVAL_DELETE($2); }
-programResult : T_RETURNS T_SYMBOL T_COLON T_STRING { $$ = IAS_DFT_FACTORY<Dec::ResultDeclarationNode>::Create(*$2,*$4); _SVAL_DELETE($2); _SVAL_DELETE($4);}
-programResult : T_RETURNS T_ARRAY T_OF T_SYMBOL { $$ = IAS_DFT_FACTORY<Dec::ResultDeclarationNode>::Create(*$4);  $$->setIsArray(true); _SVAL_DELETE($4); }
-programResult : T_RETURNS T_ARRAY T_OF T_SYMBOL T_COLON T_STRING { $$ = IAS_DFT_FACTORY<Dec::ResultDeclarationNode>::Create(*$4,*$6);  $$->setIsArray(true); _SVAL_DELETE($4); _SVAL_DELETE($6);}
+programResult : T_RETURNS T_SYMBOL {
+  $$ = IAS_DFT_FACTORY<Dec::ResultDeclarationNode>::Create(*$2);
+  $$->setSourceLocation(myParser.getLexer()->getCachedLocation());
+  _SVAL_DELETE($2);
+}
+programResult : T_RETURNS T_SYMBOL T_COLON T_STRING {
+  $$ = IAS_DFT_FACTORY<Dec::ResultDeclarationNode>::Create(*$2,*$4);
+  $$->setSourceLocation(myParser.getLexer()->getCachedLocation());
+  _SVAL_DELETE($2);
+  _SVAL_DELETE($4);
+}
+
+programResult : T_RETURNS T_ARRAY T_OF T_SYMBOL {
+  $$ = IAS_DFT_FACTORY<Dec::ResultDeclarationNode>::Create(*$4);
+  $$->setIsArray(true);
+  $$->setSourceLocation(myParser.getLexer()->getCachedLocation());
+  _SVAL_DELETE($4);
+}
+programResult : T_RETURNS T_ARRAY T_OF T_SYMBOL T_COLON T_STRING {
+  $$ = IAS_DFT_FACTORY<Dec::ResultDeclarationNode>::Create(*$4,*$6);
+  $$->setIsArray(true);
+  $$->setSourceLocation(myParser.getLexer()->getCachedLocation());
+  _SVAL_DELETE($4);
+  _SVAL_DELETE($6);
+}
 
 parametersListPar: T_OPEN_PAR parametersList T_CLOSE_PAR { $$ = $2; }
 				|  T_OPEN_PAR T_CLOSE_PAR { $$ = IAS_DFT_FACTORY<Dec::ParametersNode>::Create();  }
 
-parametersList: parametersList T_COMMA declaration  { $$ = $1; $$->addDeclaration($3); }
-		      |  declaration  { $$ = IAS_DFT_FACTORY<Dec::ParametersNode>::Create(); $$->addDeclaration($1); };
+parametersList: parametersList T_COMMA declaration  {
+  $$ = $1;
+  $3->setSourceLocation(myParser.getLexer()->getCachedLocation());
+  $$->addDeclaration($3);
+}
+|  declaration  {
+  $$ = IAS_DFT_FACTORY<Dec::ParametersNode>::Create();
+  $1->setSourceLocation(myParser.getLexer()->getCachedLocation());
+  $$->addDeclaration($1);
+ };
 
 statementsListBeginEnd: T_BEGIN statementsList T_END{ $$ = $2; }
 
@@ -339,7 +368,11 @@ $$ = $1;
 $2->setSourceLocation(myParser.getLexer()->getCachedLocation());
 $$->addStatement($2);
  }
-statementsList: statementsList declaration T_SEMICOLON { $$ = $1; $$->addDeclaration($2); }
+statementsList: statementsList declaration T_SEMICOLON {
+  $$ = $1;
+  $2->setSourceLocation(myParser.getLexer()->getCachedLocation());
+  $$->addDeclaration($2);
+}
            | /* Nothing.  */             { $$ = IAS_DFT_FACTORY<Stmt::StatementsListNode>::Create(); };
 
 declaration : T_VAR T_SYMBOL T_AS T_SYMBOL { $$ = IAS_DFT_FACTORY<Dec::DeclarationNode>::Create(*$2,*$4); _SVAL_DELETE($2); _SVAL_DELETE($4); }
