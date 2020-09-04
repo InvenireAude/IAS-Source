@@ -31,9 +31,10 @@ class DoubleLinkedList {
 
 public:
 
-  DoubleLinkedList():
+  DoubleLinkedList(C* pValue):
     pPrev(this),
-    pNext(this){}
+    pNext(this),
+    pValue(pValue){}
 
  ~DoubleLinkedList(){
     if(pNext != this)
@@ -45,7 +46,7 @@ public:
 
   void append(C *pNext){
     pNext->pNext = this->pNext;
-    this->pNext->pPrev = pPrev;
+    this->pNext->pPrev = pNext;
     this->pNext = pNext;
     pNext->pPrev = this;
   }
@@ -68,18 +69,64 @@ public:
     this->pPrev = this->pNext = this;
   }
 
-  inline C* getPrev(){
-    return pPrev;
+class iterator {
+   public:
+    iterator(const iterator& other):
+      pCurrent(other.pCurrent),
+      pLast(other.pLast){};
+
+    bool operator==(const iterator& other){
+      return pCurrent == other.pCurrent;
+    }
+
+    bool operator!=(const iterator& other){
+      return pCurrent != other.pCurrent;
+    }
+
+    iterator& operator=(const iterator& other){
+      pCurrent = other.pCurrent;
+      pLast    = other.pLast;
+      return *this;
+    };
+
+  iterator& operator++(){
+    pCurrent = pCurrent != pLast ? pCurrent->pNext : NULL; 
+    return *this;
+  }
+    C* operator*() const{
+      IAS_CHECK_IF_NULL(pCurrent);
+      return pCurrent->pValue;
+    }
+  
+  protected:
+
+   iterator(DoubleLinkedList<C> *pCurrent, DoubleLinkedList<C> *pLast):
+    pCurrent(pCurrent),
+    pLast(pLast){}
+
+    DoubleLinkedList<C> *pCurrent;
+    DoubleLinkedList<C> *pLast;
+
+    friend class  DoubleLinkedList<C>;
+  };
+
+  iterator begin(){
+    return iterator(this,this->pPrev);
   }
 
-  inline C* getNext(){
-    return *pNext;
+  iterator end(){
+    return iterator(NULL, NULL);
   }
 
- private:
+ protected:
+ 
+  iterator begin(DoubleLinkedList<C> *pCurrent, DoubleLinkedList<C> *pLast){
+    return iterator(pCurrent, pLast);
+  }
 
   DoubleLinkedList<C> *pPrev;
   DoubleLinkedList<C> *pNext;
+  C                   *pValue;
 };
 
 /*************************************************************************/

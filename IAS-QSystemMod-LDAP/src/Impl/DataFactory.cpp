@@ -9,7 +9,7 @@ namespace IAS {
 namespace DM {
 namespace AG {
 namespace Impl {
-static void initialize_1583938044(::IAS::DM::Gen::DataFactory* pDataFactory){
+static void initialize_1599145947(::IAS::DM::Gen::DataFactory* pDataFactory){
 	IAS_TRACER;
 
 
@@ -23,16 +23,16 @@ static void initialize_1583938044(::IAS::DM::Gen::DataFactory* pDataFactory){
 
 }
 
-DataFactoryInitalizer_1583938044::DataFactoryInitalizer_1583938044(){
+DataFactoryInitalizer_1599145947::DataFactoryInitalizer_1599145947(){
 	IAS_TRACER;
-   IAS::DM::Gen::DataFactory::GetInstance()->initializeWith(&initialize_1583938044);
+   IAS::DM::Gen::DataFactory::GetInstance()->initializeWith(&initialize_1599145947);
 }
 
-DataFactoryInitalizer_1583938044::~DataFactoryInitalizer_1583938044() throw(){
+DataFactoryInitalizer_1599145947::~DataFactoryInitalizer_1599145947() throw(){
 	IAS_TRACER;
 }
 
-extern "C" { void ias_dm_init(){ DataFactoryInitalizer_1583938044::GetInstance(); } }
+extern "C" { void ias_dm_init(){ DataFactoryInitalizer_1599145947::GetInstance(); } }
 } /* Impl */
 } /* AG */
 } /* DM */

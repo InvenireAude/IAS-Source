@@ -37,6 +37,7 @@ public:
 	virtual void close();
 
 	std::istream& getStreamRef();
+	operator std::istream&() { return getStreamRef(); }
 
 	virtual bool isOpenedAndGood();
 

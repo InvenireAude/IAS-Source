@@ -36,6 +36,8 @@ public:
 
 	std::ofstream& getStreamRef();
 
+	operator std::ofstream&() { return getStreamRef(); }
+
 	virtual bool isOpenedAndGood();
 
 	static void SaveString(const String& strFileName, const String& strValue, bool bAppend = false);
