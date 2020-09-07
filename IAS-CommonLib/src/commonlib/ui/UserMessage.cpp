@@ -57,6 +57,13 @@ UserMessage& UserMessage::operator<<(long iValue) {
     return *this;
 }
 /*************************************************************************/
+UserMessage& UserMessage::operator<<(void* pValue) {
+	StringStream ss;
+	ss<<pValue;
+	tabValues.push_back(ss.str());
+    return *this;
+}
+/*************************************************************************/
 void UserMessage::show(const String& strText){
 	IAS_TRACER;
 	// TODO (M) syslog

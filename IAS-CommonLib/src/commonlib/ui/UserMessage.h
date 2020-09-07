@@ -43,6 +43,7 @@ public:
 	 UserMessage & operator<<(const char *s);
 	 UserMessage & operator<<(const String& s);
 	 UserMessage & operator<<(long  iValue);
+	 UserMessage & operator<<(void* pValue);
 
 protected:
 
