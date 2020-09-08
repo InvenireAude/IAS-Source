@@ -69,6 +69,19 @@ public:
     this->pPrev = this->pNext = this;
   }
 
+inline DoubleLinkedList<C> *getNext() { return pNext;};
+inline DoubleLinkedList<C> *getPrev() {return pPrev;};
+inline C *getValue() {return pValue;};
+
+inline const DoubleLinkedList<C> *getNext()const { return pNext;};
+inline const DoubleLinkedList<C> *getPrev()const {return pPrev;};
+inline const C *getValue()const {return pValue;};
+
+
+
+operator C&(){ return *pValue;}
+operator const C&()const { return *pValue;}
+
 class iterator {
    public:
     iterator(const iterator& other):
