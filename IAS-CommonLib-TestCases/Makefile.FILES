@@ -1,8 +1,9 @@
-#Wed 09 Sep 2020 03:02:37 PM CEST
+#Wed 09 Sep 2020 07:33:02 PM CEST
 FILES+=testcases/TCBackgroundJobs
 FILES+=testcases/TCBitMap
 FILES+=testcases/TCBlockIOBuffer
 FILES+=testcases/TCBucketCache
+FILES+=testcases/TCBufferQueue
 FILES+=testcases/TCCache
 FILES+=testcases/TCEmpty
 FILES+=testcases/TCFileLock
