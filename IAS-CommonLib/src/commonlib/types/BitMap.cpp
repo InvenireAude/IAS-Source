@@ -28,6 +28,8 @@ BitMap::BitMap(const BitMap* pSource) {
 	int iTabSize = iSize / (sizeof(Word) << 3) + 1;
 
 	//TODO (M) macro or something to allocate basic tabs !!! Auto delete !!! - better implementation
+	// pass allocator as a parameter ! ;)
+
 	tValues = (Word*)::IAS::MemoryManager::GetInstance()->allocate(sizeof(Word)*iTabSize);
 
 	IAS_LOG(LogLevel::INSTANCE.isInfo(), "BitMap, iTabSize="<<iTabSize<<", sizeof(Word)="<<sizeof(Word));
@@ -46,6 +48,7 @@ BitMap::BitMap(unsigned int iSize) {
 	int iTabSize = iSize / (sizeof(Word) << 3) + 1;
 
 	//TODO (M) macro or something to allocate basic tabs !!! Auto delete !!! - better implementation
+	// pass allocator as a parameter ! ;)
 	tValues = (Word*)::IAS::MemoryManager::GetInstance()->allocate(sizeof(Word)*iTabSize);
 
 	clear();

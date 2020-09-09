@@ -1,0 +1,9 @@
+dnf install g++ openssl-devel libuuid-devel libxml2-devel
+
+dnf install fcgi fcgi-devel
+
+sudo dnf install postgresql postgresql-devel postgresql-server
+sudo dnf install sqlite-devel
+sudo dnf install openldap-devel
+sudo dnf install bison byacc
+

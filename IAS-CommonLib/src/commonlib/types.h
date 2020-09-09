@@ -39,7 +39,6 @@
 #define  ias_std_hash          std::tr1::hash
 #endif
 
-
 namespace IAS{
 
 	typedef double Float;

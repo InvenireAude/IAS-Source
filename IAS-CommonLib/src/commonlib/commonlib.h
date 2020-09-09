@@ -101,6 +101,7 @@
 #include "commonlib/types/BitMap.h"
 #include "commonlib/types/Decimal.h"
 #include "commonlib/types/DoubleLinkedList.h"
+#include "commonlib/types/SortedHeap.h"
 
 #include "commonlib/sys/Signal.h"
 #include "commonlib/sys/DynamicLibrary.h"

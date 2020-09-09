@@ -54,6 +54,7 @@
 #include "testcases/TCBucketCache.h"
 #include "testcases/TCHttp.h"
 #include "testcases/TCTemplates.h"
+#include "testcases/TCSortedHeap.h"
 
 using namespace IAS;
 using namespace TCT;
@@ -79,7 +80,7 @@ int main(int argc, char* argv[]) {
 
 			//IAS_DFT_FACTORY<TCStreamMemoryBuffer>::Create(ptrSuite.getPointer());
 			//IAS_DFT_FACTORY<TCMisc>::Create(ptrSuite.getPointer());
-			IAS_DFT_FACTORY<TCFixedObjectPoolMemoryManager>::Create(ptrSuite.getPointer());
+			IAS_DFT_FACTORY<TCSortedHeap>::Create(ptrSuite.getPointer());
 		} else {
 /*
  */

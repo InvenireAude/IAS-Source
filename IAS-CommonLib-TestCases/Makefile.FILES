@@ -1,4 +1,4 @@
-#Tue 01 Sep 2020 09:04:13 AM CEST
+#Wed 09 Sep 2020 03:02:37 PM CEST
 FILES+=testcases/TCBackgroundJobs
 FILES+=testcases/TCBitMap
 FILES+=testcases/TCBlockIOBuffer
@@ -25,6 +25,7 @@ FILES+=testcases/TCSerializationHelper
 FILES+=testcases/TCShareable
 FILES+=testcases/TCSimpleMemoryManager
 FILES+=testcases/TCSockets
+FILES+=testcases/TCSortedHeap
 FILES+=testcases/TCStreamMemoryBuffer
 FILES+=testcases/TCTemplates
 FILES+=testcases/TCThreads
