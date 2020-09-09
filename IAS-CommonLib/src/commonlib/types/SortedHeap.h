@@ -33,8 +33,8 @@ class SortedHeap {
 
 public:
 
-  SortedHeap(void *pStart, size_t iSize):
-    tabValues((C*)pStart),
+  SortedHeap(C *pStart, size_t iSize):
+    tabValues(pStart),
     iSize(iSize),
     iNextFree(0){}
 
@@ -123,7 +123,7 @@ public:
   }
 
  protected:
- 
+  typedef C ItemType;
   C *tabValues;
   size_t iSize;
   CO co;
