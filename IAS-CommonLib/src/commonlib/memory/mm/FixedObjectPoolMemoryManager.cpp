@@ -25,26 +25,32 @@
 
 namespace IAS {
 
-
+/*************************************************************************/
+size_t FixedObjectPoolMemoryManager::ComputeMemoryRequirement(size_t iObjectSize, size_t iNumObjects){
+  if(iObjectSize % sizeof(EntryIndex) != 0){
+    IAS_THROW(InternalException("FixedObjectPoolMemoryManager object size error: ")<<iObjectSize<<" ? "<<sizeof(EntryIndex));
+  }
+  return sizeof(Info) + iObjectSize * iNumObjects;
+}
 /*************************************************************************/
 FixedObjectPoolMemoryManager::FixedObjectPoolMemoryManager(
-    void *pStart, size_t iObjectSize, size_t iNumObjects):
+    void *pMemory, size_t iObjectSize, size_t iNumObjects):
   bFreeMe(false){
 	IAS_TRACER;
 
-	IAS_LOG(LogLevel::INSTANCE.isInfo(),"Call for FOPMM: "<<iNumObjects<<" at: "<<pStart<<", size="<<iObjectSize<<" at="<<(void*)this);
+	IAS_LOG(LogLevel::INSTANCE.isInfo(),"Call for FOPMM: "<<iNumObjects<<" at: "<<pMemory<<", size="<<iObjectSize<<" at="<<(void*)this);
 
   if(iObjectSize % sizeof(EntryIndex) != 0){
     IAS_THROW(InternalException("FixedObjectPoolMemoryManager object size error: ")<<iObjectSize<<" ? "<<sizeof(EntryIndex));
   }
 
-  const size_t iTabSize =iObjectSize * iNumObjects;
+  const size_t iTabSize = ComputeMemoryRequirement(iObjectSize, iNumObjects);
 
-  if(!pStart){
+  if(!pMemory){
 
-    pStart = new char[iTabSize];
+    pMemory = new char[iTabSize];
 
-    if(!pStart){
+    if(!pMemory){
       IAS_LOG(LogLevel::INSTANCE.bIsError,"FixedObjectPoolMemoryManager cannot allocate memory.");
       throw std::bad_alloc();
     }
@@ -52,51 +58,59 @@ FixedObjectPoolMemoryManager::FixedObjectPoolMemoryManager(
     bFreeMe = true;
   }
 
-  pMemory = (EntryIndex*) pStart;
+  this->pMemory = pMemory;
 
-  this->iObjectSize = iObjectSize;
-  this->iNumObjects = iNumObjects;
+  refObjectSize() = iObjectSize;
+  refNumObjects() = iNumObjects;
+  refTop() = 0;
 
   for(EntryIndex iIdx = 0; iIdx < iNumObjects - 1; iIdx++){
     indexEntry(iIdx) =  iIdx + 1;
   }
   indexEntry(iNumObjects - 1) = CUnusedIndex;
 
-  iTop = 0;
+ 
 	IAS_LOG(LogLevel::INSTANCE.isInfo(),"FOPMM is ready !");
 
 }
 /*************************************************************************/
 void* FixedObjectPoolMemoryManager::allocate(size_t n){
 
-  if(n != iObjectSize){
-    IAS_LOG(LogLevel::INSTANCE.bIsError,"(FOPMM) Bad memory allocation request, got: "<<n<<" bytes, expected: "<<iObjectSize<<".");
+  if(n != refObjectSize()){
+    IAS_LOG(LogLevel::INSTANCE.bIsError,"(FOPMM) Bad memory allocation request, got: "<<n<<" bytes, expected: "<<refObjectSize()<<".");
     throw std::bad_alloc();
   }
 
-  if(iTop == CUnusedIndex){
+  if(refTop() == CUnusedIndex){
     IAS_LOG(LogLevel::INSTANCE.bIsError,"FixedObjectPoolMemoryManager is out of memory.");
     throw std::bad_alloc();
   }
 
-	Mutex::Locker locker(mutex, tsrMutexWaits);
+	Mutex::Locker locker(refMutex(), tsrMutexWaits);
 	AutoTimeSample sample(tsrAllocations,LogLevel::INSTANCE.isProfile());
+ 
+  void *pResult = &(indexEntry(refTop()));
+  refTop() = indexEntry(refTop());
 
-  void *pResult = &(indexEntry(iTop));
-  iTop = indexEntry(iTop);
+  IAS_LOG(true, "pMemory:"<<pMemory);
+  IAS_LOG(true, "getStart():"<<getStart());
+
+  IAS_LOG(true, "top():"<<refTop());
+  IAS_LOG(true, "pResult:"<<pMemory);
+ 
 	return pResult;
 }
 /*************************************************************************/
 inline bool FixedObjectPoolMemoryManager::isPointerSane(const void *p) const{
-		bool bResult = p >= pMemory &&
-		   p < (unsigned char*)pMemory + iObjectSize * iNumObjects &&
-           ((long long)p) % iObjectSize == 0;
+		bool bResult = p >= getStart() &&
+		   p < getStart() + refObjectSize() * refNumObjects() &&
+           ((long long)p) % refObjectSize() == 0;
 
 		if(!bResult){
 			IAS_LOG(LogLevel::INSTANCE.bIsError,"FixedObjectPoolMemoryManager pointer error: "
 				<<p<<" "
-				<<((unsigned char*)p - (unsigned char*)pMemory)
-				<<", iObjectSize: "<<iObjectSize<<", iNumObjects: "<<iNumObjects);
+				<<((unsigned char*)p - getStart())
+				<<", refObjectSize(): "<<refObjectSize()<<", iNumObjects: "<<refNumObjects());
 		}
 
 		return bResult;
@@ -108,12 +122,12 @@ void  FixedObjectPoolMemoryManager::free(const void* p){
    throw std::bad_alloc();
   }
 
-	EntryIndex iReturned = ((unsigned char*)p - (unsigned char*)pMemory)/iObjectSize;
+	EntryIndex iReturned = ((unsigned char*)p - getStart())/refObjectSize();
 
-  Mutex::Locker locker(mutex, tsrMutexWaits);
+  Mutex::Locker locker(refMutex(), tsrMutexWaits);
 
-  indexEntry(iReturned) = iTop;
-  iTop = iReturned;
+  indexEntry(iReturned) = refTop();
+  refTop() = iReturned;
 }
 /*************************************************************************/
 bool  FixedObjectPoolMemoryManager::check(const void* p){
@@ -121,11 +135,11 @@ bool  FixedObjectPoolMemoryManager::check(const void* p){
   if(!isPointerSane(p))
     return false;
 
-  EntryIndex iReturned = ((unsigned char*)p - (unsigned char*)pMemory)/iObjectSize;
+  EntryIndex iReturned = ((unsigned char*)p - getStart())/refObjectSize();
 
-	Mutex::Locker locker(mutex, tsrMutexWaits);
+	Mutex::Locker locker(refMutex(), tsrMutexWaits);
 
-  EntryIndex iCurrent = iTop;
+  EntryIndex iCurrent = refTop();
 
   while(iCurrent != CUnusedIndex){
 
@@ -147,9 +161,9 @@ FixedObjectPoolMemoryManager::~FixedObjectPoolMemoryManager()throw(){
 /*************************************************************************/
 void FixedObjectPoolMemoryManager::printToStream(std::ostream& os){
 
-	Mutex::Locker locker(mutex);
+	Mutex::Locker locker(refMutex());
 
-	os<<"FixedObjectPoolMemoryManager, entries="<<iNumObjects<<", size="<<iObjectSize<<" bytes."<<std::endl;
+	os<<"FixedObjectPoolMemoryManager, entries="<<refNumObjects()<<", size="<<refObjectSize()<<" bytes."<<std::endl;
 
 	os<<"  Waits:        "<<tsrMutexWaits<<std::endl;
 	os<<"  Allocations:  "<<tsrAllocations<<std::endl;
@@ -159,9 +173,9 @@ void FixedObjectPoolMemoryManager::printToStream(std::ostream& os){
 void FixedObjectPoolMemoryManager::dump(std::ostream& os){
 
   os<<"Free List"<<std::endl;
-  Mutex::Locker locker(mutex);
+  Mutex::Locker locker(refMutex());
 
-  EntryIndex iCurrent = iTop;
+  EntryIndex iCurrent = refTop();
 
   while(iCurrent != CUnusedIndex){
     os<<iCurrent<<"\t"<<(void*)&(indexEntry(iCurrent))<<std::endl;

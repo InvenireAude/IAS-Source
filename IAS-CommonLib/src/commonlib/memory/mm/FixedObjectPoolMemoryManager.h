@@ -37,11 +37,15 @@ public:
 	virtual void* allocate(size_t n);
 	virtual void  free(const void* p);
 	virtual bool  check(const void* p);
-  virtual void  trim();
+    virtual void  trim();
 
 	virtual void printToStream(std::ostream& os);
 
 	void dump(std::ostream& os);
+
+	static size_t ComputeMemoryRequirement(size_t iObjectSize, size_t iNumObjects);
+
+protected:
 
 	FixedObjectPoolMemoryManager(void *pStart, size_t iObjectSize, size_t iNumObjects);
 
@@ -51,23 +55,36 @@ public:
     static  const uint32_t CUnusedIndex = 0xffffffff;
 
 	void*            pMemory;
-    EntryIndex       iTop;
-
-    size_t           iObjectSize;
-  	size_t           iNumObjects;
-
   	bool             bFreeMe;
+
+	struct Info {
+	    EntryIndex       iTop;
+    	size_t           iObjectSize;
+  		size_t           iNumObjects;
+		Mutex mutex;
+	};
+
+	inline EntryIndex&       refTop(){ return ((Info*)pMemory)->iTop; };
+	inline unsigned char*    getStart(){ return ((unsigned char*)pMemory) + sizeof(Info); }
+    inline size_t&           refObjectSize(){ return ((Info*)pMemory)->iObjectSize; };
+  	inline size_t&           refNumObjects(){ return ((Info*)pMemory)->iNumObjects; };
+	inline Mutex&            refMutex(){ return ((Info*)pMemory)->mutex; };
+
+	inline const EntryIndex&       refTop()const{ return ((Info*)pMemory)->iTop; };
+	inline const unsigned char*    getStart()const{ return ((unsigned char*)pMemory) + sizeof(Info); }
+    inline const size_t&           refObjectSize()const{ return ((Info*)pMemory)->iObjectSize; };
+  	inline const size_t&           refNumObjects()const{ return ((Info*)pMemory)->iNumObjects; };
 
 	TimeSamplesResults  tsrMutexWaits;
 	TimeSamplesResults  tsrAllocations;
 
 	inline EntryIndex& indexEntry(size_t iIdx){
-		return *(EntryIndex*)(((unsigned char*)pMemory) + iIdx * iObjectSize);
+		return *(EntryIndex*)(getStart() + iIdx * refObjectSize());
 	}
 
 	inline bool isPointerSane(const void *p) const;
 
-  	Mutex mutex;
+ 
 };
 
 /*************************************************************************/

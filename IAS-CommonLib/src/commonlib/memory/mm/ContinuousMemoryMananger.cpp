@@ -25,21 +25,21 @@
 
 namespace IAS {
 
-
+/*************************************************************************/
+size_t ContinuousMemoryMananger::ComputeMemoryRequirement(size_t iMemoryPoolSize){
+  return sizeof(Info) + iMemoryPoolSize;
+}
 /*************************************************************************/
 ContinuousMemoryMananger::ContinuousMemoryMananger(
-    void *pStart, size_t iSize):
-  bFreeMe(false),
-  iStart(0),
-  iSize(iSize),
-  iFree(iSize){
+    void *pMemory, size_t iMemoryPoolSize):
+  bFreeMe(false){
 	IAS_TRACER;
 
-  if(!pStart){
+  if(!pMemory){
 
-    pStart = new char[iSize];
+    pMemory = new char[ComputeMemoryRequirement(iMemoryPoolSize)];
 
-    if(!pStart){
+    if(!pMemory){
       IAS_LOG(LogLevel::INSTANCE.bIsError,"ContinuousMemoryMananger cannot allocate memory.");
       throw std::bad_alloc();
     }
@@ -47,37 +47,37 @@ ContinuousMemoryMananger::ContinuousMemoryMananger(
     bFreeMe = true;
   }
 
-  pMemory = (unsigned char*) pStart;
-
+  this->pMemory = pMemory;
+  refFreeOffset() = 0;
+  refSize() = iMemoryPoolSize;
 	IAS_LOG(LogLevel::INSTANCE.isInfo(),"CMM is ready !");
 
 }
 /*************************************************************************/
 void* ContinuousMemoryMananger::allocate(size_t n){
 
-  if(iFree < n){
+  if(getFree() < n){
     IAS_LOG(LogLevel::INSTANCE.bIsError,"ContinuousMemoryMananger is out of memory.");
     throw std::bad_alloc();
   }
 
-	Mutex::Locker locker(mutex, tsrMutexWaits);
+	Mutex::Locker locker(refMutex(), tsrMutexWaits);
 	AutoTimeSample sample(tsrAllocations,LogLevel::INSTANCE.isProfile());
 
-  iFree -= n;
-  void *pResult = pMemory + iStart;
-  iStart += n;
+  void *pResult = getAddressAtStart();
+  refFreeOffset() += n;
 	return pResult;
 }
 /*************************************************************************/
 inline bool ContinuousMemoryMananger::isPointerSane(const void *p) const{
-		bool bResult = p >= pMemory &&
-		   p < pMemory + iStart;
+		bool bResult = p >= getStart() &&
+		   p < getAddressAtStart();
 
 		if(!bResult){
 			IAS_LOG(LogLevel::INSTANCE.bIsError,"ContinuousMemoryMananger pointer error: "
 				<<p<<" "
-				<<((unsigned char*)p - (unsigned char*)pMemory)
-				<<", iStart: "<<iStart<<", iSize: "<<iSize);
+				<<((unsigned char*)p - (unsigned char*)getStart())
+				<<", offset: "<<refFreeOffset()<<", refSize: "<<refSize());
 		}
 
 		return bResult;
@@ -106,9 +106,9 @@ ContinuousMemoryMananger::~ContinuousMemoryMananger()throw(){
 /*************************************************************************/
 void ContinuousMemoryMananger::printToStream(std::ostream& os){
 
-	Mutex::Locker locker(mutex);
+	Mutex::Locker locker(refMutex());
 
-	os<<"ContinuousMemoryMananger, size: "<<iSize<<", start: "<<iStart<<std::endl;
+	os<<"ContinuousMemoryMananger, offset: "<<refFreeOffset()<<", size: "<<refSize()<<std::endl;
 
 	os<<"  Waits:        "<<tsrMutexWaits<<std::endl;
 	os<<"  Allocations:  "<<tsrAllocations<<std::endl;
@@ -117,9 +117,9 @@ void ContinuousMemoryMananger::printToStream(std::ostream& os){
 /*************************************************************************/
 void ContinuousMemoryMananger::dump(std::ostream& os){
 
-  Mutex::Locker locker(mutex);
+  Mutex::Locker locker(refMutex());
 
-	os<<"ContinuousMemoryMananger, size: "<<iSize<<", start: "<<iStart<<", free: "<<iFree<<std::endl;
+	os<<"ContinuousMemoryMananger, offset: "<<refFreeOffset()<<", size: "<<refSize()<<std::endl;
 
 }
 /*************************************************************************/

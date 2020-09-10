@@ -42,24 +42,45 @@ public:
 	virtual void printToStream(std::ostream& os);
 
 	void dump(std::ostream& os);
+	static size_t ComputeMemoryRequirement(size_t iMemoryPoolSize);
 
-	ContinuousMemoryMananger(void *pStart, size_t iSize);
+protected:
+
+	ContinuousMemoryMananger(void *pMemory, size_t iMemoryPoolSize);
 
 	friend class Factory<ContinuousMemoryMananger>;
 
-	  unsigned char*   pMemory;
-    size_t           iStart;
-    size_t           iSize;
-  	size_t           iFree;
+	void*  pMemory;
+
+	struct Info {
+		size_t           iFreeOffset;
+    	size_t           iSize;
+		Mutex mutex;
+	};
+
+	inline size_t& refFreeOffset(){return ((Info*)pMemory)->iFreeOffset; };
+    inline size_t& refSize(){return ((Info*)pMemory)->iSize; };
+
+	inline const size_t& refFreeOffset()const {return ((Info*)pMemory)->iFreeOffset; };
+    inline const size_t& refSize()const {return ((Info*)pMemory)->iSize; };
+
+	inline unsigned char*    getStart(){ return ((unsigned char*)pMemory) + sizeof(Info); }
+  	inline const unsigned char*  getStart()const{ return ((unsigned char*)pMemory) + sizeof(Info); }
+  	inline Mutex&            refMutex(){ return ((Info*)pMemory)->mutex; };
+
+	inline size_t getFree()const { return refSize() - refFreeOffset(); };
+
+	inline void* getAddressAtStart(){ return getStart() + refFreeOffset(); }
+	inline const void* getAddressAtStart()const{ return getStart() + refFreeOffset(); }
 
   	bool             bFreeMe;
 
-  	TimeSamplesResults  tsrMutexWaits;
-	  TimeSamplesResults  tsrAllocations;
+	TimeSamplesResults  tsrMutexWaits;
+	TimeSamplesResults  tsrAllocations;
 
-	  inline bool isPointerSane(const void *p) const;
+	inline bool isPointerSane(const void *p) const;
 
-  	Mutex mutex;
+  
 };
 
 /*************************************************************************/

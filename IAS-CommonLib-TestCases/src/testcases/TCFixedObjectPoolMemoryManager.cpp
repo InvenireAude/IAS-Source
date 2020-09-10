@@ -50,7 +50,7 @@ void TCFixedObjectPoolMemoryManager::caseALL(){
 	IAS_TRACER;
 
 	IAS_DFT_FACTORY<FixedObjectPoolMemoryManager>::PtrHolder ptrMemoryManager;
-	char *b = new char[sizeof(Object) * 100];
+	char *b = new char[FixedObjectPoolMemoryManager::ComputeMemoryRequirement(sizeof(Object),100)];
 	Object *tabObjects = (Object *)b;
 	ptrMemoryManager=IAS_DFT_FACTORY<FixedObjectPoolMemoryManager>::Create(b, sizeof(Object), 100);
 	TheAllocator=ptrMemoryManager;
