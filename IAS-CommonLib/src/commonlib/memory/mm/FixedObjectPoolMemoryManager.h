@@ -20,8 +20,9 @@
 
 #include "../ma/Allocator.h"
 #include "MemoryManager.h"
-
+#include "commonlib/exception/ItemNotFoundException.h"
 #include "commonlib/threads/Mutex.h"
+#include "commonlib/logger/logger.h"
 
 namespace IAS {
 
@@ -45,14 +46,29 @@ public:
 
 	static size_t ComputeMemoryRequirement(size_t iObjectSize, size_t iNumObjects);
 
+	typedef uint32_t EntryIndex;
+    static  const EntryIndex CUnusedIndex = 0xffffffff;
+    
+	template <class C>
+		C* pointerFromIdx(EntryIndex iIdx){
+			return reinterpret_cast<C*>(getStart() + iIdx * refObjectSize());
+		};
+	
+	template <class C>
+		EntryIndex idxFromPointer(C* p){
+			 
+			 if(!isPointerSane(p)){
+   				IAS_THROW(ItemNotFoundException("FOMM, Invalid conversion from pointer to index."));
+			 }
+			return ((unsigned char*)p - getStart())/refObjectSize();
+		};
+	
 protected:
 
 	FixedObjectPoolMemoryManager(void *pStart, size_t iObjectSize, size_t iNumObjects);
 
 	friend class Factory<FixedObjectPoolMemoryManager>;
 
-	typedef uint32_t EntryIndex;
-    static  const uint32_t CUnusedIndex = 0xffffffff;
 
 	void*            pMemory;
   	bool             bFreeMe;
@@ -82,9 +98,7 @@ protected:
 		return *(EntryIndex*)(getStart() + iIdx * refObjectSize());
 	}
 
-	inline bool isPointerSane(const void *p) const;
-
- 
+	bool isPointerSane(const void *p) const;
 };
 
 /*************************************************************************/

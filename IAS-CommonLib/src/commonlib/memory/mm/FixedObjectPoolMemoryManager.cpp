@@ -101,10 +101,10 @@ void* FixedObjectPoolMemoryManager::allocate(size_t n){
 	return pResult;
 }
 /*************************************************************************/
-inline bool FixedObjectPoolMemoryManager::isPointerSane(const void *p) const{
+ bool FixedObjectPoolMemoryManager::isPointerSane(const void *p) const{
 		bool bResult = p >= getStart() &&
 		   p < getStart() + refObjectSize() * refNumObjects() &&
-           ((long long)p) % refObjectSize() == 0;
+           ((unsigned char*)p - getStart()) % refObjectSize() == 0;
 
 		if(!bResult){
 			IAS_LOG(LogLevel::INSTANCE.bIsError,"FixedObjectPoolMemoryManager pointer error: "
