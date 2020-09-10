@@ -1,7 +1,7 @@
 /*
  * File: IAS-CommonLib/src/commonlib/types/DoubleLinkedList.h
  *
- * Copyright (C) 2015, Albert Krzymowski
+ * Copyright (C) 2020, Albert Krzymowski
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -131,11 +131,14 @@ class iterator {
     return iterator(NULL, NULL);
   }
 
+ 
  protected:
  
   iterator begin(DoubleLinkedList<C> *pCurrent, DoubleLinkedList<C> *pLast){
     return iterator(pCurrent, pLast);
   }
+
+ private:
 
   DoubleLinkedList<C> *pPrev;
   DoubleLinkedList<C> *pNext;
@@ -143,6 +146,37 @@ class iterator {
 };
 
 /*************************************************************************/
+
+template<class C>
+class DoubleLinkedListOwner : public DoubleLinkedList<C> {
+
+  public:
+    DoubleLinkedListOwner():DoubleLinkedList<C>(NULL){};
+
+    typedef typename IAS::DoubleLinkedList<C>::iterator iterator;
+
+    iterator begin(){
+      if(DoubleLinkedList<C>::getNext() == this)
+        return DoubleLinkedList<C>::end();
+    
+      return IAS::DoubleLinkedList<C>::begin(DoubleLinkedList<C>::getNext(), DoubleLinkedList<C>::getPrev());
+    };
+
+    iterator remove(iterator& it){
+      if(it == DoubleLinkedList<C>::end())
+        return it;
+
+      DoubleLinkedList<C> *pNext = (*it)->getNext();
+ 
+      (*it)->detach();
+ 
+      if(pNext == this)
+        return DoubleLinkedList<C>::end();
+ 
+      return IAS::DoubleLinkedList<C>::begin(pNext, IAS::DoubleLinkedList<C>::getPrev());  
+    }
+
+ };
 
 }
 
