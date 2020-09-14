@@ -24,7 +24,7 @@
 #include <commonlib/exception/BadUsageException.h>
 #include <commonlib/threads/Mutex.h>
 #include <commonlib/threads/Condition.h>
-
+#include "BufferQueue.h"
 
 namespace IAS {
 
