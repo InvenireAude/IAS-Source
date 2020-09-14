@@ -1,0 +1,83 @@
+/*
+ * File: IAS-CommonLib/src/commonlib/types/ProducerConsumerQueue.h
+ *
+ * Copyright (C) 2020, Albert Krzymowski
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ * http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+#ifndef _IAS_Types_SortedHeapWithDelete_H_
+#define _IAS_Types_SortedHeapWithDelete_H_
+
+#include <commonlib/types.h>
+#include <commonlib/memory/memory.h>
+#include <commonlib/exception/BadUsageException.h>
+#include <commonlib/threads/Mutex.h>
+#include <commonlib/threads/Condition.h>
+
+
+namespace IAS {
+
+template<class C, class TA = IAS_DFT_FACTORY<C> >
+class ProducerConsumerQueue : protected BufferQueue<C, TA> {
+
+public:
+    ProducerConsumerQueue(C *pStart, size_t iLogSize):
+      BufferQueue<C, TA> (pStart, iLogSize){}
+
+    ProducerConsumerQueue(size_t iLogSize):
+      BufferQueue<C, TA> (iLogSize){}
+
+    static size_t ComputeMemoryRequirement(size_t iLogSize){
+        return BufferQueue<C, TA>::ComputeMemoryRequirement(iLogSize);
+    }
+
+    void put(const C& aValue){
+
+        Mutex::Locker locker(mutex);
+
+        while(BufferQueue<C, TA>::full()){
+            mutex.wait(cndProducer);
+        }
+
+        BufferQueue<C, TA>::put(aValue);
+        cndConsumer.signal();
+    }
+
+    C get(){
+
+        Mutex::Locker locker(mutex);
+
+        while(BufferQueue<C, TA>::empty()){
+            mutex.wait(cndConsumer);
+        }
+
+        C aValue = BufferQueue<C, TA>::get();
+        cndProducer.signal();
+
+    }
+
+    size_t size(){
+        Mutex::Locker locker(mutex);
+        return BufferQueue<C, TA>::iNumItems;
+    }
+
+protected:
+    Mutex     mutex;
+    Condition cndProducer;
+    Condition cndConsumer;
+};
+
+}
+
+#endif /* _IAS_Types_SortedHeapWithDelete_H_ */
