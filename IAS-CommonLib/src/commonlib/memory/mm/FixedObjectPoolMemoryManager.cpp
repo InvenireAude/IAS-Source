@@ -74,6 +74,10 @@ FixedObjectPoolMemoryManager::FixedObjectPoolMemoryManager(
 
 }
 /*************************************************************************/
+FixedObjectPoolMemoryManager::FixedObjectPoolMemoryManager(void *pMemory):
+  pMemory(pMemory),
+  bFreeMe(false){};
+/*************************************************************************/
 void* FixedObjectPoolMemoryManager::allocate(size_t n){
 
   if(n != refObjectSize()){

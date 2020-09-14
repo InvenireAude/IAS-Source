@@ -39,7 +39,7 @@ public:
 	virtual void* allocate(size_t n);
 	virtual void  free(const void* p);
 	virtual bool  check(const void* p);
-  virtual void  trim();
+    virtual void  trim();
 
 	virtual void printToStream(std::ostream& os);
 
@@ -49,6 +49,7 @@ public:
 protected:
 
 	ContinuousMemoryMananger(void *pMemory, size_t iMemoryPoolSize);
+	ContinuousMemoryMananger(void *pMemory);
 
 	friend class Factory<ContinuousMemoryMananger>;
 

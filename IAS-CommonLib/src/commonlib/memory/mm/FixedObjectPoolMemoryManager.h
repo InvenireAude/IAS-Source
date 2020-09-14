@@ -67,7 +67,8 @@ public:
 	
 protected:
 
-	FixedObjectPoolMemoryManager(void *pStart, size_t iObjectSize, size_t iNumObjects);
+	FixedObjectPoolMemoryManager(void *pMemory, size_t iObjectSize, size_t iNumObjects);
+    FixedObjectPoolMemoryManager(void *pMemory);
 
 	friend class Factory<FixedObjectPoolMemoryManager>;
 

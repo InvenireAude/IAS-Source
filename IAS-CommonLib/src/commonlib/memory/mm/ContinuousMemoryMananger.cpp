@@ -54,6 +54,10 @@ ContinuousMemoryMananger::ContinuousMemoryMananger(
 
 }
 /*************************************************************************/
+ContinuousMemoryMananger::ContinuousMemoryMananger(void *pMemory):
+  pMemory(pMemory),
+  bFreeMe(false){}
+/*************************************************************************/
 void* ContinuousMemoryMananger::allocate(size_t n){
 
   if(getFree() < n){
