@@ -65,6 +65,7 @@ public:
         C aValue = BufferQueue<C, TA>::get();
         cndProducer.signal();
 
+        return aValue;
     }
 
     size_t size(){
