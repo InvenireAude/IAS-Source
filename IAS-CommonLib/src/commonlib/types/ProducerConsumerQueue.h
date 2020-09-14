@@ -47,6 +47,7 @@ public:
         Mutex::Locker locker(mutex);
 
         while(BufferQueue<C, TA>::full()){
+            Thread::Cancellation ca(true);
             mutex.wait(cndProducer);
         }
 
@@ -59,6 +60,7 @@ public:
         Mutex::Locker locker(mutex);
 
         while(BufferQueue<C, TA>::empty()){
+            Thread::Cancellation ca(true);
             mutex.wait(cndConsumer);
         }
 
