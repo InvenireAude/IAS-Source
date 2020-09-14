@@ -143,6 +143,9 @@ public:
 template<class T, class CO = DynamicCastOperator <T> >
  class MemoryManagerFactory : public AllocatorFactory<T, ::IAS::MemoryManager::GetAllocator, CO > {};
 
+template<class T, class CO = StaticCastOperator <T> >
+ class MemoryManagerStaticFactory : public AllocatorFactory<T, ::IAS::MemoryManager::GetAllocator, CO > {};
+
 };
 
 namespace IAS2{

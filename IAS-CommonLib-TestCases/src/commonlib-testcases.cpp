@@ -81,8 +81,8 @@ int main(int argc, char* argv[]) {
 
 			//IAS_DFT_FACTORY<TCStreamMemoryBuffer>::Create(ptrSuite.getPointer());
 			//IAS_DFT_FACTORY<TCMisc>::Create(ptrSuite.getPointer());
-			//IAS_DFT_FACTORY<TCSortedHeap>::Create(ptrSuite.getPointer());
-			IAS_DFT_FACTORY<TCFixedObjectPoolMemoryManager>::Create(ptrSuite.getPointer());
+			IAS_DFT_FACTORY<TCSortedHeap>::Create(ptrSuite.getPointer());
+			//IAS_DFT_FACTORY<TCFixedObjectPoolMemoryManager>::Create(ptrSuite.getPointer());
 			IAS_DFT_FACTORY<TCBufferQueue>::Create(ptrSuite.getPointer());
 			
 		} else {

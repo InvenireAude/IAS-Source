@@ -46,5 +46,6 @@
 }
 
 #define IAS_DFT_FACTORY ::IAS::MemoryManagerFactory
+#define IAS_DFT_STATIC_FACTORY ::IAS::MemoryManagerStaticFactory
 
 #endif /*IASMEMORY_H_*/

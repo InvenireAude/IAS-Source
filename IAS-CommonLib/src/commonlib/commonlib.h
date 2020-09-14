@@ -102,6 +102,7 @@
 #include "commonlib/types/Decimal.h"
 #include "commonlib/types/DoubleLinkedList.h"
 #include "commonlib/types/SortedHeap.h"
+#include "commonlib/types/ProducerConsumerQueue.h"
 #include "commonlib/types/BufferQueue.h"
 
 #include "commonlib/sys/Signal.h"

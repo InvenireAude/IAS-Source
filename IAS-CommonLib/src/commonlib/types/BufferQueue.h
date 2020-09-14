@@ -50,9 +50,10 @@ public:
     }
 
   static size_t ComputeMemoryRequirement(size_t iLogSize){
-    return sizeof(C)*(0x1L << (iLogSize - 1));
+    return sizeof(C)*(0x1L << iLogSize);
   }
-  const C& get(){
+  
+  C get(){
 
       if(iNumItems == 0)
         IAS_THROW(BadUsageException("BufferQueue: is empty."));

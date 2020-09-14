@@ -65,6 +65,8 @@ void* ContinuousMemoryMananger::allocate(size_t n){
 	AutoTimeSample sample(tsrAllocations,LogLevel::INSTANCE.isProfile());
 
   void *pResult = getAddressAtStart();
+
+  lstEntries.push_back(LogEntry(pResult, n));
   refFreeOffset() += n;
 	return pResult;
 }
@@ -112,7 +114,8 @@ void ContinuousMemoryMananger::printToStream(std::ostream& os){
 
 	os<<"  Waits:        "<<tsrMutexWaits<<std::endl;
 	os<<"  Allocations:  "<<tsrAllocations<<std::endl;
-	os<<std::endl;
+	
+  os<<std::endl;
 }
 /*************************************************************************/
 void ContinuousMemoryMananger::dump(std::ostream& os){
@@ -121,6 +124,14 @@ void ContinuousMemoryMananger::dump(std::ostream& os){
 
 	os<<"ContinuousMemoryMananger, offset: "<<refFreeOffset()<<", size: "<<refSize()<<std::endl;
 
+  os<<"  Waits:        "<<tsrMutexWaits<<std::endl;
+	os<<"  Allocations:  "<<tsrAllocations<<std::endl;
+	
+  for(EntriesList::const_iterator it = lstEntries.begin(); it != lstEntries.end(); it++){
+    os<<"\t"<<(*it).pAddress<<"\t"<<(*it).iSize<<std::endl;
+  }
+
+  os<<std::endl;
 }
 /*************************************************************************/
 void ContinuousMemoryMananger::trim(){

@@ -21,6 +21,8 @@
 #include "../ma/Allocator.h"
 #include "MemoryManager.h"
 
+#include<list>
+
 #include "commonlib/threads/Mutex.h"
 
 namespace IAS {
@@ -80,7 +82,19 @@ protected:
 
 	inline bool isPointerSane(const void *p) const;
 
-  
+	struct LogEntry{
+		
+		LogEntry(void* pAddress, size_t iSize):
+			pAddress(pAddress), iSize(iSize){};
+
+		void* pAddress;
+		size_t iSize;
+	};
+
+	typedef std::list<LogEntry> EntriesList;
+
+	EntriesList lstEntries;
+
 };
 
 /*************************************************************************/
