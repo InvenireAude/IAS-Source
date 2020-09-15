@@ -95,13 +95,6 @@ void* FixedObjectPoolMemoryManager::allocate(size_t n){
  
   void *pResult = &(indexEntry(refTop()));
   refTop() = indexEntry(refTop());
-
-  IAS_LOG(true, "pMemory:"<<pMemory);
-  IAS_LOG(true, "getStart():"<<getStart());
-
-  IAS_LOG(true, "top():"<<refTop());
-  IAS_LOG(true, "pResult:"<<pMemory);
- 
 	return pResult;
 }
 /*************************************************************************/

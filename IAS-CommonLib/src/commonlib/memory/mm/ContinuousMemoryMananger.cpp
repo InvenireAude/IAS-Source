@@ -61,7 +61,7 @@ ContinuousMemoryMananger::ContinuousMemoryMananger(void *pMemory):
 void* ContinuousMemoryMananger::allocate(size_t n){
 
   if(getFree() < n){
-    IAS_LOG(LogLevel::INSTANCE.bIsError,"ContinuousMemoryMananger is out of memory.");
+    IAS_LOG(LogLevel::INSTANCE.bIsError,"ContinuousMemoryMananger is out of memory. "<<"n= "<<n<<", size="<<this->getFree());
     throw std::bad_alloc();
   }
 

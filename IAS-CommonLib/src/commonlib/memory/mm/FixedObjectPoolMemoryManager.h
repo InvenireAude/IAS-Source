@@ -53,7 +53,7 @@ public:
     
 	template <class C>
 		C* pointerFromIdx(EntryIndex iIdx){
-			return reinterpret_cast<C*>(getStart() + iIdx * refObjectSize());
+			return reinterpret_cast<C*>(getStart() + (size_t)iIdx * refObjectSize());
 		};
 	
 	template <class C>
@@ -98,7 +98,7 @@ protected:
 	TimeSamplesResults  tsrAllocations;
 
 	inline EntryIndex& indexEntry(size_t iIdx){
-		return *(EntryIndex*)(getStart() + iIdx * refObjectSize());
+		return *(EntryIndex*)(getStart() + (size_t)iIdx * refObjectSize());
 	}
 
 	bool isPointerSane(const void *p) const;
