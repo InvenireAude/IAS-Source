@@ -65,6 +65,14 @@ public:
       return tabValues[iIdx];
   }
 
+  C front(){
+    
+    if(iNumItems == 0)
+      IAS_THROW(BadUsageException("BufferQueue: is empty."));
+
+    return tabValues[iHead];
+  }
+
   void put(const C& aValue){
 
     if(iNumItems == iSize)

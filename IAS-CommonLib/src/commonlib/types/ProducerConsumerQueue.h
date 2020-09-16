@@ -33,10 +33,16 @@ class ProducerConsumerQueue : protected BufferQueue<C, TA> {
 
 public:
     ProducerConsumerQueue(C *pStart, size_t iLogSize):
-      BufferQueue<C, TA> (pStart, iLogSize){}
+      BufferQueue<C, TA> (pStart, iLogSize),
+      mutex(true),
+      cndConsumer(true),
+      cndProducer(true){}
 
     ProducerConsumerQueue(size_t iLogSize):
-      BufferQueue<C, TA> (iLogSize){}
+      BufferQueue<C, TA> (iLogSize),
+      mutex(true),
+      cndConsumer(true),
+      cndProducer(true){}
 
     static size_t ComputeMemoryRequirement(size_t iLogSize){
         return BufferQueue<C, TA>::ComputeMemoryRequirement(iLogSize);

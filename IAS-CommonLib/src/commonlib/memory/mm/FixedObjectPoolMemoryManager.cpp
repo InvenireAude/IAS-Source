@@ -59,6 +59,7 @@ FixedObjectPoolMemoryManager::FixedObjectPoolMemoryManager(
   }
 
   this->pMemory = pMemory;
+  new (pMemory) Info();
 
   refObjectSize() = iObjectSize;
   refNumObjects() = iNumObjects;
@@ -69,14 +70,17 @@ FixedObjectPoolMemoryManager::FixedObjectPoolMemoryManager(
   }
   indexEntry(iNumObjects - 1) = CUnusedIndex;
 
- 
+  bCheckPointersOnReturn = false;
+
 	IAS_LOG(LogLevel::INSTANCE.isInfo(),"FOPMM is ready !");
 
 }
 /*************************************************************************/
 FixedObjectPoolMemoryManager::FixedObjectPoolMemoryManager(void *pMemory):
   pMemory(pMemory),
-  bFreeMe(false){};
+  bFreeMe(false){
+     bCheckPointersOnReturn = false;
+  };
 /*************************************************************************/
 void* FixedObjectPoolMemoryManager::allocate(size_t n){
 
@@ -128,7 +132,7 @@ void  FixedObjectPoolMemoryManager::free(const void* p){
 }
 /*************************************************************************/
 bool  FixedObjectPoolMemoryManager::check(const void* p){
-
+  IAS_LOG(true,"check:"<<bCheckPointersOnReturn);
   if(!isPointerSane(p))
     return false;
 

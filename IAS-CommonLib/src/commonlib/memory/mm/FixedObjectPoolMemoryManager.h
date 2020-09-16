@@ -81,6 +81,11 @@ protected:
     	size_t           iObjectSize;
   		size_t           iNumObjects;
 		Mutex mutex;
+		Info():
+		 iTop(0),
+		 iObjectSize(0),
+		 iNumObjects(0),
+		 mutex(true){}
 	};
 
 	inline EntryIndex&       refTop(){ return ((Info*)pMemory)->iTop; };
