@@ -39,4 +39,7 @@
 
 #include "socket/EventHandler.h"
 
+#include "mcast/Receiver.h"
+#include "mcast/Sender.h"
+
 #endif /* _IAS_Net_net_H_ */

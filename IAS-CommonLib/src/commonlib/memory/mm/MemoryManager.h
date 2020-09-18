@@ -83,7 +83,7 @@ public:
  	 virtual void* allocate(size_t n);
 	 virtual void  free(const void* p);
 	 virtual bool check(const void* p);
-   virtual void trim();
+     virtual void trim();
 
 	inline static Allocator *GetAllocator(){
 			GetInstance();
