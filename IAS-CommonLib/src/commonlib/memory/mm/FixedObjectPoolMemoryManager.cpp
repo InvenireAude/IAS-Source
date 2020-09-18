@@ -86,6 +86,7 @@ void* FixedObjectPoolMemoryManager::allocate(size_t n){
 
   if(n != refObjectSize()){
     IAS_LOG(LogLevel::INSTANCE.bIsError,"(FOPMM) Bad memory allocation request, got: "<<n<<" bytes, expected: "<<refObjectSize()<<".");
+    PrintTrace(std::cerr);
     throw std::bad_alloc();
   }
 
