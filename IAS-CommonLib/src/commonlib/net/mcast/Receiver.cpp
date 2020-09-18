@@ -38,6 +38,11 @@ Receiver::Receiver(unsigned int iPort):
 	Base(iPort){
 	IAS_TRACER;
 	
+	// int size = 1000 * 1024 * 1024;
+
+	// if (setsockopt(iSocket, SOL_SOCKET, SO_RCVBUF, &size, (socklen_t)sizeof(int)) < 0)
+    // 	IAS_THROW(SystemException()<<"UDP mulitcast socket (SO_RCVBUF), port: "<<(int)iPort);
+	
 	int reuse = 1;
     if (setsockopt(iSocket, SOL_SOCKET, SO_REUSEADDR, (char *)&reuse, sizeof(reuse)) < 0)
     	IAS_THROW(SystemException()<<"UDP mulitcast socket (SO_REUSEADDR), port: "<<(int)iPort);
