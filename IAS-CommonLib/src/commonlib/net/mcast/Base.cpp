@@ -27,7 +27,8 @@ namespace MCast {
 
 /*************************************************************************/
 Base::Base(unsigned int iPort):
-	iPort(iPort){
+	iPort(iPort),
+	iTimeout(C_UnLimited){
 	IAS_TRACER;
 	  
 	if((iSocket=socket(AF_INET, SOCK_DGRAM, 0)) < 0)
@@ -41,6 +42,51 @@ Base::~Base() throw(){
 
 	if(iSocket > 0)
 		::close(iSocket);
+}
+/*************************************************************************/
+void Base::setTimeout(int iTimeout){
+	IAS_TRACER;
+
+	if(iTimeout != C_UnLimited && iTimeout < 0)
+		IAS_THROW(BadUsageException("timeout: ")<<iTimeout);
+
+	this->iTimeout=iTimeout;
+
+	IAS_LOG(LogLevel::INSTANCE.isInfo(),"fd("<<iSocket<<"), timeout: "<<this->iTimeout);
+}
+/*************************************************************************/
+bool Base::waitForData(WaitMode iMode){
+	IAS_TRACER;
+
+	 fd_set set;
+	 struct timeval timeout;
+
+	 FD_ZERO(&set);
+	 FD_SET(iSocket, &set);
+
+	 timeout.tv_sec = 0;
+	 timeout.tv_usec = 1000*iTimeout;
+
+	 IAS_LOG(LogLevel::INSTANCE.isInfo(),"fd("<<iSocket<<"), timeout: "<<iTimeout);
+
+	 int iRC = ::select(iSocket + 1,
+			 	 (iMode == WM_Read  ? &set : NULL),
+				 (iMode == WM_Write ? &set : NULL),
+				 &set,
+				 &timeout);
+
+	 IAS_LOG(LogLevel::INSTANCE.isInfo(),"rc="<<iRC);
+
+	 switch(iRC){
+	 	 case -1:
+	 		 IAS_THROW(SystemException("select: ")<<iSocket)
+			 break;
+	 	 case 0:
+	 		 return false;
+	 		 break;
+	 }
+
+	 return true;
 }
 /*************************************************************************/
 }

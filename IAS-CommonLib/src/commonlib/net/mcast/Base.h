@@ -36,8 +36,20 @@ public:
 
 	virtual ~Base() throw();
 
+	void setTimeout(int iTimeout);
+	static const int  C_UnLimited = -1;
+
 protected:
 	Base(unsigned int iPort);
+
+	int iTimeout;
+
+	enum WaitMode{
+		WM_Read,
+		WM_Write
+	};
+	
+	bool waitForData(WaitMode iMode);
 
 	unsigned int iPort;
 	int iSocket;

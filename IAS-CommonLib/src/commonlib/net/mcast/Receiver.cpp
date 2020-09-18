@@ -78,48 +78,24 @@ void Receiver::subscribe(const String& strInterface, const String& strGroup){
 
 }
 /*************************************************************************/
-void Receiver::receive(void *pData, size_t iBufferLen, size_t& iDataSize){
+bool Receiver::receive(void *pData, size_t iBufferLen, size_t& iDataSize){
 	IAS_TRACER;
 
 	ssize_t iResult = 0;
 
-     fd_set set;
-	 struct timeval timeout;
-
-	 FD_ZERO(&set);
-	 FD_SET(iSocket, &set);
-
-	 timeout.tv_sec = 0;
-	 timeout.tv_usec = 10000000;
-
-	 IAS_LOG(LogLevel::INSTANCE.isInfo()||true,"fd("<<iSocket<<")");
-
-	 int iRC = ::select(iSocket + 1,
-			 	 &set,
-				 NULL,
-				 &set,
-				 &timeout);
-
-	 IAS_LOG(LogLevel::INSTANCE.isInfo()||true,"rc="<<iRC);
-
-	 switch(iRC){
-	 	 case -1:
-	 		 IAS_THROW(SystemException("select: ")<<iSocket)
-			 break;
-	 	 case 0:
-			IAS_THROW(EndOfDataException("udp receive"));;
-	 		 break;
-	 }
-
 	{
 		Thread::Cancellation ca(true);
+		if(iTimeout >= 0)
+			if(!waitForData(WM_Read)){
+				iDataSize = 0;
+				return false;
+		}
+
 		iResult = ::read(iSocket, pData, iBufferLen);
 	}
 
 	if(iResult < 0){
-
 		IAS_LOG(LogLevel::INSTANCE.isError(),"READ:"<<(void*)pData<<"len="<<iBufferLen);
-
 		IAS_THROW(SystemException("read",errno));
 	}
 
@@ -131,6 +107,7 @@ void Receiver::receive(void *pData, size_t iBufferLen, size_t& iDataSize){
 	}
 
 	iDataSize = iResult;
+	return true;
 }
 /*************************************************************************/
 }

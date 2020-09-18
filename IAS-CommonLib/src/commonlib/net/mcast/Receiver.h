@@ -41,7 +41,7 @@ public:
 
 	void subscribe(const String& strInterface, const String& strGroup);
 
-	void receive(void *pData, size_t iBufferLen, size_t& iDataSize);
+	bool receive(void *pData, size_t iBufferLen, size_t& iDataSize);
 
 protected:
 	
