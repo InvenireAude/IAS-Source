@@ -112,6 +112,7 @@ void* FixedObjectPoolMemoryManager::allocate(size_t n){
 				<<p<<" "
 				<<((unsigned char*)p - getStart())
 				<<", refObjectSize(): "<<refObjectSize()<<", iNumObjects: "<<refNumObjects());
+        PrintTrace(std::cerr);
 		}
 
 		return bResult;

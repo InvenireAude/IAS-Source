@@ -196,6 +196,15 @@ void Signal::handleUserSignal(){
 	}
 }
 /*************************************************************************/
+void Signal::StopApplication(bool bCancelThreads){
+	
+	if(bCancelThreads){
+		SignalHandler(0);
+	}else{
+		SignalHandlerStopOnly(0);
+	}
+}
+/*************************************************************************/
 //TODO AIX xlc/linker workaround
 Signal* Signal::GetInstance(){
 	return InstanceFeature<Signal>::GetInstance();
