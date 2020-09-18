@@ -42,8 +42,7 @@ namespace IAS{
  */
 
 class MemoryManager :
-	public Allocator,
-  public SYS::Signal::UserSignalCallback
+	public Allocator //, public SYS::Signal::UserSignalCallback
    {
 
 public:
