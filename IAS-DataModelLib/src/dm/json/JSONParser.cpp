@@ -281,7 +281,7 @@ DM::DataObjectPtr JSONParser::buildObject(const Node& node, const DM::Type* pTyp
 	return dm;
 }
 /*************************************************************************/
-const DM::Type* JSONParser::getDMType(ValuesMap *pMap)const{
+const DM::Type* JSONParser::getDMType(ValuesMap *pMap, const DM::Type* pTypeNSHint)const{
 	IAS_TRACER;
 
 	String strType;
@@ -291,8 +291,11 @@ const DM::Type* JSONParser::getDMType(ValuesMap *pMap)const{
 		String strValue( (*pMap)[C_TypeAttr]->getFirst().getValue() );
 		TypeTools::ChopArguments(strValue,strURI,strType,'#');
 
-		IAS_LOG(IAS::DM::LogLevel::INSTANCE.isInfo(),"Check type:"<<strURI<<" : "<<strType);
+		if(strURI.empty() && pTypeNSHint)
+			strURI = pTypeNSHint->getURI();
 
+		IAS_LOG(IAS::DM::LogLevel::INSTANCE.isInfo(),"Check type:"<<strURI<<" : "<<strType);
+	
 		return pDataFactory->getType(strURI,strType);
 	}else
 		return NULL;

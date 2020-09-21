@@ -142,7 +142,7 @@ protected:
 	char* copyValue();
 	char* copyStringValue();
 
-	const DM::Type* getDMType(ValuesMap *pMap)const;
+	const DM::Type* getDMType(ValuesMap *pMap, const DM::Type* pTypeNSHint = NULL)const;
 
 	RegionMemoryManager   mm;
 	CharsAllocator        maChars;
