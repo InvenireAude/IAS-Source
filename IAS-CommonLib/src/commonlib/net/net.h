@@ -41,5 +41,7 @@
 
 #include "mcast/Receiver.h"
 #include "mcast/Sender.h"
+#include "mcast/StreamInput.h"
+#include "mcast/StreamOutput.h"
 
 #endif /* _IAS_Net_net_H_ */

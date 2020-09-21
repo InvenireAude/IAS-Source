@@ -81,6 +81,7 @@ void Sender::send(const void *pData, size_t iDataSize, size_t& iWritten){
 		IAS_THROW(SystemException("read",errno));
 	}
 
+	iWritten = iResult;
 }
 /*************************************************************************/
 }

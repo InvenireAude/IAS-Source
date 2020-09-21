@@ -45,16 +45,24 @@ protected:
 /*************************************************************************/
 struct TimeSamplesResults{
 
-	TimeSamplesResults():iTotal(0L),iMin(0),iMax(0L),iNumSamples(0L){};
+	static const int COF_MicroSec = 1;
+	static const int COF_MiliSec = 1000;
+	static const int COF_Seconds = 1000000;
+	
+	TimeSamplesResults(int iOutputFactor = 1000):
+		iTotal(0L),iMin(0),iMax(0L),iNumSamples(0L),
+		iOutputFactor(iOutputFactor){};
 
 	long iTotal;
 	long iMin;
 	long iMax;
 	long iNumSamples;
 
+	int iOutputFactor;
 
 	TimeSamplesResults(const TimeSamplesResults& other):
-		iTotal(other.iTotal),iMin(other.iMin),iMax(other.iMax),iNumSamples(other.iNumSamples){};
+		iTotal(other.iTotal),iMin(other.iMin),iMax(other.iMax),iNumSamples(other.iOutputFactor),
+		iOutputFactor(other.iOutputFactor){};
 
 	void reset(){
 		iTotal=0;
@@ -63,11 +71,13 @@ struct TimeSamplesResults{
 		iNumSamples=0;
 	}
 
+	
 	inline TimeSamplesResults& operator=(const TimeSamplesResults& other){
 		this->iMin=other.iMin;
 		this->iMax=other.iMax;
 		this->iTotal=other.iTotal;
 		this->iNumSamples=other.iNumSamples;
+		this->iOutputFactor = other.iOutputFactor;
 		return *this;
 	}
 
@@ -103,10 +113,10 @@ struct TimeSamplesResults{
 		//TODO (L) c++ way
 		char sBuff[256];
 		sprintf(sBuff,"min = %10.2f\t max = %10.2f\tavg = %10.2f\t total = %10.2f\tnum = %10ld",
-				0.001*r.iMin,
-				0.001*r.iMax,
-				r.iNumSamples > 0 ? 0.001*r.iTotal/r.iNumSamples : 0.0,
-				0.001*r.iTotal,
+				1.0*r.iMin/r.iOutputFactor,
+				1.0*r.iMax/r.iOutputFactor,
+				r.iNumSamples > 0 ? 1.0*r.iTotal/r.iNumSamples/r.iOutputFactor : 0.0,
+				1.0*r.iTotal/r.iOutputFactor,
 				r.iNumSamples);
 
 		os<<sBuff;
