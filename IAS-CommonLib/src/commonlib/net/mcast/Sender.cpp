@@ -84,6 +84,16 @@ void Sender::send(const void *pData, size_t iDataSize, size_t& iWritten){
 	iWritten = iResult;
 }
 /*************************************************************************/
+void Sender::send(const void *pData, size_t iDataSize){
+	IAS_TRACER;
+	size_t iWritten;
+	Sender::send(pData, iDataSize, iWritten);
+
+	if(iWritten != iDataSize){
+		IAS_THROW(SystemException("Sender::send(), iWritten != iDataSize"));
+	}
+}
+/*************************************************************************/
 }
 }
 }

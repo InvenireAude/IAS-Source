@@ -39,6 +39,7 @@ public:
 
 	void setup(const String& strInterface, const String& strGroup);
 
+	void send(const void *pData, size_t iDataSize);
 	void send(const void *pData, size_t iDataSize, size_t& iWritten);
 	
 protected:
