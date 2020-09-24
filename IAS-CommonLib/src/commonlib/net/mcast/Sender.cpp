@@ -64,7 +64,7 @@ void Sender::send(const void *pData, size_t iDataSize, size_t& iWritten){
 
 	ssize_t iResult = 0;
 	
-	if(true || LogLevel::INSTANCE.isData()){
+	if(LogLevel::INSTANCE.isData()){
 		String strData;
 		for(int i=0;i<iDataSize;i++)
 			strData += String("") + (*(((char*)pData)+i) >= ' ' ? *(((char*)pData)+i) : '.');

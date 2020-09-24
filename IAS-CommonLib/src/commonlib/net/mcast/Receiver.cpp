@@ -104,7 +104,7 @@ bool Receiver::receive(void *pData, size_t iBufferLen, size_t& iDataSize){
 		IAS_THROW(SystemException("read",errno));
 	}
 
-	if(LogLevel::INSTANCE.isData()||true){
+	if(LogLevel::INSTANCE.isData()){
 		String strData;
 		for(int i=0;i<iResult;i++)
 			strData += String("") + (*(((char*)pData)+i) >= ' ' ? *(((char*)pData)+i) : '.');

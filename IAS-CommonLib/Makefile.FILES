@@ -1,4 +1,4 @@
-#Sun 20 Sep 2020 06:31:40 PM CEST
+#Wed 23 Sep 2020 01:03:54 PM CEST
 FILES+=commonlib/configfile/Properties
 FILES+=commonlib/configfile/PropertiesProvider
 FILES+=commonlib/configfile/PropertiesProviderFromFile
@@ -63,9 +63,6 @@ FILES+=commonlib/net/mcast/Base
 FILES+=commonlib/net/mcast/EndPoint
 FILES+=commonlib/net/mcast/Receiver
 FILES+=commonlib/net/mcast/Sender
-FILES+=commonlib/net/mcast/StreamBufferBase
-FILES+=commonlib/net/mcast/StreamInput
-FILES+=commonlib/net/mcast/StreamOutput
 FILES+=commonlib/net/Peer
 FILES+=commonlib/net/PeerAddrInfo
 FILES+=commonlib/net/pollset/EventMonitor
