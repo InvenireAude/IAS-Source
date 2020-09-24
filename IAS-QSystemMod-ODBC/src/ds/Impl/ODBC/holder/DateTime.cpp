@@ -34,14 +34,14 @@ DateTime::~DateTime() throw(){
 void DateTime::fetch(DM::DataObjectPtr& dm){
 	IAS_TRACER;
 
-  IAS_LOG(true,"Unsetme? "<<iStrLenOrInd<<" "<<SQL_NULL_DATA);
+  IAS_LOG(LogLevel::INSTANCE.isInfo(),"Unsetme? "<<iStrLenOrInd<<" "<<SQL_NULL_DATA);
 
 	if(iStrLenOrInd == SQL_NULL_DATA) {
 
 		if(!bOptional)
 			pSetter->unset(dm);
 
-    IAS_LOG(true,"Unsetme");
+    IAS_LOG(LogLevel::INSTANCE.isInfo(),"Unsetme");
 	}else{
 
 

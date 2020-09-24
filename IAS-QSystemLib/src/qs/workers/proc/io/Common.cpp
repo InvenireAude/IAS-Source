@@ -175,7 +175,7 @@ void Common::applyContext(const ::org::invenireaude::qsystem::workers::Ext::Cont
 	if(QS::LogLevel::INSTANCE.isInfo()){
 		for(API::Attributes::ValuesMap::const_iterator it=pAttributes->begin();
 			it != pAttributes->end(); it++)
-			IAS_LOG(true,"["<<it->first<<"]="<<it->second);
+			IAS_LOG(LogLevel::INSTANCE.isInfo(),"["<<it->first<<"]="<<it->second);
 	}
 
 	for(int iIdx=lstAttrUpdates.size()-1; iIdx>=0; iIdx--){
@@ -274,7 +274,7 @@ void Common::parse(API::Message* pMessage, DM::DataObjectPtr& dmData){
 
 	}catch(Exception& e){
 		if(LogLevel::INSTANCE.isData()){
-			IAS_LOG(true,"Cannot parse: "<<MiscTools::StreamToString(*pMessage->getContent()));
+			IAS_LOG(LogLevel::INSTANCE.isInfo(),"Cannot parse: "<<MiscTools::StreamToString(*pMessage->getContent()));
 		}
 
 		throw;
@@ -283,7 +283,7 @@ void Common::parse(API::Message* pMessage, DM::DataObjectPtr& dmData){
 	if(QS::LogLevel::INSTANCE.isData()){
 		StringStream ssTmp;
 		pFmtFactory->getFormatter(pMessage->getAttributes()->getFormat())->write(dmData,ssTmp);
-		IAS_LOG(true,ssTmp.str());
+		IAS_LOG(LogLevel::INSTANCE.isInfo(),ssTmp.str());
 	}
 }
 /*************************************************************************/
@@ -311,7 +311,7 @@ void Common::serialize(const DM::DataObject* dmData, API::Message* pMessage){
 	if(QS::LogLevel::INSTANCE.isData()){
 		StringStream ssTmp;
 		pFmtFactory->getFormatter(pAttributes->getFormat())->write(dmData,ssTmp,pAttributes);
-		IAS_LOG(true,ssTmp.str());
+		IAS_LOG(LogLevel::INSTANCE.isInfo(),ssTmp.str());
 	}
 }
 //TODO exits do not work on non-parsed send/receive.

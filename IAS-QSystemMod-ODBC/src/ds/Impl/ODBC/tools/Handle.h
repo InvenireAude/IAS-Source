@@ -56,7 +56,7 @@ public:
 	inline void initialize(SQLHANDLE parent){
 		free();
 		SQLINTEGER rc=SQLAllocHandle(handle_id, parent, (handle_type*) &pHandle);
-    IAS_LOG(true,"Handle: "<<(void*)pHandle);
+    IAS_LOG(LogLevel::INSTANCE.isInfo(),"Handle: "<<(void*)pHandle);
 		//ODBCException::ThrowOnError("AllocateHandle",0,0,0);
 	}
 

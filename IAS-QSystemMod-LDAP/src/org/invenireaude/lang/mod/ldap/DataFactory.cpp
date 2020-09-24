@@ -34,7 +34,7 @@ QueryResult* DataFactory::createQueryResult(::org::invenireaude::lang::mod::ldap
 ::IAS::DM::DataFactory *DataFactory::getContaingDataFactory(){
 	return ::IAS::DM::Gen::DataFactory::GetInstance();
 }
-DataFactory::DataFactory(){::IAS::DM::AG::Impl::DataFactoryInitalizer_1599145947::GetInstance();}
+DataFactory::DataFactory(){::IAS::DM::AG::Impl::DataFactoryInitalizer_1600450595::GetInstance();}
 DataFactory::~DataFactory()throw(){}
 
 } /* ldap */

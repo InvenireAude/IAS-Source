@@ -37,8 +37,8 @@ RawFormatter::RawFormatter(const DM::DataFactory* pDataFactory):pDataFactory(pDa
 RawFormatter::~RawFormatter() throw(){
 	IAS_TRACER;
 
-	//IAS_LOG(true,"Parsing:       "<<tsrParsing);
-	//IAS_LOG(true,"Serializing:   "<<tsrSerialization);
+	//IAS_LOG(LogLevel::INSTANCE.isInfo(),"Parsing:       "<<tsrParsing);
+	//IAS_LOG(LogLevel::INSTANCE.isInfo(),"Serializing:   "<<tsrSerialization);
 
 }
 

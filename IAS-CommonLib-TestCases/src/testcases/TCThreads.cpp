@@ -1,14 +1,14 @@
 /*
  * File: IAS-CommonLib-TestCases/src/testcases/TCThreads.cpp
- * 
+ *
  * Copyright (C) 2015, Albert Krzymowski
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  * http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -85,7 +85,7 @@ void TCThreads::MyThread::iterate(int i) {
 //	::IAS::MemoryManagerFactoryBT<int>::PtrHolder p;
 //	p=::IAS::MemoryManagerFactoryBT<int>::CreateTab(10);
 
-	IAS_LOG(true,"I:"<<iStart<<","<<((unsigned int)pthread_self())<<","<<ptrObject->strInfo);
+	IAS_LOG(LogLevel::INSTANCE.isInfo(),"I:"<<iStart<<","<<((unsigned int)pthread_self())<<","<<ptrObject->strInfo);
 	int *pp;
 //  IAS_MEM_NEW(pp,int); //waisted
 //	IAS_MEM_NEW(p,int);
@@ -108,12 +108,12 @@ void TCThreads::MyThread::iterate(int i) {
 TCThreads::Object::Object(){
 	IAS_TRACER;
 	strInfo=TypeTools::IntToString(pthread_self());
-	IAS_LOG(true,"\nCreated: "<<((unsigned int)pthread_self())<<", "<<(void*)this<<std::endl);
+	IAS_LOG(LogLevel::INSTANCE.isInfo(),"\nCreated: "<<((unsigned int)pthread_self())<<", "<<(void*)this<<std::endl);
 }
 /*************************************************************************/
 TCThreads::Object::~Object(){
 	IAS_TRACER
-	IAS_LOG(true,"\nDestroyed: "<<((unsigned int)pthread_self())<<", "<<(void*)this<<strInfo);
+	IAS_LOG(LogLevel::INSTANCE.isInfo(),"\nDestroyed: "<<((unsigned int)pthread_self())<<", "<<(void*)this<<strInfo);
 }
 /*************************************************************************/
 }

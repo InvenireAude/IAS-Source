@@ -43,7 +43,7 @@ MemoryManager::~MemoryManager() throw(){
 void MemoryManager::setAllocatorForData(IAS::Allocator* pAllocator){
 	IAS_TRACER;
 
-//	IAS_LOG(true,"NN:"<<(void*)pAllocator);
+//	IAS_LOG(LogLevel::INSTANCE.isInfo(),"NN:"<<(void*)pAllocator);
 //	IAS_MY_STACK().printStack(std::cerr);
 	IAS_CHECK_IF_NULL(pAllocator);
 	this->pAllocatorForData=pAllocator;

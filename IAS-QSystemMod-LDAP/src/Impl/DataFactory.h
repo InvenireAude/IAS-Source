@@ -14,15 +14,15 @@ namespace IAS {
 namespace DM {
 namespace AG {
 namespace Impl {
-class DataFactoryInitalizer_1599145947 :
-   public IAS::InstanceFeatureWithFactory< IAS::DM::Impl::ModelAllocator<DataFactoryInitalizer_1599145947>, DataFactoryInitalizer_1599145947 >{
+class DataFactoryInitalizer_1600450595 :
+   public IAS::InstanceFeatureWithFactory< IAS::DM::Impl::ModelAllocator<DataFactoryInitalizer_1600450595>, DataFactoryInitalizer_1600450595 >{
 public:
 
-	virtual ~DataFactoryInitalizer_1599145947() throw();
+	virtual ~DataFactoryInitalizer_1600450595() throw();
 
 protected:
-	DataFactoryInitalizer_1599145947();
-   friend class IAS::Factory< DataFactoryInitalizer_1599145947 >;
+	DataFactoryInitalizer_1600450595();
+   friend class IAS::Factory< DataFactoryInitalizer_1600450595 >;
 
 };
 

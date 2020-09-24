@@ -32,7 +32,7 @@ Output::~Output() throw(){
 /*************************************************************************/
 void Output::addOutput(const String& strTag, DM::Tools::Setter *pSetter){
 	IAS_TRACER;
- IAS_LOG(true,"Output:"<<strTag);
+ IAS_LOG(LogLevel::INSTANCE.isInfo(),"Output:"<<strTag);
 	tabOutputHolders.push_back(Holder::Base::Create(&statement,pSetter,false));
 	tabOutputHolders.back()->bind(iNum++,SQL_PARAM_OUTPUT);
 	tabOutputHolders.back()->define(tabOutputHolders.size()+tabInputOutputHolders.size());
@@ -41,7 +41,7 @@ void Output::addOutput(const String& strTag, DM::Tools::Setter *pSetter){
 /*************************************************************************/
 void Output::addInputOutput(const String& strTag, DM::Tools::Setter *pSetter){
 	IAS_TRACER;
-IAS_LOG(true,"InputOutput:"<<strTag);
+IAS_LOG(LogLevel::INSTANCE.isInfo(),"InputOutput:"<<strTag);
 	tabInputOutputHolders.push_back(Holder::Base::Create(&statement,pSetter,false));
 	tabInputOutputHolders.back()->bind(iNum++,SQL_PARAM_INPUT_OUTPUT);
 	tabInputOutputHolders.back()->define(tabOutputHolders.size()+tabInputOutputHolders.size());
@@ -71,14 +71,14 @@ void Output::fetch(DM::DataObjectPtr& dm){
 	for(Holder::Base::Table::iterator it=tabOutputHolders.begin();
 		it != tabOutputHolders.end(); it++){
 
-    IAS_LOG(true,"Fetching1");
+    IAS_LOG(LogLevel::INSTANCE.isInfo(),"Fetching1");
 		(*it)->fetch(dm);
 	}
 
 	for(Holder::Base::Table::iterator it=tabInputOutputHolders.begin();
 		it != tabInputOutputHolders.end(); it++){
 
-IAS_LOG(true,"Fetching2");
+IAS_LOG(LogLevel::INSTANCE.isInfo(),"Fetching2");
 		(*it)->fetch(dm);
 	}
 

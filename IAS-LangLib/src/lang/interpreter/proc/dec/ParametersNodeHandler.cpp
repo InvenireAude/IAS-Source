@@ -70,7 +70,7 @@ void ParametersNodeHandler::call(const Model::Node* pNode,
 	}	catch(ProcessorLinkedException& e){
 			throw e;
 	}catch(Exception& e){
-      IAS_LOG(true,(*itDeclarations)->getVariable());
+      IAS_LOG(LogLevel::INSTANCE.isInfo(),(*itDeclarations)->getVariable());
 			IAS_THROW(ProcessorLinkedException(e,(*itDeclarations)->getSourceLocation(),*itDeclarations));
 	}
 

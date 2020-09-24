@@ -1,14 +1,14 @@
 /*
  * File: IAS-CommonLib/src/commonlib/logger/logger.h
- * 
+ *
  * Copyright (C) 2015, Albert Krzymowski
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  * http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -18,7 +18,7 @@
 /* IAS_COPYRIGHT */
 
 /* ChangeLog:
- * 
+ *
  */
 
 #ifndef IASLOGGER_H_
@@ -43,22 +43,22 @@
  if(i){ \
 	std::stringstream ss; ss<<s;       \
 	IAS::Logger::GetInstance()->addEntry(__FUNCTION__,__FILE__,__LINE__,ss.str().c_str()); \
-	};       
+	};
 
 #define IAS_ENTER_FUN(i,sFun,sFile,iLine)                      \
  if(i){                              \
     IAS::Logger::GetInstance()->addEntry(sFun,sFile,iLine,(">> Entering")); \
-	};       
+	};
 
 #define IAS_LEAVE_FUN(i,sFun,sFile,iLine)                      \
  if(i){                              \
 	IAS::Logger::GetInstance()->addEntry(sFun,sFile,iLine,(">> Leaving")); \
-	};       
+	};
 
 #define IAS_THROW(e)              \
   {IAS_LOG(::IAS::LogLevel::INSTANCE.isExceptionThrow(),"Exception !!!"); \
    throw e; }
- 
+
 
 #define IAS_REPORT_EXCEPTION(e)                         \
 {  if(::IAS::LogLevel::INSTANCE.isReportedExceptions()){  \

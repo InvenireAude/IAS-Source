@@ -35,7 +35,7 @@ OutputDriver::OutputDriver(const API::Destination& destination):
 	IAS_TRACER;
 
 
-	//IAS_LOG(true,strFileName);
+	//IAS_LOG(LogLevel::INSTANCE.isInfo(),strFileName);
 
 	if(strFileName.compare("/stdout") == 0){
 		osp = &std::cout;

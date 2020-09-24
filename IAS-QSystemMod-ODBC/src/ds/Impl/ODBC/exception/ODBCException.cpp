@@ -101,7 +101,7 @@ void ODBCException::ThrowOnError(const String& strInfo,
    SQLINTEGER sqlcode;
 
   _getDiagnostics(type, handle, ssInfo, sqlcode);
-  IAS_LOG(true, rc<<" "+ssInfo.str());
+  IAS_LOG(LogLevel::INSTANCE.isInfo(), rc<<" "+ssInfo.str());
 	IAS_THROW(ODBCException(ssInfo.str(),rc));
 
 /* 	switch(rc){

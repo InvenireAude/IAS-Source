@@ -97,7 +97,7 @@ void* FixedObjectPoolMemoryManager::allocate(size_t n){
 
 	Mutex::Locker locker(refMutex(), tsrMutexWaits);
 	AutoTimeSample sample(tsrAllocations,LogLevel::INSTANCE.isProfile());
- 
+
   void *pResult = &(indexEntry(refTop()));
   refTop() = indexEntry(refTop());
 	return pResult;
@@ -134,7 +134,7 @@ void  FixedObjectPoolMemoryManager::free(const void* p){
 }
 /*************************************************************************/
 bool  FixedObjectPoolMemoryManager::check(const void* p){
-  IAS_LOG(true,"check:"<<bCheckPointersOnReturn);
+  IAS_LOG(LogLevel::INSTANCE.isInfo(),"check:"<<bCheckPointersOnReturn);
   if(!isPointerSane(p))
     return false;
 

@@ -43,8 +43,8 @@ TemplateFormatter::TemplateFormatter(const DM::DataFactory* pDataFactory):pDataF
 TemplateFormatter::~TemplateFormatter() throw(){
 	IAS_TRACER;
 
-	//IAS_LOG(true,"Parsing:       "<<tsrParsing);
-	//IAS_LOG(true,"Serializing:   "<<tsrSerialization);
+	//IAS_LOG(LogLevel::INSTANCE.isInfo(),"Parsing:       "<<tsrParsing);
+	//IAS_LOG(LogLevel::INSTANCE.isInfo(),"Serializing:   "<<tsrSerialization);
 
 }
 /*************************************************************************/

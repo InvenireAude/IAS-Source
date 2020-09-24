@@ -46,8 +46,8 @@ XMLFormatter::XMLFormatter(const DM::DataFactory* pDataFactory):pDataFactory(pDa
 XMLFormatter::~XMLFormatter() throw(){
 	IAS_TRACER;
 
-	//IAS_LOG(true,"Parsing:       "<<tsrParsing);
-	//IAS_LOG(true,"Serializing:   "<<tsrSerialization);
+	//IAS_LOG(LogLevel::INSTANCE.isInfo(),"Parsing:       "<<tsrParsing);
+	//IAS_LOG(LogLevel::INSTANCE.isInfo(),"Serializing:   "<<tsrSerialization);
 
 }
 /*************************************************************************/

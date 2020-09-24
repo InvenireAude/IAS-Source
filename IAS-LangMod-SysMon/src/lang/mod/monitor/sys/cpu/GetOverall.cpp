@@ -81,7 +81,7 @@ void GetOverall::readSample(DM::DataObjectPtr& dmSample)const{
 		ssLine>>ovNow.iWait;
 
 
-		IAS_LOG(true,ovNow.iUser);
+		IAS_LOG(LogLevel::INSTANCE.isInfo(),ovNow.iUser);
 		struct OverallValues ovTmp(ovNow);
 		ovNow-=ovOld;
 		ovOld=ovTmp;

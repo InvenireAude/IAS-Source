@@ -34,7 +34,7 @@ Text::~Text() throw(){
 void Text::fetch(DM::DataObjectPtr& dm){
 	IAS_TRACER;
 
-  IAS_LOG(true, "iStrLen:" <<(void*)iStrLenOrInd<<" "<<(long)iStrLenOrInd);
+  IAS_LOG(LogLevel::INSTANCE.isInfo(), "iStrLen:" <<(void*)iStrLenOrInd<<" "<<(long)iStrLenOrInd);
 
 	if(iStrLenOrInd == SQL_NULL_DATA || iStrLenOrInd==0xffffffff) {
 

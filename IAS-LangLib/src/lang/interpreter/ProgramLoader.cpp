@@ -108,9 +108,9 @@ const Interpreter::Exe::Program* ProgramLoader::getExecutable(const String& strP
 	IAS_TRACER;
 
 	if(::IAS::Lang::LogLevel::INSTANCE.isInfo()){
-		IAS_LOG(true,"getExecutable: "<<strProgramName<<", no. of args: "<<lstTypes.size());
+		IAS_LOG(LogLevel::INSTANCE.isInfo(),"getExecutable: "<<strProgramName<<", no. of args: "<<lstTypes.size());
 		for(TypeList::const_iterator it = lstTypes.begin(); it != lstTypes.end(); it++)
-			IAS_LOG(true,(*it)->getFullName());
+			IAS_LOG(LogLevel::INSTANCE.isInfo(),(*it)->getFullName());
 	}
 
 	ProgramList lstOutput;

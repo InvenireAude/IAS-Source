@@ -41,8 +41,8 @@ JSONFormatter::JSONFormatter(const DM::DataFactory* pDataFactory):pDataFactory(p
 JSONFormatter::~JSONFormatter() throw(){
 	IAS_TRACER;
 
-	//IAS_LOG(true,"Parsing:       "<<tsrParsing);
-	//IAS_LOG(true,"Serializing:   "<<tsrSerialization);
+	//IAS_LOG(LogLevel::INSTANCE.isInfo(),"Parsing:       "<<tsrParsing);
+	//IAS_LOG(LogLevel::INSTANCE.isInfo(),"Serializing:   "<<tsrSerialization);
 
 }
 /*************************************************************************/
