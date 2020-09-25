@@ -27,7 +27,12 @@ public:
 
 	virtual ~SequencedInput() throw();
 
-	void next(void* &pData, PacketSizeType& iDataSize);
+	void* receive(PacketSizeType& iDataSize);
+
+  template<class C>
+   inline C* receive(PacketSizeType& iDataSize){
+      return reinterpret_cast<C*>(receive(iDataSize));
+    }
 
 	void setup();
 

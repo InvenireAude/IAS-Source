@@ -26,7 +26,7 @@ SequencedBase::SequencedBase(const EndPoint& endPoint,
  	WireData *pWireData = tabBuffer;
 
 	for(int iIdx = 0; iIdx < iBufferSize; iIdx++, pWireData++){
-		pWireData->pPacket = allocatePacket();
+		pWireData->pPacket = 0;
 		pWireData->iSize   = 0;
 	}
 
@@ -44,7 +44,7 @@ SequencedBase::~SequencedBase() throw(){
 /*************************************************************************/
 void *SequencedBase::allocatePacket(){
 	IAS_TRACER;
-  return pAllocator->allocate(iMaxPacketSize + sizeof(IndexType));
+  return pAllocator->allocate(iMaxPacketSize);
 }
 /*************************************************************************/
 }

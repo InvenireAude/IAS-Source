@@ -49,7 +49,7 @@ void SequencedInput::receiveFromNet(IndexType iMaxPrefetch){
 
     WireDataHolder wd(pAllocator);
 
-    wd.pPacket = pAllocator->allocate(iMaxPacketSize + sizeof(IndexType));
+    wd.pPacket = allocatePacket();
 
 		receiver.receive(wd.pPacket,
 						         iMaxPacketSize + sizeof(IndexType),
@@ -85,7 +85,7 @@ void SequencedInput::receiveFromNet(IndexType iMaxPrefetch){
 
 }
 /*************************************************************************/
-void SequencedInput::next(void* &pData, PacketSizeType& iDataSize){
+void* SequencedInput::receive(PacketSizeType& iDataSize){
 	IAS_TRACER;
 
    Mutex::Locker locker(mutex);
@@ -94,7 +94,7 @@ void SequencedInput::next(void* &pData, PacketSizeType& iDataSize){
        receiveFromNet(iBufferSize);
   }
 
-	pData = pNetwork->pPacket;
+	void *pData = pNetwork->pPacket;
   iDataSize = pNetwork->iSize;
   pNetwork->pPacket = NULL;
   pNetwork->iSize   = 0;
@@ -105,6 +105,7 @@ void SequencedInput::next(void* &pData, PacketSizeType& iDataSize){
 
   ++iNetworkSequence;
 
+  return pData;
 }
 /*************************************************************************/
 void SequencedInput::sendWhoHas(IndexType iStartSequence, IndexType iEndSequence){

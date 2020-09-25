@@ -1,4 +1,4 @@
-#Thu 24 Sep 2020 06:15:34 PM CEST
+#Fri 25 Sep 2020 08:13:10 AM CEST
 FILES+=commonlib/configfile/Properties
 FILES+=commonlib/configfile/PropertiesProvider
 FILES+=commonlib/configfile/PropertiesProviderFromFile
@@ -65,7 +65,6 @@ FILES+=commonlib/net/mcast/Receiver
 FILES+=commonlib/net/mcast/Sender
 FILES+=commonlib/net/mcast/SequencedBase
 FILES+=commonlib/net/mcast/SequencedInput
-FILES+=commonlib/net/mcast/SequencedInputAsync
 FILES+=commonlib/net/mcast/SequencedOutput
 FILES+=commonlib/net/Peer
 FILES+=commonlib/net/PeerAddrInfo

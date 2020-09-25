@@ -40,19 +40,17 @@ void SequencedOutput::setup(){
 	IAS_LOG(LogLevel::INSTANCE.isInfo(), "SequencedOutput is ready: "<<iBufferSize);
 }
 /*************************************************************************/
-void* SequencedOutput::next(){
-	return pNetwork->pPacket;
-}
-/*************************************************************************/
-void  SequencedOutput::commit(PacketSizeType iSize){
+void  SequencedOutput::send(void* pPacket, PacketSizeType iSize){
 
 	Mutex::Locker locker(Mutex);
 
-	pNetwork->iSize = iSize;
+  pNetwork->pPacket = pPacket;
+	pNetwork->iSize   = iSize;
 	pNetwork->setSequence(iNetworkSequence);
 
-
-	sender.send(pNetwork->pPacket, pNetwork->iSize + sizeof(IndexType));
+  static int i = 0;
+	if(i++ % 3 != 1)
+    sender.send(pNetwork->pPacket, pNetwork->iSize + sizeof(IndexType));
 
 	if(++pNetwork >= pBufferEnd)
 		pNetwork = tabBuffer;

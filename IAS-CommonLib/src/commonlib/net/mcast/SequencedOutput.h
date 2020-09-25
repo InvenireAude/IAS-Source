@@ -32,8 +32,8 @@ public:
 
 	virtual ~SequencedOutput() throw();
 
- 	void* next();
-	void commit(PacketSizeType iSize);
+
+	void send(void* pPacket, PacketSizeType iSize);
 
 	void setup();
 	void startRepeater();
