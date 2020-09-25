@@ -1,5 +1,5 @@
 /*
- * File: IAS-QSystemLib/src/qs/Impl/System.h
+ * MCast: IAS-QSystemLib/src/qs/Impl/sdf/file/System.h
  *
  * Copyright (C) 2015, Albert Krzymowski
  *
@@ -15,35 +15,46 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#ifndef _IAS_QS_Impl_System_H_
-#define _IAS_QS_Impl_System_H_
+#ifndef _IAS_QS_UDP_MCast_System_H_
+#define _IAS_QS_UDP_MCast_System_H_
 
-#include <org/invenireaude/qsystem/workers/Connection.h>
+#include "../System.h"
 
 namespace IAS {
 namespace QS {
+namespace UDP {
+namespace MCast {
 
-namespace API{
-class Connection;
-class IAdministration;
-}
-
-namespace Impl {
+class InputDriver;
+class OutputDriver;
 
 /*************************************************************************/
-/** The System class.
+/** The UDP class.
  *
  */
-class System {
+class System : public UDP::System {
 public:
-	virtual ~System() throw(){};
 
-	virtual API::Connection* createConnection(const ::org::invenireaude::qsystem::workers::Connection* dmConnection)=0;
+	virtual ~System() throw();
 
+	virtual UDP::InputDriver*  createInputDriver(const ::org::invenireaude::qsystem::workers::Connection* dmConnection,
+                                              const API::Destination& destination);
+
+	virtual UDP::OutputDriver* createOutputDriver(const ::org::invenireaude::qsystem::workers::Connection* dmConnection,
+                                              const API::Destination& destination);
+
+
+protected:
+
+	System();
+
+	friend class IAS::Factory<System>;
 };
 /*************************************************************************/
+
+}
 }
 }
 }
 
-#endif /* _IAS_QS_Impl_System_H_ */
+#endif /* _IAS_QS_UDP_MCast_System_H_ */

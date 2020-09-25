@@ -1,14 +1,14 @@
 /*
  * File: IAS-CommonLib/src/commonlib/tools/Buffer.cpp
- * 
+ *
  * Copyright (C) 2015, Albert Krzymowski
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  * http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -53,31 +53,6 @@ void Buffer::reserve(size_t iSize){
 	this->iSize=iSize;
 }
 /*************************************************************************/
-struct MemHolder {
-
-	MemHolder(void* p, Allocator *ma) :
-			p(p),ma(ma) {
-	}
-
-	~MemHolder() {
-		if(p)
-			ma->free(p);
-	}
-
-	operator void*(){
-		return p;
-	}
-
-	void* pass() {
-		void* tmp = p;
-		p = 0;
-		return tmp;
-	}
-
-	void* p;
-	Allocator *ma;
-};
-/*************************************************************************/
 void Buffer::resize(size_t iSize){
 
 	IAS_LOG(LogLevel::INSTANCE.isDetailedInfo(),"Resizing from:"<<this->iSize<<" to "<<iSize);
@@ -115,6 +90,18 @@ void *Buffer::getBuffer<void>(){
 	if(iSize)
 		return pData;
 	IAS_THROW(InternalException("Buffer is empty."))
+}
+/*************************************************************************/
+void* Buffer::pass(){
+
+  MemHolder mh(pData, ma);
+
+  pData = NULL;
+
+  if(iSize)
+    pData = ma->allocate(iSize);
+
+  return mh.pass();
 }
 /*************************************************************************/
 

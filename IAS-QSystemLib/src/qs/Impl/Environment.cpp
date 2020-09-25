@@ -1,14 +1,14 @@
 /*
  * File: IAS-QSystemLib/src/qs/Impl/Environment.cpp
- * 
+ *
  * Copyright (C) 2015, Albert Krzymowski
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  * http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -37,6 +37,10 @@
 
 #include <qs/Impl/net/async/System.h>
 #include <qs/Impl/net/async/http/System.h>
+
+#include <qs/Impl/udp/mcast/System.h>
+#include <qs/Impl/udp/mbus/System.h>
+
 #include <algorithm>
 #include <unistd.h>
 
@@ -92,6 +96,10 @@ API::Connection* Environment::connect(const ::org::invenireaude::qsystem::worker
 				hmSystems[strProtocol]=IAS_DFT_FACTORY<QS::Net::Sync::Server::HTTP::System>::Create();
 		}else if(strProtocol.compare("asrvhttp") == 0){
 			hmSystems[strProtocol]=IAS_DFT_FACTORY<QS::Net::Async::HTTP::System>::Create();
+		}else if(strProtocol.compare("mcast") == 0){
+			hmSystems[strProtocol]=IAS_DFT_FACTORY<QS::UDP::MCast::System>::Create();
+		}else if(strProtocol.compare("mbus") == 0){
+			hmSystems[strProtocol]=IAS_DFT_FACTORY<QS::UDP::MBus::System>::Create();
 		}else{
 			try{
 				hmSystems[strProtocol]=(*(getFactory(strProtocol)))();

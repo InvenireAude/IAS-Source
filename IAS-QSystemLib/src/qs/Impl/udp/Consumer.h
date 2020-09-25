@@ -1,49 +1,51 @@
 /*
- * File: IAS-QSystemLib/src/qs/Impl/System.h
- *
+ * File: IAS-QSystemLib/src/qs/Impl/sdf/Consumer.h
+ * 
  * Copyright (C) 2015, Albert Krzymowski
- *
+ * 
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- *
+ * 
  * http://www.apache.org/licenses/LICENSE-2.0
- *
+ * 
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#ifndef _IAS_QS_Impl_System_H_
-#define _IAS_QS_Impl_System_H_
+#ifndef _IAS_QS_UDP_Consumer_H_
+#define _IAS_QS_UDP_Consumer_H_
 
-#include <org/invenireaude/qsystem/workers/Connection.h>
+#include <qs/api/Consumer.h>
+#include "Receiver.h"
 
 namespace IAS {
 namespace QS {
-
-namespace API{
-class Connection;
-class IAdministration;
-}
-
-namespace Impl {
+namespace UDP {
 
 /*************************************************************************/
-/** The System class.
+/** The Consumer class.
  *
  */
-class System {
+class Consumer :
+		public Receiver,
+		public virtual API::Consumer {
 public:
-	virtual ~System() throw(){};
 
-	virtual API::Connection* createConnection(const ::org::invenireaude::qsystem::workers::Connection* dmConnection)=0;
+	virtual ~Consumer() throw();
 
+
+protected:
+	Consumer(Session* pSession, const API::Destination& refDestination);
+
+	friend class Factory<Consumer>;
 };
+
 /*************************************************************************/
 }
 }
 }
 
-#endif /* _IAS_QS_Impl_System_H_ */
+#endif /* _IAS_QS_UDP_Consumer_H_ */

@@ -1,5 +1,5 @@
 /*
- * File: IAS-QSystemLib/src/qs/Impl/System.h
+ * MBus: IAS-QSystemLib/src/qs/Impl/sdf/file/OutputDriver.h
  *
  * Copyright (C) 2015, Albert Krzymowski
  *
@@ -15,35 +15,49 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#ifndef _IAS_QS_Impl_System_H_
-#define _IAS_QS_Impl_System_H_
+#ifndef _IAS_QS_UDP_MBus_OutputDriver_H_
+#define _IAS_QS_UDP_MBus_OutputDriver_H_
 
-#include <org/invenireaude/qsystem/workers/Connection.h>
+#include <commonlib/commonlib.h>
+#include "../Driver.h"
+#include <qs/api.h>
 
 namespace IAS {
 namespace QS {
-
-namespace API{
-class Connection;
-class IAdministration;
-}
-
-namespace Impl {
+namespace UDP {
+namespace MBus {
 
 /*************************************************************************/
-/** The System class.
+/** The OutputDriver class.
  *
  */
-class System {
+class OutputDriver : public UDP::OutputDriver {
 public:
-	virtual ~System() throw(){};
 
-	virtual API::Connection* createConnection(const ::org::invenireaude::qsystem::workers::Connection* dmConnection)=0;
+	virtual ~OutputDriver() throw();
 
+	virtual bool send(Message* pMessage);
+
+protected:
+
+	OutputDriver(const ::org::invenireaude::qsystem::workers::Connection* dmConnection, const API::Destination& destination);
+
+	String strMBusName;
+	int    iCount;
+
+  API::Destination            destination;
+	Mutex mutex;
+
+  Buffer buffer;
+  IAS_DFT_FACTORY<Net::MCast::SequencedOutput>::PtrHolder ptrOutput;
+
+	friend class Factory<OutputDriver>;
 };
+
 /*************************************************************************/
 }
 }
 }
+}
 
-#endif /* _IAS_QS_Impl_System_H_ */
+#endif /* _IAS_QS_UDP_MBus_OutputDriver_H_ */

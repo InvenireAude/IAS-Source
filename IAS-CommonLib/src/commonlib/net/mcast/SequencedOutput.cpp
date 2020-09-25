@@ -48,9 +48,9 @@ void  SequencedOutput::send(void* pPacket, PacketSizeType iSize){
 	pNetwork->iSize   = iSize;
 	pNetwork->setSequence(iNetworkSequence);
 
-  static int i = 0;
-	if(i++ % 3 != 1)
-    sender.send(pNetwork->pPacket, pNetwork->iSize + sizeof(IndexType));
+  IAS_LOG(LogLevel::INSTANCE.isDetailedInfo(), "iNetworkSequence: "<<iNetworkSequence);
+
+  sender.send(pNetwork->pPacket, pNetwork->iSize + sizeof(IndexType));
 
 	if(++pNetwork >= pBufferEnd)
 		pNetwork = tabBuffer;
@@ -74,6 +74,8 @@ void SequencedOutput::serveWhoHas(const WhoHasMessage& message){
   IndexType iMsgSequence = message.iStartSequence;
 
 	while(iDataLeft-- > 0){
+
+    IAS_LOG(LogLevel::INSTANCE.isDetailedInfo(), "Repeat: "<<iMsgSequence);
 
 		Mutex::Locker locker(Mutex);
 

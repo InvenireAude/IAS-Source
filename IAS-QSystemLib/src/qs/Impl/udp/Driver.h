@@ -1,5 +1,5 @@
 /*
- * File: IAS-QSystemLib/src/qs/Impl/System.h
+ * File: IAS-QSystemLib/src/qs/Impl/sdf/Driver.h
  *
  * Copyright (C) 2015, Albert Krzymowski
  *
@@ -15,35 +15,38 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#ifndef _IAS_QS_Impl_System_H_
-#define _IAS_QS_Impl_System_H_
+#ifndef _IAS_QS_UDP_Driver_H_
+#define _IAS_QS_UDP_Driver_H_
 
-#include <org/invenireaude/qsystem/workers/Connection.h>
+#include <commonlib/commonlib.h>
+
+#include <qs/api/Attributes.h>
 
 namespace IAS {
 namespace QS {
+namespace UDP {
 
-namespace API{
-class Connection;
-class IAdministration;
-}
-
-namespace Impl {
-
+class Message;
 /*************************************************************************/
-/** The System class.
- *
- */
-class System {
+class InputDriver  {
 public:
-	virtual ~System() throw(){};
+	virtual ~InputDriver(){};
 
-	virtual API::Connection* createConnection(const ::org::invenireaude::qsystem::workers::Connection* dmConnection)=0;
+	virtual Message* receive(int iTimeWait, API::Attributes* pSelector)=0;
+	virtual unsigned int skip(unsigned int iOffset)=0;
 
+	void updateFormat(Message *pMessage, const String& strFileName);
+};
+/*************************************************************************/
+class OutputDriver  {
+public:
+	virtual ~OutputDriver(){};
+
+	virtual bool send(Message* pMessage)=0;
 };
 /*************************************************************************/
 }
 }
 }
 
-#endif /* _IAS_QS_Impl_System_H_ */
+#endif /* _IAS_QS_UDP_Driver_H_ */

@@ -1,14 +1,14 @@
 /*
  * File: IAS-CommonLib/src/commonlib/tools/Buffer.h
- * 
+ *
  * Copyright (C) 2015, Albert Krzymowski
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  * http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -50,11 +50,38 @@ class Buffer{
 		template<typename T>
 		Buffer& operator =(const T& v){ *(getBuffer<T>())=v;  return *this;}
 
+    void* pass();
+
 	protected:
 		void  *pData;
 		size_t iSize;
 
 		Allocator* ma;
+
+struct MemHolder {
+
+	MemHolder(void* p, Allocator *ma) :
+			p(p),ma(ma) {
+	}
+
+	~MemHolder() {
+		if(p)
+			ma->free(p);
+	}
+
+	operator void*(){
+		return p;
+	}
+
+	void* pass() {
+		void* tmp = p;
+		p = 0;
+		return tmp;
+	}
+
+	void* p;
+	Allocator *ma;
+};
 
 	friend class Factory<Buffer>;
 };

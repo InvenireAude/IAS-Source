@@ -1,5 +1,5 @@
 /*
- * File: IAS-QSystemLib/src/qs/Impl/System.h
+ * MCast: IAS-QSystemLib/src/qs/Impl/sdf/file/InputDriver.h
  *
  * Copyright (C) 2015, Albert Krzymowski
  *
@@ -15,35 +15,46 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#ifndef _IAS_QS_Impl_System_H_
-#define _IAS_QS_Impl_System_H_
+#ifndef _IAS_QS_UDP_MCast_InputDriver_H_
+#define _IAS_QS_UDP_MCast_InputDriver_H_
 
-#include <org/invenireaude/qsystem/workers/Connection.h>
+#include <qs/api.h>
+
+#include "../Driver.h"
 
 namespace IAS {
 namespace QS {
-
-namespace API{
-class Connection;
-class IAdministration;
-}
-
-namespace Impl {
+namespace UDP {
+namespace MCast {
 
 /*************************************************************************/
-/** The System class.
+/** The InputDriver class.
  *
  */
-class System {
+class InputDriver : public UDP::InputDriver {
 public:
-	virtual ~System() throw(){};
 
-	virtual API::Connection* createConnection(const ::org::invenireaude::qsystem::workers::Connection* dmConnection)=0;
+	virtual ~InputDriver() throw();
 
+	virtual Message* receive(int iTimeWait, API::Attributes* pSelector);
+
+  virtual unsigned int skip(unsigned int iOffset);
+
+protected:
+	InputDriver(const ::org::invenireaude::qsystem::workers::Connection* dmConnection,
+              const API::Destination& destination);
+
+  Net::MCast::Receiver receiver;
+  API::Destination   destination;
+
+  Buffer buffer;
+	friend class Factory<InputDriver>;
 };
+
 /*************************************************************************/
 }
 }
 }
+}
 
-#endif /* _IAS_QS_Impl_System_H_ */
+#endif /* _IAS_QS_UDP_MCast_InputDriver_H_ */
