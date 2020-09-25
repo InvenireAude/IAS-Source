@@ -1,14 +1,14 @@
 /*
  * File: IAS-CommonLib/src/commonlib/net/mcast/Sender.cpp
- * 
+ *
  * Copyright (C) 2020, Albert Krzymowski
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  * http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -45,7 +45,7 @@ Sender::~Sender() throw(){
 /*************************************************************************/
 void Sender::setup(const String& strInterface, const String& strGroup){
 	IAS_TRACER;
-	
+
 	struct in_addr localInterface;
     localInterface.s_addr = inet_addr(strInterface.c_str());
 
@@ -63,7 +63,7 @@ void Sender::send(const void *pData, size_t iDataSize, size_t& iWritten){
 	IAS_TRACER;
 
 	ssize_t iResult = 0;
-	
+
 	if(LogLevel::INSTANCE.isData()){
 		String strData;
 		for(int i=0;i<iDataSize;i++)
@@ -78,7 +78,7 @@ void Sender::send(const void *pData, size_t iDataSize, size_t& iWritten){
 
 	if(iResult < 0){
 		IAS_LOG(LogLevel::INSTANCE.isError(),"SEND:"<<(void*)pData<<"len="<<iDataSize);
-		IAS_THROW(SystemException("read",errno));
+		IAS_THROW(SystemException("write",errno));
 	}
 
 	iWritten = iResult;
