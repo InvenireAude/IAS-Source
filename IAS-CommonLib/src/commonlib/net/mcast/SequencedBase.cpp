@@ -19,15 +19,14 @@ SequencedBase::SequencedBase(const EndPoint& endPoint,
 	endPoint(endPoint),
 	pAllocator(pAllocator),
   iBufferSize(iBufferSize),
-  iMaxPacketSize(iMaxPacketSize),
-	iSequence(0){
+  iMaxPacketSize(iMaxPacketSize){
 	IAS_TRACER;
 
 	tabBuffer = IAS_DFT_STATIC_FACTORY<WireData>().allocate(iBufferSize);
  	WireData *pWireData = tabBuffer;
 
 	for(int iIdx = 0; iIdx < iBufferSize; iIdx++, pWireData++){
-		pWireData->pPacket = pAllocator->allocate(iMaxPacketSize + sizeof(IndexType));
+		pWireData->pPacket = allocatePacket();
 		pWireData->iSize   = 0;
 	}
 
@@ -36,7 +35,16 @@ SequencedBase::SequencedBase(const EndPoint& endPoint,
 /*************************************************************************/
 SequencedBase::~SequencedBase() throw(){
 	IAS_TRACER;
-	IAS_LOG(LogLevel::INSTANCE.isInfo(),"Last sequence: "<<iSequence);
+
+   WireData *pWireData = tabBuffer;
+  for(int iIdx = 0; iIdx < iBufferSize; iIdx++, pWireData++){
+		pWireData->unset(pAllocator);
+	}
+}
+/*************************************************************************/
+void *SequencedBase::allocatePacket(){
+	IAS_TRACER;
+  return pAllocator->allocate(iMaxPacketSize + sizeof(IndexType));
 }
 /*************************************************************************/
 }

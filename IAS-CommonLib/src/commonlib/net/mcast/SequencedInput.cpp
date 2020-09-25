@@ -19,10 +19,11 @@ SequencedInput::SequencedInput( const EndPoint& endPoint,
 	SequencedBase(endPoint, iBufferSize, iMaxPacketSize, pAllocator),
 	receiver(endPoint.getPort()),
 	sender(endPoint.getPort() + 1),
-	iWhoHasCount(0){
+	iWhoHasCount(0),
+  iNetworkSequence(0){
 	IAS_TRACER;
-	pNetwork = tabBuffer + (iSequence % iBufferSize);
-	iWhoHasMax = iSequence;
+	pNetwork = tabBuffer + (iNetworkSequence % iBufferSize);
+	iWhoHasMax = iNetworkSequence;
 }
 /*************************************************************************/
 SequencedInput::~SequencedInput() throw(){
@@ -43,55 +44,67 @@ void SequencedInput::setup(){
 void SequencedInput::receiveFromNet(IndexType iMaxPrefetch){
   IAS_TRACER;
 
-	  if(iWhoHasMax < iSequence)
-  		  iWhoHasMax = iSequence;
+    if(iWhoHasMax < iNetworkSequence)
+  		  iWhoHasMax = iNetworkSequence;
 
-    size_t iNetDataLen;
+    WireDataHolder wd(pAllocator);
 
-		receiver.receive(pNetwork->pPacket,
-						 iMaxPacketSize + sizeof(IndexType),
-						 iNetDataLen);
+    wd.pPacket = pAllocator->allocate(iMaxPacketSize + sizeof(IndexType));
 
-		pNetwork->iSize = iNetDataLen - sizeof(IndexType);
+		receiver.receive(wd.pPacket,
+						         iMaxPacketSize + sizeof(IndexType),
+						         wd.iSize);
 
-		IndexType iMsgSequence = pNetwork->getSequence();
+    if(wd.iSize <= sizeof(IndexType))
+        return;
 
-		IAS_LOG(LogLevel::INSTANCE.isDetailedInfo(), "Received! expected: "<<iSequence<<", got: "<<iMsgSequence);
+		wd.iSize -= sizeof(IndexType);
 
-		if(iMsgSequence > iSequence && iMsgSequence < iSequence + iMaxPrefetch){
+		IndexType iMsgSequence = wd.getSequence();
 
-			pNetwork->swap(tabBuffer[ iMsgSequence  % iBufferSize ]);
+		IAS_LOG(LogLevel::INSTANCE.isDetailedInfo(), "Received! expected: "<<iNetworkSequence<<", got: "<<iMsgSequence);
 
-      IAS_LOG(LogLevel::INSTANCE.isDetailedInfo(), "Swaping: "<<iSequence<<", with "<<(iMsgSequence  % iBufferSize));
+		if(iMsgSequence >= iNetworkSequence && iMsgSequence < iNetworkSequence + iMaxPrefetch){
 
-      pNetwork->setSequence(-1);
+      WireData *pTarget = tabBuffer + (iMsgSequence  % iBufferSize);
 
-			if(iMsgSequence > iWhoHasMax){
-				sendWhoHas(iWhoHasMax, iMsgSequence);
-				iWhoHasMax = iMsgSequence;
-			}
+     // Mutex::Locker locker(mutex);
+
+      if(!pTarget->hasData() || pTarget->getSequence() < iNetworkSequence){
+
+        pTarget->unset(pAllocator);
+        pTarget->set(wd.release(), wd.iSize);
+        IAS_LOG(LogLevel::INSTANCE.isDetailedInfo(), "Setting prefetch at: "<<(iMsgSequence  % iBufferSize));
+
+			  if(iMsgSequence > iWhoHasMax){ //TODO do need lock for this
+				  sendWhoHas(iWhoHasMax, iMsgSequence);
+				  iWhoHasMax = iMsgSequence;
+			  }
+      }
     }
 
 }
 /*************************************************************************/
-const SequencedBase::WireData& SequencedInput::next(){
+void SequencedInput::next(void* &pData, PacketSizeType& iDataSize){
 	IAS_TRACER;
 
-  Mutex::Locker locker(mutex);
+   Mutex::Locker locker(mutex);
 
-	while(!pNetwork->hasData() || pNetwork->getSequence() != iSequence){
-      receiveFromNet(iBufferSize);
-	}
+  while(!pNetwork->hasData() || pNetwork->getSequence() != iNetworkSequence){
+       receiveFromNet(iBufferSize);
+  }
 
-	iSequence++;
+	pData = pNetwork->pPacket;
+  iDataSize = pNetwork->iSize;
+  pNetwork->pPacket = NULL;
+  pNetwork->iSize   = 0;
 
-	WireData *pResult = pNetwork;
+ 	if(++pNetwork >= pBufferEnd){
+	  	pNetwork = tabBuffer;
+	  }
 
-	if(++pNetwork >= pBufferEnd){
-		pNetwork = tabBuffer;
-	}
+  ++iNetworkSequence;
 
-	return *pResult;
 }
 /*************************************************************************/
 void SequencedInput::sendWhoHas(IndexType iStartSequence, IndexType iEndSequence){
@@ -101,7 +114,7 @@ void SequencedInput::sendWhoHas(IndexType iStartSequence, IndexType iEndSequence
 
 	iWhoHasCount++;
 
-	message.iStartSequence = iSequence;
+	message.iStartSequence = iStartSequence;
 	message.iEndSequence   = iEndSequence;
 
 	sender.send(&message, sizeof(WhoHasMessage));

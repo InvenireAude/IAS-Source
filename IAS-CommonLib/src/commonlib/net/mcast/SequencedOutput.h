@@ -58,7 +58,8 @@ protected:
 		friend class Factory<NetRepeater>;
 	};
 
-	WireData *pWriter;
+  IndexType iNetworkSequence;
+	WireData *pNetwork;
 
 	Receiver receiver;
 	Sender   sender;

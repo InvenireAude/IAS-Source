@@ -26,6 +26,7 @@ namespace MCast {
 /** The SequencedBase class.
  *
  */
+
 class SequencedBase {
 public:
 
@@ -34,22 +35,36 @@ public:
 	typedef size_t       IndexType;
 	typedef size_t       PacketSizeType;
 
-	struct WireData{
+protected:
+	SequencedBase(const EndPoint& endPoint,
+			 	        IndexType      iBufferSize,
+                PacketSizeType iMaxPacketSize,
+                Allocator     *pAllocator);
+
+	EndPoint        endPoint;
+	IndexType       iBufferSize;
+
+  struct WireData{
+
+    WireData():
+      pPacket(NULL),
+      iSize(0){}
 
 		void            *pPacket;
 		PacketSizeType  iSize;
 
+    void unset(Allocator  *pAllocator){
+      if(pPacket)
+        pAllocator->free(pPacket);
+    }
+
+    void set(void* pPacket, PacketSizeType  iSize){
+      this->pPacket = pPacket;
+      this->iSize   = iSize;
+    }
+
 		inline bool hasData()const{
 			return iSize != 0;
-		}
-
-		void swap(WireData& other){
-			WireData tmp;
-			tmp = other;
-			other.pPacket = this->pPacket;
-			other.iSize   = this->iSize;
-			this->pPacket = tmp.pPacket;
-			this->iSize   = tmp.iSize;
 		}
 
 		inline IndexType getSequence()const{
@@ -68,21 +83,28 @@ public:
 			*pSequence = iSequence;
 		}
 
-	};
+  };
 
-protected:
-	SequencedBase(const EndPoint& endPoint,
-			 	        IndexType      iBufferSize,
-                PacketSizeType iMaxPacketSize,
-                Allocator     *pAllocator);
+  struct WireDataHolder : public WireData {
 
-	EndPoint endPoint;
-	IndexType                 iBufferSize;
+    WireDataHolder(Allocator     *pAllocator):pAllocator(pAllocator){};
+    ~WireDataHolder(){
+        if(pPacket)
+          pAllocator->free(pPacket);
+      }
+
+    void *release(){
+      void *t = pPacket;
+      pPacket = 0;
+      return t;
+    }
+
+    Allocator     *pAllocator;
+  };
 
 	IAS_DFT_STATIC_FACTORY<WireData>::PtrHolder  tabBuffer;
 	WireData                                   *pBufferEnd;
 
-	IndexType      iSequence;
   Allocator     *pAllocator;
   PacketSizeType iMaxPacketSize;
 
@@ -91,7 +113,7 @@ protected:
 		IndexType iEndSequence;
 	};
 
-  protected:
+  void *allocatePacket();
 
 	friend class Factory<SequencedBase>;
 };

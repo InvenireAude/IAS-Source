@@ -27,7 +27,7 @@ public:
 
 	virtual ~SequencedInput() throw();
 
-	const WireData& next();
+	void next(void* &pData, PacketSizeType& iDataSize);
 
 	void setup();
 
@@ -37,7 +37,8 @@ protected:
                   PacketSizeType iMaxPacketSize,
                   Allocator     *pAllocator);
 
-	WireData *pNetwork;
+  IndexType iNetworkSequence;
+	WireData  *pNetwork;
 
 	Receiver receiver;
 	Sender   sender;
@@ -46,7 +47,6 @@ protected:
 	size_t    iWhoHasCount;
 
   void receiveFromNet(IndexType iMaxPrefetch);
-
 	void sendWhoHas(IndexType iStartSequence, IndexType iEndSequence);
 
 	Mutex mutex;

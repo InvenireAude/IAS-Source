@@ -18,10 +18,11 @@ SequencedOutput::SequencedOutput(const EndPoint& endPoint,
                                 Allocator     *pAllocator):
 	SequencedBase(endPoint, iBufferSize, iMaxPacketSize, pAllocator),
 	receiver(endPoint.getPort() + 1),
-	sender(endPoint.getPort()){
+	sender(endPoint.getPort()),
+  iNetworkSequence(0){
 	IAS_TRACER;
 
-	pWriter = tabBuffer + (iSequence % iBufferSize);
+	pNetwork = tabBuffer + (iNetworkSequence % iBufferSize);
 }
 /*************************************************************************/
 SequencedOutput::~SequencedOutput() throw(){
@@ -40,23 +41,23 @@ void SequencedOutput::setup(){
 }
 /*************************************************************************/
 void* SequencedOutput::next(){
-	return pWriter->pPacket;
+	return pNetwork->pPacket;
 }
 /*************************************************************************/
 void  SequencedOutput::commit(PacketSizeType iSize){
 
 	Mutex::Locker locker(Mutex);
 
-	pWriter->iSize = iSize;
-	pWriter->setSequence(iSequence);
+	pNetwork->iSize = iSize;
+	pNetwork->setSequence(iNetworkSequence);
 
 
-	sender.send(pWriter->pPacket, pWriter->iSize + sizeof(IndexType));
+	sender.send(pNetwork->pPacket, pNetwork->iSize + sizeof(IndexType));
 
-	if(++pWriter >= pBufferEnd)
-		pWriter = tabBuffer;
+	if(++pNetwork >= pBufferEnd)
+		pNetwork = tabBuffer;
 
-	iSequence++;
+	iNetworkSequence++;
 }
 /*************************************************************************/
 void SequencedOutput::serveWhoHas(const WhoHasMessage& message){
@@ -66,7 +67,7 @@ void SequencedOutput::serveWhoHas(const WhoHasMessage& message){
 
 		Mutex::Locker locker(Mutex);
 
-		if(message.iStartSequence + iBufferSize < iSequence )
+		if(message.iStartSequence + iBufferSize < iNetworkSequence )
 			return;
 	}
 
