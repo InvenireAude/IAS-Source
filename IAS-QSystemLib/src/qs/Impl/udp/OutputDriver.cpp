@@ -1,5 +1,5 @@
 /*
- * MCast: IAS-QSystemLib/src/qs/Impl/sdf/file/OutputDriver.h
+ * File: IAS-QSystemLib/src/qs/Impl/sdf/Driver.cpp
  *
  * Copyright (C) 2015, Albert Krzymowski
  *
@@ -15,49 +15,20 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#ifndef _IAS_QS_UDP_MCast_OutputDriver_H_
-#define _IAS_QS_UDP_MCast_OutputDriver_H_
-
-#include "../OutputDriver.h"
-
-#include <qs/api.h>
+#include "OutputDriver.h"
+#include<qs/log/LogLevel.h>
+#include "Message.h"
+#include "../base/Attributes.h"
 
 namespace IAS {
 namespace QS {
 namespace UDP {
-namespace MCast {
 
 /*************************************************************************/
-/** The OutputDriver class.
- *
- */
-class OutputDriver : public UDP::OutputDriver {
-public:
-
-	virtual ~OutputDriver() throw();
-
-	virtual bool send(Message* pMessage);
-
-protected:
-
-	OutputDriver(const ::org::invenireaude::qsystem::workers::Connection* dmConnection, const API::Destination& destination);
-
-	String strMCastName;
-	int    iCount;
-
-  Net::MCast::Sender sender;
-
-	Mutex mutex;
-
-  Buffer buffer;
-
-	friend class Factory<OutputDriver>;
-};
-
+OutputDriver::OutputDriver(const API::Destination& destination):
+  DriverBase(destination){};
 /*************************************************************************/
 }
 }
 }
-}
 
-#endif /* _IAS_QS_UDP_MCast_OutputDriver_H_ */

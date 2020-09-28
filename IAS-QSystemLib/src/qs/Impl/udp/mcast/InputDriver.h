@@ -20,7 +20,7 @@
 
 #include <qs/api.h>
 
-#include "../Driver.h"
+#include "../InputDriver.h"
 
 namespace IAS {
 namespace QS {
@@ -45,9 +45,7 @@ protected:
               const API::Destination& destination);
 
   Net::MCast::Receiver receiver;
-  API::Destination   destination;
 
-  Buffer buffer;
 	friend class Factory<InputDriver>;
 };
 

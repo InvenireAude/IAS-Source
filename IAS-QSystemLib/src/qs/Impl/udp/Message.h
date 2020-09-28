@@ -1,14 +1,14 @@
 /*
  * File: IAS-QSystemLib/src/qs/Impl/sdf/Message.h
- * 
+ *
  * Copyright (C) 2015, Albert Krzymowski
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  * http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -41,11 +41,11 @@ public:
 	virtual API::Content*    getContent();
 	virtual API::Attributes* getAttributes();
 
-	void write(std::ostream& os);
+	void write(Buffer& buffer, size_t &iDataLen, const String& strTopic);
 
 protected:
 	Message();
-	Message(std::istream& is);
+	Message(const char* pData, size_t iDataLen, QS::Base::Attributes* pAttributes);
 
 	IAS_DFT_FACTORY<Content>::PtrHolder ptrContent;
 	IAS_DFT_FACTORY<QS::Base::Attributes>::PtrHolder ptrAttributes;

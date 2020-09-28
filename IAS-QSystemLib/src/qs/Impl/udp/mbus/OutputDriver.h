@@ -19,7 +19,7 @@
 #define _IAS_QS_UDP_MBus_OutputDriver_H_
 
 #include <commonlib/commonlib.h>
-#include "../Driver.h"
+#include "../OutputDriver.h"
 #include <qs/api.h>
 
 namespace IAS {
@@ -31,7 +31,7 @@ namespace MBus {
 /** The OutputDriver class.
  *
  */
-class OutputDriver : public UDP::OutputDriver {
+class OutputDriver : public UDP::OutputDriver{
 public:
 
 	virtual ~OutputDriver() throw();
@@ -42,12 +42,9 @@ protected:
 
 	OutputDriver(const ::org::invenireaude::qsystem::workers::Connection* dmConnection, const API::Destination& destination);
 
-	String strMBusName;
 	int    iCount;
 
-  API::Destination            destination;
 	Mutex mutex;
-
   Buffer buffer;
   IAS_DFT_FACTORY<Net::MCast::SequencedOutput>::PtrHolder ptrOutput;
 

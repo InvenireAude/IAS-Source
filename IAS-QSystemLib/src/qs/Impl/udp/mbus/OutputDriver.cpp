@@ -31,8 +31,7 @@ namespace MBus {
 /*************************************************************************/
 OutputDriver::OutputDriver(const ::org::invenireaude::qsystem::workers::Connection* dmConnection,
                             const API::Destination& destination):
-    destination(destination),
-		strMBusName(dmConnection->getHost()),
+    UDP::OutputDriver(destination),
 		iCount(0){
 	IAS_TRACER;
 
@@ -41,7 +40,7 @@ OutputDriver::OutputDriver(const ::org::invenireaude::qsystem::workers::Connecti
                   IAS::Net::MCast::EndPoint(dmConnection->getHost(),"127.0.0.1",dmConnection->getPort()),
                   100,
                   32000,
-                  MemoryManager::GetAllocator());
+                  pAllocator);
 
   ptrOutput->setup();
   ptrOutput->startRepeater();
@@ -56,23 +55,9 @@ bool OutputDriver::send(Message* pMessage){
 	IAS_TRACER;
 
 	Mutex::Locker locker(mutex);
-
-  std::istream& is(*(pMessage->getContent()));
-
-	if(!is.good()){
-		return false;
-	}
-
-	size_t iChunkSize=64000;
   size_t iDataLen = 0;
 
-	while(is.good()){
-		buffer.resize(iDataLen + iChunkSize);
-		is.read(buffer.getBuffer<char>() + iDataLen, iChunkSize);
-		iDataLen += is.gcount();
-		iChunkSize *= 2;
-	}
-
+  pMessage->write(buffer, iDataLen, strTopic);
   ptrOutput->send(buffer.pass(), iDataLen);
   iCount ++;
 

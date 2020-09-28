@@ -30,12 +30,12 @@ namespace MCast {
 /*************************************************************************/
 InputDriver::InputDriver(const ::org::invenireaude::qsystem::workers::Connection* dmConnection,
                          const API::Destination& destination):
-  destination(destination),
+  UDP::InputDriver(destination),
   receiver(dmConnection->getPort()){
 	IAS_TRACER;
   receiver.bind();
   receiver.subscribe("127.0.0.1",dmConnection->getHost());
-  buffer.reserve(64000);
+
 }
 /*************************************************************************/
 InputDriver::~InputDriver() throw(){
@@ -45,19 +45,23 @@ InputDriver::~InputDriver() throw(){
 Message* InputDriver::receive(int iTimeWait, API::Attributes* pSelector){
 	IAS_TRACER;
 
-  size_t iDataLen;
-  receiver.receive(buffer.getBuffer<void>(), buffer.getSize(), iDataLen);
 
- 	IAS_DFT_FACTORY<Message>::PtrHolder ptrMessage(
-			IAS_DFT_FACTORY<Message>::Create()
-	);
+  while(! SYS::Signal::GetInstance()->isStopping() ){
 
-  ptrMessage->getContent()->write(buffer.getBuffer<char>(), iDataLen);
-  ptrMessage->getContent()->flush();
+    PtrDataHolder data(pAllocator->allocate(64000), 64000, this);
+    size_t iDataLen;
+    receiver.receive(data, data.getDataLeft(), iDataLen);
+    data.setDataLeft(iDataLen);
 
-	ptrMessage->getAttributes()->setMID("ABC");
+    if(checkTopic(data)){
+      IAS_DFT_FACTORY<QS::Base::Attributes>::PtrHolder ptrAttributes(buildAttributes(data));
+      if(!pSelector || checkAttributes(ptrAttributes, pSelector)){
+        return IAS_DFT_FACTORY<Message>::Create(data, data.getDataLeft(), ptrAttributes.pass());
+      }
+    }
+  }
 
-	return ptrMessage.pass();
+  IAS_THROW(EndOfDataException("No more UDP messages expected."));
 }
 /*************************************************************************/
 unsigned int InputDriver::skip(unsigned int iOffset){

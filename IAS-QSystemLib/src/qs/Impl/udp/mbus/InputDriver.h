@@ -21,7 +21,7 @@
 #include <commonlib/commonlib.h>
 #include <qs/api.h>
 
-#include "../Driver.h"
+#include "../InputDriver.h"
 
 namespace IAS {
 namespace QS {
@@ -46,7 +46,7 @@ protected:
               const API::Destination& destination);
 
   API::Destination   destination;
-
+  bool               bMatchAny;
   IAS_DFT_FACTORY<Net::MCast::SequencedInput>::PtrHolder ptrInput;
 
   Buffer buffer;

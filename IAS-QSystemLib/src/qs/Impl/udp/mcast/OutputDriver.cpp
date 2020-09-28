@@ -31,7 +31,7 @@ namespace MCast {
 /*************************************************************************/
 OutputDriver::OutputDriver(const ::org::invenireaude::qsystem::workers::Connection* dmConnection,
                             const API::Destination& destination):
-    destination(destination),
+    UDP::OutputDriver(destination),
 		strMCastName(dmConnection->getHost()),
     sender(dmConnection->getPort()),
 		iCount(0){
@@ -50,22 +50,8 @@ bool OutputDriver::send(Message* pMessage){
 	IAS_TRACER;
 
 	Mutex::Locker locker(mutex);
-
-  std::istream& is(*(pMessage->getContent()));
-
-	if(!is.good()){
-		return false;
-	}
-
-	size_t iChunkSize=64000;
   size_t iDataLen = 0;
-	while(is.good()){
-		buffer.resize(iDataLen + iChunkSize);
-		is.read(buffer.getBuffer<char>() + iDataLen, iChunkSize);
-		iDataLen += is.gcount();
-		iChunkSize *= 2;
-	}
-
+  pMessage->write(buffer, iDataLen, strTopic);
   sender.send(buffer.getBuffer<void>(), iDataLen);
   iCount ++;
 

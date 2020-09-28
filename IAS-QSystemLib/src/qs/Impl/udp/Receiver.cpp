@@ -26,7 +26,7 @@
 #include "System.h"
 
 #include <commonlib/commonlib.h>
-#include "Driver.h"
+#include "InputDriver.h"
 
 namespace IAS {
 namespace QS {

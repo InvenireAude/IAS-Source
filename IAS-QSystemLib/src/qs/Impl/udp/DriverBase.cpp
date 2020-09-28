@@ -1,5 +1,5 @@
 /*
- * File: IAS-QSystemLib/src/qs/Impl/sdf/Sender.cpp
+ * MBus: IAS-QSystemLib/src/qs/Impl/sdf/file/DriverBase.cpp
  *
  * Copyright (C) 2015, Albert Krzymowski
  *
@@ -15,53 +15,31 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#include "Sender.h"
+#include "DriverBase.h"
 #include<qs/log/LogLevel.h>
-
-#include "Session.h"
-#include "Connection.h"
-#include "Message.h"
-#include "System.h"
 
 #include <commonlib/commonlib.h>
 
-#include "OutputDriver.h"
+#include "Message.h"
 
 namespace IAS {
 namespace QS {
 namespace UDP {
 
 /*************************************************************************/
-Sender::Sender(Session* pSession, const API::Destination& refDestination):
-	Manageable(pSession),
-	myDestination(refDestination){
-
+DriverBase::DriverBase(const API::Destination& destination):
+  destination(destination),
+  strTopic(destination.getName()),
+  pAllocator(MemoryManager::GetAllocator()){
+  IAS_LOG(LogLevel::INSTANCE.isInfo(), "Topic: ["<<strTopic<<"]");
 	IAS_TRACER;
-
-		pDriver=getSession()->getConnection()->getSystem()->getOutputDriver(
-          getSession()->getConnection()->getConfiguration(), refDestination);
-
-	IAS_CHECK_IF_NULL(pDriver);
 }
 /*************************************************************************/
-Sender::~Sender() throw(){
+DriverBase::~DriverBase() throw(){
 	IAS_TRACER;
-
 }
+
 /*************************************************************************/
-bool Sender::send(API::Message* pMessage){
-	IAS_TRACER;
-
-	IAS_CHECK_IF_NULL(pMessage);
-	//TODO (M) typeid check and static ?
-	Message* pUDPMessage=dynamic_cast<Message*>(pMessage);
-
-	pDriver->send(pUDPMessage);
-
-	return true;
-}
-/*************************************************************************/
-
 }
 }
 }

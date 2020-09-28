@@ -23,7 +23,7 @@
 #include "Session.h"
 #include "System.h"
 #include "Connection.h"
-#include "Driver.h"
+#include "InputDriver.h"
 
 namespace IAS {
 namespace QS {

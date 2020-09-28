@@ -30,7 +30,8 @@ namespace MBus {
 /*************************************************************************/
 InputDriver::InputDriver(const ::org::invenireaude::qsystem::workers::Connection* dmConnection,
                          const API::Destination& destination):
-  destination(destination){
+  UDP::InputDriver(destination),
+  bMatchAny(destination.getName().compare("*") == 0){
 	IAS_TRACER;
 
   ptrInput = IAS_DFT_FACTORY<Net::MCast::SequencedInput>::Create(
@@ -49,20 +50,22 @@ InputDriver::~InputDriver() throw(){
 Message* InputDriver::receive(int iTimeWait, API::Attributes* pSelector){
 	IAS_TRACER;
 
-  size_t iDataLen;
+  while(! SYS::Signal::GetInstance()->isStopping()){
 
-  char *pData = (char*) ptrInput->receive(iDataLen);
+    size_t iDataLen;
+    void *pData = ptrInput->receive(iDataLen);
 
- 	IAS_DFT_FACTORY<Message>::PtrHolder ptrMessage(
-			IAS_DFT_FACTORY<Message>::Create()
-	);
+    PtrDataHolder data(pData, iDataLen, this);
 
-  ptrMessage->getContent()->write(pData, iDataLen);
-  ptrMessage->getContent()->flush();
+    if(checkTopic(data)){
+      IAS_DFT_FACTORY<QS::Base::Attributes>::PtrHolder ptrAttributes(buildAttributes(data));
+      if(!pSelector || checkAttributes(ptrAttributes, pSelector)){
+        return IAS_DFT_FACTORY<Message>::Create(data, data.getDataLeft(), ptrAttributes.pass());
+      }
+    }
+  }
 
-	ptrMessage->getAttributes()->setMID("ABC");
-
-	return ptrMessage.pass();
+  IAS_THROW(EndOfDataException("No more UDP messages expected."));
 }
 /*************************************************************************/
 unsigned int InputDriver::skip(unsigned int iOffset){

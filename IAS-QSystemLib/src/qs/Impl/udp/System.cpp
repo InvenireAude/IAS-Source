@@ -23,7 +23,9 @@
 #include "ContentManager.h"
 #include "Connection.h"
 
-#include "Driver.h"
+#include "OutputDriver.h"
+#include "InputDriver.h"
+
 #include "org/invenireaude/qsystem/stats/DataFactory.h"
 
 

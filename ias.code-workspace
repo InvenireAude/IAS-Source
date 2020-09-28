@@ -172,7 +172,8 @@
       "regex": "cpp",
       "shared_mutex": "cpp",
       "*.ipp": "cpp",
-      "*.inc": "cpp"
+      "*.inc": "cpp",
+      "mutex": "cpp"
     }
   }
 }

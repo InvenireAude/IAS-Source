@@ -15,38 +15,42 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#ifndef _IAS_QS_UDP_Driver_H_
-#define _IAS_QS_UDP_Driver_H_
+#ifndef _IAS_QS_UDP_InputDriver_H_
+#define _IAS_QS_UDP_InputDriver_H_
 
 #include <commonlib/commonlib.h>
 
 #include <qs/api/Attributes.h>
 
+#include "DriverBase.h"
+
 namespace IAS {
 namespace QS {
+namespace Base{
+  class Attributes;
+}
 namespace UDP {
 
 class Message;
 /*************************************************************************/
-class InputDriver  {
+class InputDriver : public DriverBase {
 public:
 	virtual ~InputDriver(){};
 
 	virtual Message* receive(int iTimeWait, API::Attributes* pSelector)=0;
 	virtual unsigned int skip(unsigned int iOffset)=0;
 
-	void updateFormat(Message *pMessage, const String& strFileName);
+  protected:
+	  InputDriver(const API::Destination& destination);
+
+    bool checkTopic(PtrDataHolder& data) const;
+    QS::Base::Attributes *buildAttributes(PtrDataHolder& data) const;
+    bool checkAttributes(const API::Attributes *pAttributes, API::Attributes *pSelector);
+  	Message* buildMessage(PtrDataHolder& data) const;
 };
 /*************************************************************************/
-class OutputDriver  {
-public:
-	virtual ~OutputDriver(){};
-
-	virtual bool send(Message* pMessage)=0;
-};
-/*************************************************************************/
 }
 }
 }
 
-#endif /* _IAS_QS_UDP_Driver_H_ */
+#endif /* _IAS_QS_UDP_InputDriver_H_ */
