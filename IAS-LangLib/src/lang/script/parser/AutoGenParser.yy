@@ -7,8 +7,9 @@
 #include <commonlib/commonlib.h>
 #include <lang/model/allmodel.h>
 
-#define _SVAL_DELETE(p) { delete (String*)p; }
-#define _SVAL_DELETE_StringList(p) { delete (StringList*)p; }
+#define _SVAL_DELETE(p) { IAS_DFT_STATIC_FACTORY<String>::Free(p); }
+#define _SVAL_DELETE_StringList(p) { IAS_DFT_STATIC_FACTORY<StringList>::Free(p); }
+
 
 /* IAS_DFT_FACTORY<String>::Free(p) */
 namespace IAS{
@@ -552,11 +553,11 @@ exprListPar : T_OPEN_PAR T_CLOSE_PAR { $$ = IAS_DFT_FACTORY<Expr::ExprListNode>:
 exprList : exprList T_COMMA expr  { $$=$1; $$->addExprNode($3); };
 		| expr    { $$ = IAS_DFT_FACTORY<Expr::ExprListNode>::Create();  $$->addExprNode($1); };
 
-externalParametersPar : T_OPEN_PAR T_CLOSE_PAR { $$ = new StringList;}
+externalParametersPar : T_OPEN_PAR T_CLOSE_PAR { $$ = IAS_DFT_STATIC_FACTORY<StringList>::Create() ;}
 		| T_OPEN_PAR externalParameters T_CLOSE_PAR{ $$=$2; }
 
 externalParameters : externalParameters T_COMMA T_STRING  { $$=$1; $$->push_back(*$3); _SVAL_DELETE($3);};
-		| T_STRING    { $$ = new StringList; $$->push_back(*$1); _SVAL_DELETE($1); };
+		| T_STRING    { $$ = IAS_DFT_STATIC_FACTORY<StringList>::Create(); $$->push_back(*$1); _SVAL_DELETE($1); };
 
 
 qname : T_SYMBOL { $$= IAS_DFT_FACTORY<Dec::QualifiedNameNode>::Create(*$1); _SVAL_DELETE($1); }
