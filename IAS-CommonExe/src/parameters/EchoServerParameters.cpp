@@ -1,5 +1,5 @@
 /*
- * File: IAS-QSystemExe/src/parameters/EchoServer.cpp
+ * File: IAS-QSystemExe/src/parameters/EchoServerParameters.cpp
  *
  * Copyright (C) 2015, Albert Krzymowski
  *
@@ -15,7 +15,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#include "EchoServer.h"
+#include "EchoServerParameters.h"
 
 
 #include <commonlib/commonlib.h>
@@ -25,38 +25,25 @@ namespace Exe {
 namespace Parameters {
 
 /*************************************************************************/
-EchoServer::EchoServer(int argc, char* argv[]){
+EchoServerParameters::EchoServerParameters(int argc, char* argv[]){
 	IAS_TRACER;
 
 	::IAS::Exe::Parameters::ProgramParameters::init(argc,argv,"p:");
-
 }
 /*************************************************************************/
-const String& EchoServer::getSystemName()const{
-
-	if(!hmIndicators.count('p'))
-			IAS_THROW(ConfigException("Missing -p option."));
-
-	return hmValues.find('p')->second;
+int EchoServerParameters::getPort()const{
+  return getIntValue('p');
 }
 /*************************************************************************/
-int EchoServer::getPort()const{
-
-	if(!hmIndicators.count('p'))
-			IAS_THROW(ConfigException("Missing -p option."));
-
-	return TypeTools::StringToInt(hmValues.find('p')->second);
-}
-/*************************************************************************/
-EchoServer::~EchoServer() throw(){
+EchoServerParameters::~EchoServerParameters() throw(){
 	IAS_TRACER;
 }
 /*************************************************************************/
-void EchoServer::printCmdDesc(std::ostream& os) const{
+void EchoServerParameters::printCmdDesc(std::ostream& os) const{
 	IAS_TRACER;
 }
 /*************************************************************************/
-void EchoServer::printArgsDesc(std::ostream& os) const{
+void EchoServerParameters::printArgsDesc(std::ostream& os) const{
 	IAS_TRACER;
 }
 /*************************************************************************/

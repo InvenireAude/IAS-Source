@@ -1,6 +1,9 @@
-#Mon 28 Sep 2020 08:29:29 PM CEST
+#Tue 29 Sep 2020 05:28:11 PM CEST
 FILES+=exe/net/EchoServer
-FILES+=parameters/EchoServer
+FILES+=exe/net/MBusRepeater
+FILES+=parameters/EchoServerParameters
+FILES+=parameters/MBusRepeaterParameters
 FILES+=parameters/ParameterException
 FILES+=parameters/ProgramParameters
 MAINFILES+=ias_net_echo_server
+MAINFILES+=ias_net_mbus_repeater

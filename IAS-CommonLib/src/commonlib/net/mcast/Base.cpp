@@ -73,7 +73,7 @@ bool Base::waitForData(WaitMode iMode){
 			 	 (iMode == WM_Read  ? &set : NULL),
 				 (iMode == WM_Write ? &set : NULL),
 				 &set,
-				 &timeout);
+				 iTimeout == C_UnLimited ? NULL : &timeout);
 
 	 IAS_LOG(LogLevel::INSTANCE.isInfo(),"rc="<<iRC);
 

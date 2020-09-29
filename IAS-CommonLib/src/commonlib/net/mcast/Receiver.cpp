@@ -1,14 +1,14 @@
 /*
  * File: IAS-CommonLib/src/commonlib/net/mcast/Receiver.cpp
- * 
+ *
  * Copyright (C) 2020, Albert Krzymowski
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  * http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -37,12 +37,12 @@ namespace MCast {
 Receiver::Receiver(unsigned int iPort):
 	Base(iPort){
 	IAS_TRACER;
-	
+
 	// int size = 1000 * 1024 * 1024;
 
 	// if (setsockopt(iSocket, SOL_SOCKET, SO_RCVBUF, &size, (socklen_t)sizeof(int)) < 0)
     // 	IAS_THROW(SystemException()<<"UDP mulitcast socket (SO_RCVBUF), port: "<<(int)iPort);
-	
+
 	int reuse = 1;
     if (setsockopt(iSocket, SOL_SOCKET, SO_REUSEADDR, (char *)&reuse, sizeof(reuse)) < 0)
     	IAS_THROW(SystemException()<<"UDP mulitcast socket (SO_REUSEADDR), port: "<<(int)iPort);
@@ -65,12 +65,12 @@ void Receiver::bind(){
     if(::bind(iSocket, (struct sockaddr *)&localSock, sizeof(localSock)) == -1){
 		IAS_THROW(SystemException()<<"UDP mulitcast socket (bind), port: "<<(int)iPort);
     }
- 
+
 }
 /*************************************************************************/
 void Receiver::subscribe(const String& strInterface, const String& strGroup){
 	IAS_TRACER;
-	
+
 	struct ip_mreq group;
 
 	group.imr_multiaddr.s_addr = inet_addr(strGroup.c_str());
@@ -90,7 +90,7 @@ bool Receiver::receive(void *pData, size_t iBufferLen, size_t& iDataSize){
 
 	{
 		Thread::Cancellation ca(true);
-		if(iTimeout >= 0)
+		if(iTimeout != 0)
 			if(!waitForData(WM_Read)){
 				iDataSize = 0;
 				return false;

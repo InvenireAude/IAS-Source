@@ -1,5 +1,5 @@
 /*
- * File: IAS-QSystemExe/src/parameters/EchoServer.h
+ * File: IAS-QSystemExe/src/parameters/MBusRepeaterParameters.h
  *
  * Copyright (C) 2015, Albert Krzymowski
  *
@@ -15,8 +15,8 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-#ifndef _IAS_QS_Parameters_EchoServer_H_
-#define _IAS_QS_Parameters_EchoServer_H_
+#ifndef _IAS_QS_Parameters_MBusRepeaterParameters_H_
+#define _IAS_QS_Parameters_MBusRepeaterParameters_H_
 
 #include "ProgramParameters.h"
 
@@ -25,24 +25,36 @@ namespace Exe {
 namespace Parameters {
 
 /*************************************************************************/
-/** The EchoServer class.
+/** The MBusRepeaterParameters class.
  *
  */
-class EchoServer : public ::IAS::Exe::Parameters::ProgramParameters{
+class MBusRepeaterParameters : public ::IAS::Exe::Parameters::ProgramParameters{
 public:
 
-	virtual ~EchoServer() throw();
+	virtual ~MBusRepeaterParameters() throw();
 
-	const String& getSystemName()const;
-        int     getPort()const;
+  int     getPort()const;
+
+  const String& getInterface()const;
+  const String& getGroup()const;
+  const String& getOutputFilePattern()const;
+
+  int getInputBufferSize()const;
+  int getOutputBufferSize()const;
+  int getMaxPacketSize()const;
+  int getNumThreads()const;
+
+  int getMaxFileSize()const;
+  int getMaxPacketsInFile()const;
+  int getNewFileInterval()const;
 
 protected:
-	EchoServer(int argc, char* argv[]);
+	MBusRepeaterParameters(int argc, char* argv[]);
 
 	virtual void printCmdDesc(std::ostream& os) const;
 	virtual void printArgsDesc(std::ostream& os) const;
 
-	friend class ::IAS::Factory<EchoServer>;
+	friend class ::IAS::Factory<MBusRepeaterParameters>;
 };
 
 /*************************************************************************/
@@ -50,4 +62,4 @@ protected:
 }
 }
 
-#endif /* _IAS_SM_CmdLine_EchoServer_H_ */
+#endif /* _IAS_SM_CmdLine_MBusRepeaterParameters_H_ */

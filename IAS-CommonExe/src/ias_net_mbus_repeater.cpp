@@ -17,8 +17,8 @@
  */
 #include "commonlib/commonlib.h"
 
-#include <parameters/EchoServerParameters.h>
-#include <exe/net/EchoServer.h>
+#include <parameters/MBusRepeaterParameters.h>
+#include <exe/net/MBusRepeater.h>
 
 using namespace IAS;
 using namespace Exe;
@@ -30,16 +30,24 @@ int main(int argc, char* argv[]) {
 
 	try {
 
-	  IAS_DFT_FACTORY<Parameters::EchoServerParameters>::PtrHolder ptrParameters(
-        IAS_DFT_FACTORY<Parameters::EchoServerParameters>::Create(argc, argv)
+	  IAS_DFT_FACTORY<Parameters::MBusRepeaterParameters>::PtrHolder ptrParameters(
+        IAS_DFT_FACTORY<Parameters::MBusRepeaterParameters>::Create(argc, argv)
       );
 
 		if (ptrParameters->checkAndShowHelp(std::cerr) ||
 		    ptrParameters->checkAndShowVersion(std::cerr))
 			return 1;
 
-    IAS_DFT_FACTORY<Exe::Net::EchoServer>::PtrHolder ptrEchoServer(
-      IAS_DFT_FACTORY<Exe::Net::EchoServer>::Create(ptrParameters->getPort())
+    IAS::Net::MCast::EndPoint endPoint(ptrParameters->getGroup(),
+                                       ptrParameters->getInterface(),
+                                       ptrParameters->getPort());
+
+    IAS_DFT_FACTORY<Exe::Net::MBusRepeater>::PtrHolder ptrEchoServer(
+      IAS_DFT_FACTORY<Exe::Net::MBusRepeater>::Create(
+              endPoint,
+              ptrParameters->getInputBufferSize(),
+              ptrParameters->getOutputBufferSize(),
+              ptrParameters->getMaxPacketSize())
     );
 
     ptrEchoServer->start();
@@ -56,9 +64,4 @@ int main(int argc, char* argv[]) {
 		std::cerr << "Unknown exception !\n";
 	}
 
-	std::cout << "ALL:\n";
-	IAS::MemoryManager::GetInstance()->printToStream(std::cout);
-	std::cout << "Tracer:\n";
-	//IAS::TracerStats::GetInstance()->printToStream(std::cout);
-	std::cout << "Ending\n";
 }

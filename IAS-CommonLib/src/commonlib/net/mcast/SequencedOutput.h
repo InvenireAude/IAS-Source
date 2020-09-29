@@ -39,6 +39,8 @@ public:
 	void startRepeater();
 	void stopRepeater();
 
+  void setMute(bool bMuted);
+
 protected:
 	SequencedOutput(const EndPoint& endPoint,
 			 	          IndexType      iBufferSize,
@@ -65,6 +67,7 @@ protected:
 	Sender   sender;
 
 	Mutex mutex;
+  bool bMuted;
 
 	IAS_DFT_FACTORY<Thread>::PtrHolder ptrNetRepeaterThread;
 	void serveWhoHas(const WhoHasMessage& message);

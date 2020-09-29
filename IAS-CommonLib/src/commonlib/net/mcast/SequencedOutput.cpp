@@ -19,7 +19,8 @@ SequencedOutput::SequencedOutput(const EndPoint& endPoint,
 	SequencedBase(endPoint, iBufferSize, iMaxPacketSize, pAllocator),
 	receiver(endPoint.getPort() + 1),
 	sender(endPoint.getPort()),
-  iNetworkSequence(0){
+  iNetworkSequence(0),
+  bMuted(false){
 	IAS_TRACER;
 
 	pNetwork = tabBuffer + (iNetworkSequence % iBufferSize);
@@ -50,6 +51,7 @@ void  SequencedOutput::send(void* pPacket, PacketSizeType iSize){
 
   IAS_LOG(LogLevel::INSTANCE.isDetailedInfo(), "iNetworkSequence: "<<iNetworkSequence);
 
+  if(!bMuted)
   sender.send(pNetwork->pPacket, pNetwork->iSize + sizeof(IndexType));
 
 	if(++pNetwork >= pBufferEnd)
@@ -64,6 +66,7 @@ void SequencedOutput::serveWhoHas(const WhoHasMessage& message){
 	{
 
 		Mutex::Locker locker(Mutex);
+    IAS_LOG(LogLevel::INSTANCE.isDetailedInfo(),"X: "<<message.iStartSequence<<" "<<iBufferSize<<" "<<iNetworkSequence);
 
 		if(message.iStartSequence + iBufferSize < iNetworkSequence )
 			return;
@@ -75,11 +78,12 @@ void SequencedOutput::serveWhoHas(const WhoHasMessage& message){
 
 	while(iDataLeft-- > 0){
 
-    IAS_LOG(LogLevel::INSTANCE.isDetailedInfo(), "Repeat: "<<iMsgSequence);
+    IAS_LOG(LogLevel::INSTANCE.isDetailedInfo(), "Repeat: "<<iMsgSequence<<
+        ", ptr:"<<pCursor->pPacket<<", size:"<<pCursor->iSize);
 
 		Mutex::Locker locker(Mutex);
 
-    if(pCursor->getSequence() == iMsgSequence++){
+    if(pCursor->hasData() && pCursor->getSequence() == iMsgSequence++){
       sender.send(pCursor->pPacket, pCursor->iSize + sizeof(IndexType));
     }
 
@@ -116,7 +120,11 @@ void SequencedOutput::stopRepeater(){
 		ptrNetRepeaterThread->join();
 	}
 }
-
+/*************************************************************************/
+void  SequencedOutput::setMute(bool bMuted){
+	Mutex::Locker locker(Mutex);
+  this->bMuted = bMuted;
+}
 /*************************************************************************/
 }
 }
