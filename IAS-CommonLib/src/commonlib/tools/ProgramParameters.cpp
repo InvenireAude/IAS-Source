@@ -1,14 +1,14 @@
 /*
  * File: IAS-CommonLib/src/commonlib/tools/ProgramParameters.cpp
- * 
+ *
  * Copyright (C) 2015, Albert Krzymowski
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  * http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -20,6 +20,8 @@
 #include "../logger/logger.h"
 
 #include "../exception/BadUsageException.h"
+#include "../exception/ConfigException.h"
+#include "../tools/TypeTools.h"
 
 #ifndef _AIX
 #include <getopt.h>
@@ -82,6 +84,38 @@ void ProgramParameters::init(int argc, char* argv[], const String& strArgSpec){
 	if(iPos != String::npos)
 		strExeName = strExeName.substr(iPos+1);
 
+}
+/*************************************************************************/
+const String& ProgramParameters::getStringValue(char cOption, const String& strDefault)const{
+  IAS_TRACER;
+
+  ArgValuesMap::const_iterator it = hmValues.find(cOption);
+	if(it == hmValues.end()){
+
+      if(!strDefault.compare("__none__")){
+  		  IAS_THROW(ConfigException(String("Missing -") + cOption + " option."));
+      }else{
+        return strDefault;
+      }
+
+  }
+	return it->second;
+}
+/*************************************************************************/
+int ProgramParameters::getIntValue(char cOption, int iDefault)const{
+
+  ArgValuesMap::const_iterator it = hmValues.find(cOption);
+
+  if(it == hmValues.end()){
+
+      if(iDefault == -999999){
+  		  IAS_THROW(ConfigException(String("Missing -") + cOption + " option."));
+      }else{
+        return iDefault;
+      }
+
+  }
+	return TypeTools::StringToInt(it->second);
 }
 /*************************************************************************/
 }
