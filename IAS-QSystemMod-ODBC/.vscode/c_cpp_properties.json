@@ -7,8 +7,7 @@
                 "${workspaceFolder}/../IAS-CommonLib/src",
                 "${workspaceFolder}/../IAS-DataModelLib/src",
                 "${workspaceFolder}/../IAS-LangLib/src",
-                "${workspaceFolder}/../IAS-QSystemLib/src",
-                "/usr/include/libiodbc"
+                "${workspaceFolder}/../IAS-QSystemLib/src"
             ],
             "defines": [],
             "compilerPath": "/usr/bin/clang",
