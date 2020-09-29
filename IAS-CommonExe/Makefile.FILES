@@ -1,0 +1,6 @@
+#Mon 28 Sep 2020 08:29:29 PM CEST
+FILES+=exe/net/EchoServer
+FILES+=parameters/EchoServer
+FILES+=parameters/ParameterException
+FILES+=parameters/ProgramParameters
+MAINFILES+=ias_net_echo_server

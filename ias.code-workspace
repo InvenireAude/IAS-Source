@@ -10,6 +10,9 @@
       "path": "IAS-CommonLib-TestCases"
     },
     {
+      "path": "IAS-CommonExe"
+    },
+    {
       "path": "IAS-DataModelLib"
     },
     {
