@@ -180,24 +180,27 @@ void Signal::removeUserSignalCallback(UserSignalCallback* pUserSignalCallback){
 	setUserSignalCallback.erase(pUserSignalCallback);
 }
 /*************************************************************************/
-Signal::UserSignalCallback::UserSignalCallback(){
-	Signal::GetInstance()->addUserSignalCallback(this);
+Signal::UserSignalCallback::UserSignalCallback(bool bActive):
+  bActive(bActive){
+  if(bActive)
+	  Signal::GetInstance()->addUserSignalCallback(this);
 }
 /*************************************************************************/
 Signal::UserSignalCallback::~UserSignalCallback(){
-	Signal::GetInstance()->addUserSignalCallback(this);
+  if(bActive)
+	  Signal::GetInstance()->removeUserSignalCallback(this);
 }
 /*************************************************************************/
 void Signal::handleUserSignal(){
 	for(UserSignalCallbackSet::iterator it=setUserSignalCallback.begin();
 		it != setUserSignalCallback.end(); it++){
-		IAS_LOG(LogLevel::INSTANCE.isSystem(), "handle the user signal:");;
+		IAS_LOG(LogLevel::INSTANCE.isSystem(), "handle the user signal:"<<(void*)(*it));;
 		(*it)->handleUserSignal();
 	}
 }
 /*************************************************************************/
 void Signal::StopApplication(bool bCancelThreads){
-	
+
 	if(bCancelThreads){
 		SignalHandler(0);
 	}else{
@@ -208,7 +211,22 @@ void Signal::StopApplication(bool bCancelThreads){
 //TODO AIX xlc/linker workaround
 Signal* Signal::GetInstance(){
 	return InstanceFeature<Signal>::GetInstance();
-
 }
+/*************************************************************************/
+class AutoStats{
+
+~AutoStats(){
+  if(getenv("IAS_USR1_ON_EXIT") != NULL){
+     Signal::User1SignalHandler();
+    }
+  if(getenv("IAS_USR2_ON_EXIT") != NULL){
+     Signal::User2SignalHandler();
+    }
+  }
+  static AutoStats as;
+};
+AutoStats AutoStats::as;
+/*************************************************************************/
+
 }
 }

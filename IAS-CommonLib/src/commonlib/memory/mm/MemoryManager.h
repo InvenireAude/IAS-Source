@@ -42,11 +42,10 @@ namespace IAS{
  */
 
 class MemoryManager :
-	public Allocator //, public SYS::Signal::UserSignalCallback
-   {
+	public Allocator, public SYS::Signal::UserSignalCallback {
 
 public:
-	MemoryManager(const char *sName = CDefaultName);
+	MemoryManager(bool bAllowUserSignal = false, const char *sName = CDefaultName);
 	virtual ~MemoryManager()throw();
 
 	void addEntry(const char*   sFile,
@@ -67,8 +66,9 @@ public:
 	void clearNewFlag();
 
 	inline static MemoryManager *GetInstance(){
+
 		if(pInstance == NULL){
-			pAllocator = pInstance = new MemoryManager;
+			pAllocator = pInstance = new MemoryManager(true, CMainName);
     }
 		return pInstance;
 	}
@@ -82,7 +82,7 @@ public:
  	 virtual void* allocate(size_t n);
 	 virtual void  free(const void* p);
 	 virtual bool check(const void* p);
-     virtual void trim();
+   virtual void trim();
 
 	inline static Allocator *GetAllocator(){
 			GetInstance();
@@ -92,6 +92,7 @@ public:
   virtual void handleUserSignal();
 
   static const char* CDefaultName;
+  static const char* CMainName;
 
 
  private:

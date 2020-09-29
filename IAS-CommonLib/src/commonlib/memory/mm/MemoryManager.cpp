@@ -25,6 +25,8 @@
 #include "commonlib/logger/StackTraceContainer.h"
 #include "commonlib/memory/memory.h"
 
+#include "commonlib/tools/MiscTools.h"
+
 #include <stdlib.h>
 #include <cstring>
 
@@ -37,7 +39,9 @@ namespace IAS {
 
 MemoryManager* MemoryManager::pInstance = NULL;
 Allocator*     MemoryManager::pAllocator = NULL;
+
 const char*    MemoryManager::CDefaultName = "Default";
+const char*    MemoryManager::CMainName = "Main";
 
 /*************************************************************************/
 
@@ -55,7 +59,8 @@ void MemoryManager::Entry::printBackTrace(std::ostream& os) const{
 }
 
 /*************************************************************************/
-MemoryManager::MemoryManager(const char* sName):
+MemoryManager::MemoryManager(bool bAllowUserSignal, const char* sName):
+   SYS::Signal::UserSignalCallback(bAllowUserSignal),
 	iNewEntries(0),
 	pMemory(0),
 	iFree(0),
@@ -67,7 +72,7 @@ MemoryManager::MemoryManager(const char* sName):
 	//iFree=10000000;
 	//pMemory = new unsigned char[iFree];
 
-//	this->bCheckPointersOnReturn=false;
+	this->bCheckPointersOnReturn=false;
 }
 /*************************************************************************/
 MemoryManager::~MemoryManager() throw () {
@@ -159,10 +164,14 @@ bool MemoryManager::removeEntry(unsigned long lPtr) {
 
 
 	if (iCount == 0) {
-		IAS_LOG(LogLevel::INSTANCE.isError(),"Missing entry: "<<((void*)lPtr));
+		IAS_LOG(LogLevel::INSTANCE.isError(),"Missing entry [remove]: "<<((void*)lPtr));
 		IAS_LOG(LogLevel::INSTANCE.isStackTrace(),"Stack: ");
 		if (LogLevel::INSTANCE.isStackTrace()) {
-			IAS_MY_STACK().printStack(std::cerr);
+      #ifdef __GLIBC__
+	      IAS::PrintTrace(std::cerr);
+      #else
+	      IAS_MY_STACK().printStack(std::cerr);
+      #endif
 		}
 
 		if(getenv("IAS_MEM_DUMP_ON_MISSING_ENTRY") != NULL){
@@ -254,6 +263,17 @@ void MemoryManager::printToStream(std::ostream& os, bool bNewOnly, bool bStatsOn
 		for (EntryStatMap::iterator iter = hmStats.begin(); iter != hmStats.end(); iter++){
 			Stats& stat = iter->second;
       os<<"\nBytes: "<<stat.iNumBytes<<", entries: "<<stat.iNumEntries<<std::endl;
+
+      os<<" First 64 bytes hex: ";
+      for(int i=0; i < stat.pEntry->iNumBytes && i < 64; i++){
+        os<<MiscTools::CharToHex(((char*)stat.pEntry->lPtr)[i]);
+      }
+      os<<std::endl;
+      os<<" First 64 bytes raw: ";
+      for(int i=0; i < stat.pEntry->iNumBytes && i < 64; i++){
+        os<<(String(" ") + ((char*)stat.pEntry->lPtr)[i]);
+      }
+      os<<std::endl;
       stat.pEntry->printBackTrace(os);
     };
 
@@ -267,7 +287,7 @@ void MemoryManager::printToStream(std::ostream& os, bool bNewOnly, bool bStatsOn
 
 #ifdef __GLIBC__
 
-  if(sName == "Default"){
+  if(sName == CMainName){
 
     struct mallinfo info = mallinfo();
     os<<"System glibc malloc() stats:"<<std::endl;
@@ -342,10 +362,14 @@ bool MemoryManager::check(const void* p) {
 	}
 
 	if (iCount == 0) {
-		IAS_LOG(LogLevel::INSTANCE.isError(),"Missing entry: "<<((void*)lPtr));
+		IAS_LOG(LogLevel::INSTANCE.isError(),"Missing entry[check]: "<<((void*)lPtr));
 		IAS_LOG(LogLevel::INSTANCE.isStackTrace(),"Stack: ");
 		if (LogLevel::INSTANCE.isStackTrace()) {
-			IAS_MY_STACK().printStack(std::cerr);
+		  #ifdef __GLIBC__
+	      IAS::PrintTrace(std::cerr);
+      #else
+	      IAS_MY_STACK().printStack(std::cerr);
+      #endif
 		}
 
 		if(getenv("IAS_MEM_DUMP_ON_MISSING_ENTRY") != NULL){
@@ -360,8 +384,12 @@ bool MemoryManager::check(const void* p) {
 void MemoryManager::free(const void* p) {
 
 	if (::IAS::LogLevel::INSTANCE.isMemoryTrace() && !removeEntry((unsigned long) p)){
-		IAS_LOG(LogLevel::INSTANCE.isError(),"Missing entry: "<<((void*)p));
-		IAS_MY_STACK().printStack(std::cerr);
+		IAS_LOG(LogLevel::INSTANCE.isError(),"Missing entry [free]: "<<((void*)p));
+		  #ifdef __GLIBC__
+	      IAS::PrintTrace(std::cerr);
+      #else
+	      IAS_MY_STACK().printStack(std::cerr);
+      #endif
 
 		if(getenv("IAS_MEM_DUMP_ON_MISSING_ENTRY") != NULL){
 			std::cerr<<"core dump as requested "<<std::endl;

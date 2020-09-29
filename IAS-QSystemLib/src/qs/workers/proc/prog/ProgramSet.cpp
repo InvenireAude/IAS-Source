@@ -49,7 +49,8 @@ namespace Prog {
 /*************************************************************************/
 ProgramSet::ProgramSet(const ::IAS::DM::DataFactory *pDataFactory, ResultHandler *pResultHandler):
 	pDataFactory(pDataFactory),
-	ptrResultHandler(pResultHandler){
+	ptrResultHandler(pResultHandler),
+  SYS::Signal::UserSignalCallback(true){
 
 	IAS_TRACER;
 

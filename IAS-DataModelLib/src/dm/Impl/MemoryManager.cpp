@@ -30,10 +30,8 @@ MemoryManager::MemoryManager(){
 
 	IAS_LOG(LogLevel::INSTANCE.isInfo(),"Default settings.");
 
-	pAllocatorForData=IAS_DFT_FACTORY< ::IAS::MemoryManager >::Create("Data");
-//	PtrDataAllocator.SetPointer(pAllocatorForData);
-
-	pAllocatorForTypes=IAS_DFT_FACTORY< ::IAS::MemoryManager >::Create("Types");
+	pAllocatorForData=IAS_DFT_FACTORY< ::IAS::MemoryManager >::Create(true, "Data");
+	pAllocatorForTypes=IAS_DFT_FACTORY< ::IAS::MemoryManager >::Create(true, "Types");
 }
 /*************************************************************************/
 MemoryManager::~MemoryManager() throw(){

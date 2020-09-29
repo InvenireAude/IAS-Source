@@ -52,13 +52,15 @@ public:
 
   class UserSignalCallback {
     public:
-      UserSignalCallback();
+      UserSignalCallback(bool bActive);
       virtual ~UserSignalCallback();
       virtual void handleUserSignal() = 0;
+    protected:
+      bool bActive;
   };
 
 	static void StopApplication(bool bCancelThreads = true);
-	
+
 protected:
 	Signal();
 
