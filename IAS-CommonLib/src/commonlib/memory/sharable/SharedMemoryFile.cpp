@@ -1,14 +1,14 @@
 /*
  * File: IAS-CommonLib/src/commonlib/memory/sharable/SharedMemoryFile.cpp
- * 
+ *
  * Copyright (C) 2015, Albert Krzymowski
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  * http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -16,7 +16,7 @@
  * limitations under the License.
  */
 /* ChangeLog:
- * 
+ *
  */
 
 #include "SharedMemoryFile.h"
@@ -25,11 +25,11 @@
 #include "commonlib/exception/SystemException.h"
 #include "commonlib/tools/TypeTools.h"
 
+#include <fcntl.h>
 #include <sys/mman.h>
 #include <stdlib.h>
 #include <unistd.h>
 #include <stdio.h>
-#include <fcntl.h>
 #include <string.h>
 #include <pthread.h>
 #include <errno.h>
@@ -120,7 +120,6 @@ size_t SharedMemoryFile::Descriptor::getSize() const {
 	return iSize;
 }
 /*************************************************************************/
-/*************************************************************************/
 SharedMemoryFile::SharedMemoryFile(const Descriptor& aDescriptor):
 	aDescriptor(aDescriptor),
 	bAlreadyExisted(false),
@@ -128,7 +127,17 @@ SharedMemoryFile::SharedMemoryFile(const Descriptor& aDescriptor):
 	fd(-1){
 	IAS_TRACER;
 
-	accessFile();
+  switch (aDescriptor.getDomain()){
+    case Descriptor::DM_FILE:
+      accessFile();
+      break;
+    case Descriptor::DM_SHARED_MEMORY:
+      accessMemory();
+      break;
+    default:
+      IAS_THROW(InternalException("Unknown Shared Memory Domain."));
+  }
+
 	mapFile();
 
 }
@@ -136,31 +145,72 @@ SharedMemoryFile::SharedMemoryFile(const Descriptor& aDescriptor):
 void SharedMemoryFile::accessFile() {
 	IAS_TRACER;
 
+	IAS_LOG(LogLevel::INSTANCE.isInfo(),"Opening file: ["<<aDescriptor.strName<<"]:"
+			<<aDescriptor.iOpenMode);
+
+
+  int iOpenOptions = 0;
+
+  switch(aDescriptor.iOpenMode){
+
+  case Descriptor::OM_ATTACH:
+    iOpenOptions = 0;
+    break;
+
+  case Descriptor::OM_CREATE_ALWAYS:
+    iOpenOptions = O_TRUNC;
+
+  case Descriptor::OM_CREATE_IF_NEEDED:
+    iOpenOptions = O_CREAT /*| O_EXCL*/ ; break;
+
+  default:
+    IAS_THROW(InternalException("Unknown mode."));
+  }
+
+  if ( (fd = open(aDescriptor.strName.c_str(), iOpenOptions |  O_RDWR, S_IRUSR | S_IWUSR)) == -1)
+      IAS_THROW(SystemException("open(): ")<<aDescriptor.strName);
+
+	struct stat info;
+
+	IAS_LOG(LogLevel::INSTANCE.isInfo(),"Opening file: "<<aDescriptor.strName<<",fd = "<<fd);
+
+	if(fstat(fd, &info) < 0)
+		IAS_THROW(SystemException("fstat(): ")<<aDescriptor.strName<<", fd:"<<TypeTools::IntToString(fd));
+
+	bAlreadyExisted = info.st_size > 0;
+
+	if(bAlreadyExisted && aDescriptor.getSize() == 0)
+		aDescriptor.setSize(info.st_size);
+
+	IAS_LOG(LogLevel::INSTANCE.isInfo(),"Attached file: "<<info.st_size<<" bytes.");
+
+}
+/*************************************************************************/
+void SharedMemoryFile::accessMemory() {
+	IAS_TRACER;
+
 	IAS_LOG(LogLevel::INSTANCE.isInfo(),"Opening memory: ["<<aDescriptor.strName<<"]:"
 			<<aDescriptor.iOpenMode);
 
-	if(aDescriptor.iDomain == Descriptor::DM_SHARED_MEMORY){
+  int iOpenOptions = 0;
 
-		int iOpenOptions = 0;
+  switch(aDescriptor.iOpenMode){
 
-		switch(aDescriptor.iOpenMode){
+  case Descriptor::OM_ATTACH           : iOpenOptions = 0; break;
 
-		case Descriptor::OM_ATTACH           : iOpenOptions = 0; break;
+  case Descriptor::OM_CREATE_ALWAYS :
+    shm_unlink(aDescriptor.strName.c_str());
 
-		case Descriptor::OM_CREATE_ALWAYS :
-			shm_unlink(aDescriptor.strName.c_str());
+  case Descriptor::OM_CREATE_IF_NEEDED    : iOpenOptions = O_CREAT /*| O_EXCL*/ ; break;
 
-		case Descriptor::OM_CREATE_IF_NEEDED    : iOpenOptions = O_CREAT /*| O_EXCL*/ ; break;
+  default:
+    IAS_THROW(InternalException("Unknown mode."));
+  }
 
-		default:
-			IAS_THROW(InternalException("Unknown mode."));
-		}
-
-		if ((fd=shm_open(aDescriptor.strName.c_str(),
-					iOpenOptions |  O_RDWR,
-					S_IRUSR | S_IWUSR)) == -1)
-			IAS_THROW(SystemException(aDescriptor.strName+" -> shm_open"));
-	}
+  if ((fd=shm_open(aDescriptor.strName.c_str(),
+        iOpenOptions |  O_RDWR,
+        S_IRUSR | S_IWUSR)) == -1)
+    IAS_THROW(SystemException(aDescriptor.strName+" -> shm_open"));
 
 	struct stat info;
 

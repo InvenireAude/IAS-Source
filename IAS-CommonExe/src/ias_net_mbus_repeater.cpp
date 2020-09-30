@@ -22,6 +22,7 @@
 
 using namespace IAS;
 using namespace Exe;
+using namespace IAS::Storage;
 
 int main(int argc, char* argv[]) {
 	IAS_TRACER;
@@ -42,15 +43,32 @@ int main(int argc, char* argv[]) {
                                        ptrParameters->getInterface(),
                                        ptrParameters->getPort());
 
-    IAS_DFT_FACTORY<Exe::Net::MBusRepeater>::PtrHolder ptrEchoServer(
-      IAS_DFT_FACTORY<Exe::Net::MBusRepeater>::Create(
+    IAS_DFT_FACTORY<Dump::FileSet>::PtrHolder ptrDumpFileSet;
+    IAS_DFT_FACTORY<Exe::Net::MBusRepeater>::PtrHolder ptrRepeater;
+
+    if(ptrParameters->hasDumpDirectory()){
+
+      ptrDumpFileSet = IAS_DFT_FACTORY<Dump::FileSet>::Create(
+        ptrParameters->getDumpDirectory(),
+        1000
+      );
+
+      ptrRepeater = IAS_DFT_FACTORY<Exe::Net::MBusRepeater>::Create(
               endPoint,
               ptrParameters->getInputBufferSize(),
               ptrParameters->getOutputBufferSize(),
-              ptrParameters->getMaxPacketSize())
-    );
+              ptrParameters->getMaxPacketSize(),
+              ptrDumpFileSet);
+    }else{
 
-    ptrEchoServer->start();
+      ptrRepeater = IAS_DFT_FACTORY<Exe::Net::MBusRepeater>::Create(
+              endPoint,
+              ptrParameters->getInputBufferSize(),
+              ptrParameters->getOutputBufferSize(),
+              ptrParameters->getMaxPacketSize());
+    }
+
+    ptrRepeater->start(ptrParameters->getNumThreads());
 
 	} catch (IAS::SystemException& e) {
 		std::cerr << "System Exception:\n";

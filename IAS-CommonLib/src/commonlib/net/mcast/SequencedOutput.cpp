@@ -28,6 +28,7 @@ SequencedOutput::SequencedOutput(const EndPoint& endPoint,
 /*************************************************************************/
 SequencedOutput::~SequencedOutput() throw(){
 	IAS_TRACER;
+  stopRepeater();
 }
 /*************************************************************************/
 void SequencedOutput::setup(){
@@ -49,10 +50,10 @@ void  SequencedOutput::send(void* pPacket, PacketSizeType iSize){
 	pNetwork->iSize   = iSize;
 	pNetwork->setSequence(iNetworkSequence);
 
-  IAS_LOG(LogLevel::INSTANCE.isDetailedInfo(), "iNetworkSequence: "<<iNetworkSequence);
+  IAS_LOG(LogLevel::INSTANCE.isInfo(), "iNetworkSequence: "<<iNetworkSequence);
 
   if(!bMuted)
-  sender.send(pNetwork->pPacket, pNetwork->iSize + sizeof(IndexType));
+    sender.send(pNetwork->pPacket, pNetwork->iSize + sizeof(IndexType));
 
 	if(++pNetwork >= pBufferEnd)
 		pNetwork = tabBuffer;
@@ -119,6 +120,8 @@ void SequencedOutput::stopRepeater(){
 		ptrNetRepeaterThread->stop();
 		ptrNetRepeaterThread->join();
 	}
+
+  ptrNetRepeaterThread = 0;
 }
 /*************************************************************************/
 void  SequencedOutput::setMute(bool bMuted){

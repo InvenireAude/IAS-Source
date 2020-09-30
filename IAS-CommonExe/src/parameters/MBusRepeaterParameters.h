@@ -37,7 +37,8 @@ public:
 
   const String& getInterface()const;
   const String& getGroup()const;
-  const String& getOutputFilePattern()const;
+  const String& getDumpDirectory()const;
+  bool hasDumpDirectory()const;
 
   int getInputBufferSize()const;
   int getOutputBufferSize()const;

@@ -1,14 +1,14 @@
 /*
  * File: IAS-CommonLib/src/commonlib/containers/PtrVector.h
- * 
+ *
  * Copyright (C) 2015, Albert Krzymowski
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  * http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -18,7 +18,7 @@
 /* IAS_COPYRIGHT */
 
 /* ChangeLog:
- * 
+ *
  */
 
 #ifndef _IAS_PtrVector_H_
@@ -43,6 +43,8 @@ class PtrVector : private ::std::vector<T*, TA >{
 
 		typedef typename ::std::vector<T*, TA>::iterator iterator;
 		typedef typename ::std::vector<T*, TA>::const_iterator const_iterator;
+    typedef typename ::std::vector<T*, TA>::reverse_iterator  reverse_iterator;
+    typedef typename ::std::vector<T*, TA>::const_reverse_iterator  const_reverse_iterator;
 
 		virtual ~PtrVector(){
 			typename ::std::vector<T*, TA>::iterator it(::std::vector<T*, TA>::begin());
@@ -54,9 +56,14 @@ class PtrVector : private ::std::vector<T*, TA >{
 
 		iterator begin() { return ::std::vector<T*, TA>::begin(); };
 		iterator end() { return ::std::vector<T*, TA>::end(); };
+    reverse_iterator rbegin() { return ::std::vector<T*, TA>::rbegin(); };
+		reverse_iterator rend() { return ::std::vector<T*, TA>::rend(); };
 
 		const_iterator begin() const { return ::std::vector<T*, TA>::begin(); };
 		const_iterator end() const{ return ::std::vector<T*, TA>::end(); };
+
+		const_reverse_iterator rbegin() const { return ::std::vector<T*, TA>::rbegin(); };
+		const_reverse_iterator rend() const{ return ::std::vector<T*, TA>::rend(); };
 
 		void clear() { ::std::vector<T*, TA>::clear(); }
 
@@ -73,7 +80,7 @@ class PtrVector : private ::std::vector<T*, TA >{
 		}
 
 		typename ::std::vector<T*, TA>::iterator erase(typename ::std::vector<T*>::iterator it ){
-			IAS_MEM_DELETE(*it);
+			IAS_DFT_FACTORY< T >::Free(*it);
 			return ::std::vector<T*, TA>::erase(it);
 		}
 
@@ -82,7 +89,7 @@ class PtrVector : private ::std::vector<T*, TA >{
 				IAS_THROW(InternalException("PtrVector::erase(): Index ot of bound."));
 			typename ::std::vector<T*, TA>::iterator it=begin();
 			it+=iIdx;
-			IAS_MEM_DELETE(*it);
+			IAS_DFT_FACTORY< T >::Free(*it);
 			::std::vector<T*, TA>::erase(it);
 		}
 };

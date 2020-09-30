@@ -28,21 +28,9 @@ namespace Parameters {
 MBusRepeaterParameters::MBusRepeaterParameters(int argc, char* argv[]){
 	IAS_TRACER;
 
-	::IAS::Exe::Parameters::ProgramParameters::init(argc,argv,"p:i:g:F:b:B:P:T:M:N:I:");
+	::IAS::Exe::Parameters::ProgramParameters::init(argc,argv,"p:i:g:D:b:B:P:T:M:N:I:");
 
 }
-/*
-  const String& getGroup()const;
-  const String& getOutputFilePattern()const;
-
-  int getInputBufferSize()const;
-  int getOutputBufferSize()const;
-  int getMaxPacketSize()const;
-  int getNumThreads()const;
-  int getMaxFileSize()const;
-  int getMaxPacketsInFile()const;
-  int getNewFileInterval()const;
-
 /*************************************************************************/
 const String& MBusRepeaterParameters::getInterface()const{
   static const String strDefault("127.0.0.1");
@@ -53,8 +41,12 @@ const String& MBusRepeaterParameters::getGroup()const{
   return getStringValue('g');
 }
 /*************************************************************************/
-const String& MBusRepeaterParameters::getOutputFilePattern()const{
-  return getStringValue('F');
+const String& MBusRepeaterParameters::getDumpDirectory()const{
+  return getStringValue('D');
+}
+/*************************************************************************/
+bool MBusRepeaterParameters::hasDumpDirectory()const{
+  return hmIndicators.count('D');
 }
 /*************************************************************************/
 int MBusRepeaterParameters::getInputBufferSize()const{

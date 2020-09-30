@@ -72,7 +72,7 @@ MemoryManager::MemoryManager(bool bAllowUserSignal, const char* sName):
 	//iFree=10000000;
 	//pMemory = new unsigned char[iFree];
 
-	this->bCheckPointersOnReturn=false;
+	//this->bCheckPointersOnReturn=false;
 }
 /*************************************************************************/
 MemoryManager::~MemoryManager() throw () {
@@ -135,8 +135,12 @@ void MemoryManager::addEntry(const char* sFile, const char* sFun, int iLine, uns
 #endif
 	}
 
-	IAS_LOG(IAS::LogLevel::INSTANCE.isMemory(), "N["<<(void*)lPtr<<"]:"<<sFile<<","<<sFun<<"("<<iLine<<"),s="<<hmEntries.size()
+	IAS_LOG(IAS::LogLevel::INSTANCE.isMemory(), "N["<<(void*)lPtr<<"]:"<<iNumBytes<<","<<sFile<<","<<sFun<<"("<<iLine<<"),s="<<hmEntries.size()
 			<<":"<<iCurEntries<<":"<<iTotalEntries);
+
+  if(IAS::LogLevel::INSTANCE.isMemory()){
+    entry.printBackTrace(std::cerr);
+  }
 
 }
 

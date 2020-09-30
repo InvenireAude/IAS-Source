@@ -1,14 +1,14 @@
 /*
  * File: IAS-CommonLib/src/commonlib/sys/proc/ProcessList.cpp
- * 
+ *
  * Copyright (C) 2015, Albert Krzymowski
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  * http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -111,9 +111,7 @@ void ProcessList::read() {
 
 	ptrDirectoryReader->read();
 
-	const DirectoryReader::EntriesList& lstEntries = ptrDirectoryReader->getEntries();
-
-	for (DirectoryReader::EntriesList::const_iterator it = lstEntries.begin(); it != lstEntries.end(); it++) {
+	for (DirectoryReader::const_iterator it = ptrDirectoryReader->begin(); it != ptrDirectoryReader->end(); it++) {
 
 		if ((*it)->iType != DirectoryReader::FT_DIR)
 			continue;

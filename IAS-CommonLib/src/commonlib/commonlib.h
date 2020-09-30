@@ -130,6 +130,8 @@
 #include "commonlib/storage/SynchronousLogger.h"
 #include "commonlib/storage/file/LoggerOutput.h"
 
+#include "commonlib/storage/dump/FileSet.h"
+
 #include "version/Version.h"
 
 #ifndef NULL

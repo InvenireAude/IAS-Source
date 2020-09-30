@@ -172,10 +172,8 @@ void MessageCatalog::loadExternalMessages(){
 	ptrDirectoryReader=IAS_DFT_FACTORY<SYS::FS::DirectoryReader>::Create(strDirectory);
 	ptrDirectoryReader->read();
 
-	const SYS::FS::DirectoryReader::EntriesList& lstEntries=ptrDirectoryReader->getEntries();
-
-	for(int iIdx=0; iIdx<lstEntries.size(); iIdx++){
-		String strFile(lstEntries[iIdx]->strFile);
+for (SYS::FS::DirectoryReader::const_iterator it = ptrDirectoryReader->begin(); it != ptrDirectoryReader->end(); it++) {
+		String strFile((*it)->strFile);
 		//TODO (LL) match sufix.
 		loadFile(strFile);
 	}

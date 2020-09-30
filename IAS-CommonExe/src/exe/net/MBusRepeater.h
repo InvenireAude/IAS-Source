@@ -35,14 +35,19 @@ public:
 
 	virtual ~MBusRepeater() throw();
 
-  void start();
+  void start(unsigned int iNumThreads);
 
 protected:
 	MBusRepeater(const IAS::Net::MCast::EndPoint& endPoint,
                IAS::Net::MCast::SequencedBase::IndexType iInputBufferSize,
                IAS::Net::MCast::SequencedBase::IndexType iOutputBufferSize,
+               IAS::Net::MCast::SequencedBase::PacketSizeType iMaxPacketSize);
+
+	MBusRepeater(const IAS::Net::MCast::EndPoint& endPoint,
+               IAS::Net::MCast::SequencedBase::IndexType iInputBufferSize,
+               IAS::Net::MCast::SequencedBase::IndexType iOutputBufferSize,
                IAS::Net::MCast::SequencedBase::PacketSizeType iMaxPacketSize,
-               Allocator* pAllocator = MemoryManager::GetAllocator());
+               IAS::Storage::Dump::FileSet* pDumpFileSet);
 
   const IAS::Net::MCast::EndPoint& endPoint;
 
@@ -73,7 +78,9 @@ protected:
   IAS::Net::MCast::SequencedBase::IndexType iInputBufferSize;
   IAS::Net::MCast::SequencedBase::IndexType iOutputBufferSize;
   IAS::Net::MCast::SequencedBase::PacketSizeType iMaxPacketSize;
+
   Allocator* pAllocator;
+  IAS::Storage::Dump::FileSet* pDumpFileSet;
 };
 /*************************************************************************/
 }

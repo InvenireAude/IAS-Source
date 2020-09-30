@@ -1,4 +1,4 @@
-#Fri 25 Sep 2020 08:13:10 AM CEST
+#Wed 30 Sep 2020 08:21:15 AM CEST
 FILES+=commonlib/configfile/Properties
 FILES+=commonlib/configfile/PropertiesProvider
 FILES+=commonlib/configfile/PropertiesProviderFromFile
@@ -82,6 +82,8 @@ FILES+=commonlib/net/ssl/Tools
 FILES+=commonlib/net/TCPConnectionBase
 FILES+=commonlib/net/URI
 FILES+=commonlib/storage/AsynchronousLogger
+FILES+=commonlib/storage/dump/File
+FILES+=commonlib/storage/dump/FileSet
 FILES+=commonlib/storage/file/LoggerOutput
 FILES+=commonlib/storage/Logger
 FILES+=commonlib/storage/LoggerOutput
