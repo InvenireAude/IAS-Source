@@ -50,6 +50,7 @@ public:
 
 
   void openBackLog();
+  void dumpBackLogInfo(std::ostream& os);
   void *nextFromBackLog(File::SizeType& iDataLen);
   bool hasMoreBackLogData();
 

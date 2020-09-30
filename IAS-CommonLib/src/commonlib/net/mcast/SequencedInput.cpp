@@ -31,14 +31,22 @@ SequencedInput::~SequencedInput() throw(){
 	IAS_LOG(LogLevel::INSTANCE.isInfo(),"iWhoHasCount: "<<iWhoHasCount);
 }
 /*************************************************************************/
-void SequencedInput::setup(){
+void SequencedInput::setup(IndexType iForcedSequence){
+
+  iNetworkSequence = iForcedSequence;
+	pNetwork = tabBuffer + (iNetworkSequence % iBufferSize);
+	iWhoHasMax = iNetworkSequence;
 
 	sender.setup(endPoint.getInterface(), endPoint.getGroup());
 	receiver.bind();
 	receiver.subscribe(endPoint.getInterface(), endPoint.getGroup());
 
-	IAS_LOG(LogLevel::INSTANCE.isInfo(),"SequencedInput is ready: "<<endPoint);
+	IAS_LOG(LogLevel::INSTANCE.isInfo(), "SequencedInput seq: "<<iNetworkSequence);
+	IAS_LOG(LogLevel::INSTANCE.isInfo(), "SequencedInput is ready: "<<endPoint);
 	IAS_LOG(LogLevel::INSTANCE.isInfo(), "SequencedOutput is ready: "<<iBufferSize);
+
+  // TODO ? make optional method, e.g. force forceWhoHas(iRange = iBufferSize);
+  sendWhoHas(iNetworkSequence,iNetworkSequence + iBufferSize);
 }
 /*************************************************************************/
 void SequencedInput::receiveFromNet(IndexType iMaxPrefetch){
@@ -62,7 +70,7 @@ void SequencedInput::receiveFromNet(IndexType iMaxPrefetch){
 
 		IndexType iMsgSequence = wd.getSequence();
 
-		IAS_LOG(LogLevel::INSTANCE.isDetailedInfo(), "Received! expected: "<<iNetworkSequence<<", got: "<<iMsgSequence);
+		IAS_LOG(LogLevel::INSTANCE.isInfo(), "Received! expected: "<<iNetworkSequence<<", got: "<<iMsgSequence);
 
 		if(iMsgSequence >= iNetworkSequence && iMsgSequence < iNetworkSequence + iMaxPrefetch){
 

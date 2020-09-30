@@ -28,7 +28,7 @@ namespace Parameters {
 MBusRepeaterParameters::MBusRepeaterParameters(int argc, char* argv[]){
 	IAS_TRACER;
 
-	::IAS::Exe::Parameters::ProgramParameters::init(argc,argv,"p:i:g:D:b:B:P:T:M:N:I:");
+	::IAS::Exe::Parameters::ProgramParameters::init(argc,argv,"p:i:g:D:b:B:P:T:M:N:I:X");
 
 }
 /*************************************************************************/
@@ -49,6 +49,10 @@ bool MBusRepeaterParameters::hasDumpDirectory()const{
   return hmIndicators.count('D');
 }
 /*************************************************************************/
+bool MBusRepeaterParameters::hasPrintStats()const{
+  return hmIndicators.count('X') && hmIndicators.count('D');
+}
+/*************************************************************************/
 int MBusRepeaterParameters::getInputBufferSize()const{
   return getIntValue('b',1000);
 }
@@ -66,7 +70,7 @@ int MBusRepeaterParameters::getNumThreads()const{
 }
 /*************************************************************************/
 int MBusRepeaterParameters::getMaxFileSize()const{
-  return getIntValue('I');
+  return getIntValue('M',1024*1024);
 }
 /*************************************************************************/
 int MBusRepeaterParameters::getMaxPacketsInFile()const{

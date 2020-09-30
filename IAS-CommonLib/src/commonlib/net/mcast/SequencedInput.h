@@ -34,7 +34,7 @@ public:
       return reinterpret_cast<C*>(receive(iDataSize));
     }
 
-	void setup();
+	void setup(IndexType iForcedSequence = 0);
 
 protected:
 	SequencedInput( const EndPoint& endPoint,

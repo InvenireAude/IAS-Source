@@ -71,10 +71,14 @@ bool FileSet::discoverNextSequence(){
   for(SYS::FS::DirectoryReader::const_reverse_iterator it = ptrDirectoryReader->rbegin();
       it != ptrDirectoryReader->rend(); it++){
         const String& strFileName((*it)->strFile);
-
         if(strFileName.length() == CNumNameDigits + CFileSufix.length() &&
-           strFileName.substr(CNumNameDigits).compare(CFileSufix)){
-          this->iNextSeq = TypeTools::StringToLong(strFileName.substr(0,CNumNameDigits));
+           strFileName.substr(CNumNameDigits).compare(CFileSufix) == 0){
+
+          iNextSeq = TypeTools::StringToLong(strFileName.substr(0,CNumNameDigits));
+          lstFiles.push_front(IAS_DFT_FACTORY<File>::Create(buildFileName(iNextSeq)));
+          iNextSeq++;
+
+          IAS_LOG(LogLevel::INSTANCE.isInfo(),"Next sequence discovery: "<<iNextSeq);
           return true;
         }
 
@@ -90,6 +94,9 @@ void FileSet::createNewFile(){
 }
 /*************************************************************************/
 void FileSet::openBackLog(){
+  IAS_TRACER;
+
+  IAS_LOG(LogLevel::INSTANCE.isInfo(),"Opening BackLog.");
 
   IAS_DFT_FACTORY<SYS::FS::DirectoryReader>::PtrHolder ptrDirectoryReader(
     IAS_DFT_FACTORY<SYS::FS::DirectoryReader>::Create(strDirectory)
@@ -146,8 +153,7 @@ void* FileSet::allocate(size_t n){
 	IAS_TRACER;
 
   if(lstFiles.size() == 0 || lstFiles.front()->getFree() < n ){
-    String strFileName(buildFileName(iNextSeq++));
-    lstFiles.push_front(IAS_DFT_FACTORY<File>::Create(strFileName, iMaxFileSize));
+    createNewFile();
   }
 
   return lstFiles.front()->allocate(n);
@@ -165,6 +171,16 @@ void  FileSet::trim(){
 }
 /*************************************************************************/
 void FileSet::printToStream(std::ostream& os){
+}
+/*************************************************************************/
+void FileSet::dumpBackLogInfo(std::ostream& os){
+
+  os<<"\tFile\tItems\tAllocated / Size"<<std::endl;
+  for(FilesList::const_iterator it = lstBackLogFiles.begin();
+      it != lstBackLogFiles.end(); it++){
+        os<<"\t"<<(*it)->getName()<<"\t"<<(*it)->getNumItems()<<"\t"<<(*it)->getAllocated()<<" / "<<(*it)->getSize()<<std::endl;
+      }
+  os<<std::endl;
 }
 /*************************************************************************/
 }

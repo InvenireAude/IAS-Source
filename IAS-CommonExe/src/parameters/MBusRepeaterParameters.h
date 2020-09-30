@@ -40,6 +40,8 @@ public:
   const String& getDumpDirectory()const;
   bool hasDumpDirectory()const;
 
+  bool hasPrintStats()const;
+
   int getInputBufferSize()const;
   int getOutputBufferSize()const;
   int getMaxPacketSize()const;

@@ -42,9 +42,27 @@ public:
   typedef size_t IndexType;
   typedef size_t SizeType;
 
+  inline SizeType getSize(){
+    return iSize;
+  }
+
+  inline SizeType getAllocated(){
+    Mutex::Locker locker(mutex);
+    return *pBytesAllocated;
+  }
+
+  inline SizeType getNumItems(){
+    Mutex::Locker locker(mutex);
+    return *pNumItems;
+  }
+
   inline SizeType getFree(){
     Mutex::Locker locker(mutex);
-    return iSize - *pBytesAllocated - 2 * sizeof(SizeType);
+
+    if(iSize < *pBytesAllocated + 2 * sizeof(SizeType) + 7)
+      return 0;
+
+    return iSize - *pBytesAllocated - 2 * sizeof(SizeType) - 8;
   }
 
   inline bool hasMoreData(){
@@ -68,6 +86,7 @@ protected:
   char     *pFirstFree;
   char     *pFirstToRead;
   SizeType *pBytesAllocated;
+  SizeType *pNumItems;
   SizeType iSize;
   Mutex mutex;
 

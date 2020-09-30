@@ -83,7 +83,8 @@ MBusRepeater::MBusRepeater(const IAS::Net::MCast::EndPoint& endPoint,
   iInputBufferSize(iInputBufferSize),
   iOutputBufferSize(iOutputBufferSize),
   iMaxPacketSize(iMaxPacketSize),
-  pAllocator(pDumpFileSet){
+  pAllocator(pDumpFileSet),
+  pDumpFileSet(pDumpFileSet){
 
   ptrInput = IAS_DFT_FACTORY<IAS::Net::MCast::SequencedInput>::Create(
     endPoint, iInputBufferSize, iMaxPacketSize, MemoryManager::GetAllocator());
@@ -96,16 +97,24 @@ MBusRepeater::MBusRepeater(const IAS::Net::MCast::EndPoint& endPoint,
 
   pDumpFileSet->openBackLog();
 
+  IAS::Net::MCast::SequencedBase::IndexType iNextSequence = 0;
+
   while(pDumpFileSet->hasMoreBackLogData()){
 
      Storage::Dump::File::SizeType iDataLen;
 
      void *pData = pDumpFileSet->nextFromBackLog(iDataLen);
-     IAS_LOG(LogLevel::INSTANCE.isInfo(),"Reading backlog, size:"<<iDataLen);
+
+     //TODO do something with this hack & look up.
+     iNextSequence = *(reinterpret_cast<const Storage::Dump::File::IndexType*>(
+				              reinterpret_cast<const char*>(pData) + iDataLen - sizeof(IAS::Net::MCast::SequencedBase::IndexType))) + 1;
+
      ptrOutput->send(pData, iDataLen - sizeof(IAS::Net::MCast::SequencedBase::IndexType));
+
+     IAS_LOG(LogLevel::INSTANCE.isInfo(),"Reading backlog, size:"<<iDataLen<<", seq: "<<iNextSequence);
   }
 
-  ptrInput->setup();
+  ptrInput->setup(iNextSequence);
   ptrOutput->startRepeater();
 
 }

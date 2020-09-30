@@ -45,20 +45,26 @@ File::File(const String& strFileName, size_t iSize){
   pData = ptrFile->getAddress();
 
   pBytesAllocated = reinterpret_cast<SizeType*>(pData);
-  pData = reinterpret_cast<void*>(pBytesAllocated + 1);
+  pNumItems       = pBytesAllocated + 1;
+  pData = reinterpret_cast<void*>(pNumItems + 1);
 
   if(iSize){
     *pBytesAllocated = 0;
+    *pNumItems = 0;
   }
 
   pFirstFree   = reinterpret_cast<char*>(pData) + *pBytesAllocated;
   pFirstToRead = reinterpret_cast<char*>(pData);
 
-  IAS_LOG(LogLevel::INSTANCE.isInfo(),"File: "<<strFileName<<", size: "<<this->iSize<<", used: "<<*pBytesAllocated);
+  IAS_LOG(LogLevel::INSTANCE.isInfo(),"File: "<<strFileName<<", size: "<<this->iSize<<", used: "<<*pBytesAllocated<<", items: "<<*pNumItems);
 }
 /*************************************************************************/
 File::~File() throw(){
 	IAS_TRACER;
+}
+/*************************************************************************/
+static inline size_t __alignSize(size_t n){
+  return (n + 0x07) & 0xfffffff8;
 }
 /*************************************************************************/
 void* File::allocate(SizeType n){
@@ -66,8 +72,9 @@ void* File::allocate(SizeType n){
 
   Mutex::Locker locker(mutex);
 
-  if(n > iSize - *pBytesAllocated - 2 * sizeof(SizeType))
-    IAS_THROW(ItemNotFoundException("Dump::File::allocate: ")<<n);
+  if(__alignSize(n) + *pBytesAllocated + 2 * sizeof(SizeType) > iSize)
+    IAS_THROW(ItemNotFoundException("Dump::File::allocate: ")<<n<<" "<<__alignSize(n)<<" "
+          <<(*pBytesAllocated)<<" "<<(2*sizeof(SizeType)));
 
   SizeType *pItemSize = reinterpret_cast<SizeType*>(pFirstFree);
 
@@ -76,9 +83,9 @@ void* File::allocate(SizeType n){
 
   void *pResult = pFirstFree;
 
-  pFirstFree += (n + 0x07) & 0xfffffff8;
-  *pBytesAllocated += (n + 0x07) & 0xfffffff8;
-
+  pFirstFree += __alignSize(n);
+  *pBytesAllocated = pFirstFree - reinterpret_cast<char*>(pData);
+  (*pNumItems)++;
   return pResult;
 }
 /*************************************************************************/
@@ -95,7 +102,7 @@ void* File::readNext(SizeType& iDataLen){
   pFirstToRead = reinterpret_cast<char*>(pItemSize + 1);
   void *pResult = reinterpret_cast<void*>(pFirstToRead);
 
-  pFirstToRead += (iDataLen + 0x07) & 0xfffffff8;
+  pFirstToRead += __alignSize(iDataLen);
   pItemSize = reinterpret_cast<SizeType*>(pFirstToRead);
 
   return pResult;

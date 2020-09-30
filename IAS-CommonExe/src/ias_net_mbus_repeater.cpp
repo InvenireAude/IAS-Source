@@ -50,15 +50,20 @@ int main(int argc, char* argv[]) {
 
       ptrDumpFileSet = IAS_DFT_FACTORY<Dump::FileSet>::Create(
         ptrParameters->getDumpDirectory(),
-        1000
+        ptrParameters->getMaxFileSize()
       );
 
-      ptrRepeater = IAS_DFT_FACTORY<Exe::Net::MBusRepeater>::Create(
+      if(ptrParameters->hasPrintStats()){
+        ptrDumpFileSet->openBackLog();
+        ptrDumpFileSet->dumpBackLogInfo(std::cout);
+      }else{
+        ptrRepeater = IAS_DFT_FACTORY<Exe::Net::MBusRepeater>::Create(
               endPoint,
               ptrParameters->getInputBufferSize(),
               ptrParameters->getOutputBufferSize(),
               ptrParameters->getMaxPacketSize(),
               ptrDumpFileSet);
+      }
     }else{
 
       ptrRepeater = IAS_DFT_FACTORY<Exe::Net::MBusRepeater>::Create(
@@ -68,7 +73,8 @@ int main(int argc, char* argv[]) {
               ptrParameters->getMaxPacketSize());
     }
 
-    ptrRepeater->start(ptrParameters->getNumThreads());
+    if(!ptrRepeater.isNull())
+        ptrRepeater->start(ptrParameters->getNumThreads());
 
 	} catch (IAS::SystemException& e) {
 		std::cerr << "System Exception:\n";
