@@ -23,7 +23,7 @@ namespace IAS {
 namespace QS {
 void Version::Print(std::ostream& os){
 
-  const String CVersion ("2.2.1");
+  const String CVersion ("2.3.2");
 
   os<<"IAS QSystem:  "<<CVersion<<std::endl;
   os<<" Complied on: "<<__DATE__<<" "<<__TIME__<<", environment: "<<__VERSION__<<std::endl;
