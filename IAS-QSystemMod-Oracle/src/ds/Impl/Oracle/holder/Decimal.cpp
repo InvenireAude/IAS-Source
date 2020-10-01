@@ -67,7 +67,7 @@ public:
 void Decimal::fetch(DM::DataObjectPtr& dm){
 	IAS_TRACER;
 
-	IAS_LOG(LogLevel::INSTANCE.isDetailedInfo()||true,pSetter->getXPath()<<" "<<strFormat);
+	IAS_LOG(LogLevel::INSTANCE.isDetailedInfo(),pSetter->getXPath()<<" "<<strFormat);
 
 	if(bNull == -1) {
 

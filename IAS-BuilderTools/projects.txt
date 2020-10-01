@@ -18,5 +18,6 @@ IAS-QSystemMod-ServiceManager
 IAS-QSystemMod-DB2
 IAS-QSystemMod-Oracle
 IAS-QSystemMod-WMQ
+IAS-QSystemMod-LMDB
 IAS-QSystemFmt-MQPCF
 IAS-QSystemMod-PostgreSQL

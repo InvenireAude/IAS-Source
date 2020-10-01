@@ -66,6 +66,7 @@ void StatementSelect::setSQLText(const String& strSQLText){
 void StatementSelect::execute(){
 	IAS_TRACER;
 
+  pSession->beginTxnIfNeed();
 
   int rc = mdb_cursor_open(pSession->getTxn(),
                            pSession->getDBi(), &cursor);

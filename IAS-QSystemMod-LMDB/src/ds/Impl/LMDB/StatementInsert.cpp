@@ -43,7 +43,8 @@ void StatementInsert::setSQLText(const String& strSQLText){
   IAS_LOG(LogLevel::INSTANCE.isInfo(),"setSQL:["<<strSQLText<<"]");
 
 
-  if(strSQLText.compare("INSERT INTO table (key, value) VALUES (:I000, :I001)") == 0){
+  if(strSQLText.compare("INSERT INTO table (key, value) VALUES (:I000, :I001)") == 0 ||
+     strSQLText.compare("INSERT INTO \"table\" (key, value) VALUES (:I000, :I001)") == 0){
   } else {
     IAS_THROW(LMDBException("This SQL is not supported in LMDB: " + strSQLText));
   }
@@ -57,6 +58,7 @@ void StatementInsert::prepare(){
 /*************************************************************************/
 void StatementInsert::execute(){
 	IAS_TRACER;
+  pSession->beginTxnIfNeed();
 
   int rc = mdb_put(pSession->getTxn(),
                    pSession->getDBi(),

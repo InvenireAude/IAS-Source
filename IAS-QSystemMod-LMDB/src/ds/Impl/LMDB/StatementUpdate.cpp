@@ -56,6 +56,8 @@ void StatementUpdate::setSQLText(const String& strSQLText){
 void StatementUpdate::execute(){
 	IAS_TRACER;
 
+  pSession->beginTxnIfNeed();
+
   //TODO Inport element order :]
   int rc = mdb_put(pSession->getTxn(),
                    pSession->getDBi(),

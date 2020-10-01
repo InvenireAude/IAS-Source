@@ -57,7 +57,7 @@ Session::Session(Connection* pConnection):
   LMDBException::ThrowOnError("mdb_txn_begin" + pConnection->getName(),rc);
 
   rc = mdb_open(txn, NULL, 0, &dbi);
-  LMDBException::ThrowOnError("mdb_txn_begin" + pConnection->getName(),rc);
+  LMDBException::ThrowOnError("mdb_open" + pConnection->getName(),rc);
 
 
 }
@@ -111,6 +111,9 @@ void Session::beginTxnIfNeed(){
   MDB_env *env = pConnection->getSystem()->getEnv();
   int rc = mdb_txn_begin(env, NULL, 0, &txn);
   LMDBException::ThrowOnError("mdb_txn_begin" + pConnection->getName(),rc);
+
+ // rc = mdb_open(txn, NULL, 0, &dbi);
+ // LMDBException::ThrowOnError("mdb_open" + pConnection->getName(),rc);
 
 }
 /*************************************************************************/

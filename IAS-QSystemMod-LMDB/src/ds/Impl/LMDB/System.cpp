@@ -35,14 +35,15 @@ System::System(){
 	IAS_LOG(LogLevel::INSTANCE.isInfo(),"** LMDB instance created.");
 
   int rc = mdb_env_create(&env);
-
   LMDBException::ThrowOnError("mdb_env_create",rc);
 
+  rc = mdb_env_set_mapsize(env, 1024*1024*512);
+  LMDBException::ThrowOnError("mdb_env_set_mapsize",rc);
 }
 /*************************************************************************/
 API::Connection* System::createConnection(const ::org::invenireaude::qsystem::workers::ds::Parameter* dmParameter){
 	IAS_TRACER;
-	 	 return IAS_DFT_FACTORY<LMDB::Connection>::Create< LMDB::System* >(this,dmParameter);
+	 	 return IAS_DFT_FACTORY<LMDB::Connection>::Create(this,dmParameter);
 }
 /*************************************************************************/
 System::~System() throw () {
