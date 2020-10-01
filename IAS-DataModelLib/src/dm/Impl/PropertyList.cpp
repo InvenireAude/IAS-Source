@@ -95,6 +95,15 @@ PropertyList::~PropertyList() throw(){
 	return tabProperties[iIdx];
 }
 /*************************************************************************/
+const ::IAS::DM::Type* PropertyList::getPropertyOwnerType(int iIdx)const{
+	IAS_TRACER;
+
+  if(iIdx < 0 || iIdx > tabProperties.size() - 1)
+		IAS_THROW(ItemNotFoundException("getProperty"));
+
+  return pType;
+}
+/*************************************************************************/
 int PropertyList::getSize() const{
 	return tabProperties.size();
 }

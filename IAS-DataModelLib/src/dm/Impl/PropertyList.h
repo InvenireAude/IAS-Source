@@ -36,6 +36,7 @@ public:
 	virtual ~PropertyList() throw();
 
 	virtual ::IAS::DM::Property* getProperty(int iIdx)const;
+  virtual const ::IAS::DM::Type*     getPropertyOwnerType(int iIdx)const;
 	virtual ::IAS::DM::Property* getProperty(const String& strName)const;
   virtual bool                 hasProperty(const String& strName)const;
 

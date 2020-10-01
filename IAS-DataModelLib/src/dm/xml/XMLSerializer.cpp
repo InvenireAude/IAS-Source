@@ -219,11 +219,6 @@ void XMLSerializer::serializeElement(const DataObject* pDataObject,
 		{
 			const ::IAS::DM::PropertyList &lstProperties = pType->asComplexType()->getProperties();
 
-			String strURI;
-
-			if(pXMLHelper->isPrefixElements())
-				strURI=pType->getURI();
-
 			for(int i=0; i<lstProperties.getSize(); i++){
 
 				const Property* pProperty=lstProperties.getProperty(i);
@@ -239,6 +234,11 @@ void XMLSerializer::serializeElement(const DataObject* pDataObject,
 				const Property* pProperty=lstProperties.getProperty(i);
 
 				if(!pProperty->isXMLAttribute()){
+
+       			String strNextURI;
+			      if(pXMLHelper->isPrefixElements())
+				        strNextURI=lstProperties.getPropertyOwnerType(i)->getURI();
+
 					if(! pProperty->isMulti()){
 						if(pDataObject->isSet(pProperty)){
 							const DataObject *pChild = pDataObject->getDataObject(pProperty);
@@ -250,7 +250,7 @@ void XMLSerializer::serializeElement(const DataObject* pDataObject,
 								serializeElement(pChild,
 									         	 strPropertyName,
 												 pChild && !pChild->getType()->equals(pProperty->getType()),
-												 strURI);
+												 strNextURI);
 						}/* IF: isSet */
 					}else{
 
@@ -262,7 +262,7 @@ void XMLSerializer::serializeElement(const DataObject* pDataObject,
 							serializeElement(pChild,
 											 strPropertyName,
 											 pChild && !pChild->getType()->equals(pProperty->getType()),
-											 strURI);
+											 strNextURI);
 						}
 
 					}

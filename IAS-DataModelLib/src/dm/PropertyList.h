@@ -24,7 +24,7 @@ namespace IAS {
 namespace DM {
 
 class Property;
-
+class Type;
 /*************************************************************************/
 /** The class. */
  class PropertyList {
@@ -33,6 +33,7 @@ public:
 	virtual ~PropertyList() throw(){};
 
 	virtual ::IAS::DM::Property* getProperty(int iIdx)const=0;
+  virtual const ::IAS::DM::Type*     getPropertyOwnerType(int iIdx)const=0;
 	virtual ::IAS::DM::Property* getProperty(const String& strName) const=0;
   virtual bool                 hasProperty(const String& strName) const=0;
 	virtual int getSize() const = 0;
