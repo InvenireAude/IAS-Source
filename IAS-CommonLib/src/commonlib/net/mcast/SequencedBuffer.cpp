@@ -13,13 +13,11 @@ namespace MCast {
 
 /*************************************************************************/
 SequencedBuffer::SequencedBuffer(const EndPoint& endPoint,
-			 	                     IndexType      iBufferSize,
-                             PacketSizeType iMaxPacketSize,
-                             Allocator     *pAllocator):
-	SequencedBase(endPoint),
-	pAllocator(pAllocator),
-  iBufferSize(iBufferSize),
-  iMaxPacketSize(iMaxPacketSize){
+			 	                        IndexType      iBufferSize,
+                                PacketSizeType iMaxPacketSize,
+                                Allocator     *pAllocator):
+	SequencedBase(endPoint, iMaxPacketSize, pAllocator),
+  iBufferSize(iBufferSize){
 	IAS_TRACER;
 
 	tabBuffer = IAS_DFT_STATIC_FACTORY<WireData>().allocate(iBufferSize);
@@ -40,11 +38,6 @@ SequencedBuffer::~SequencedBuffer() throw(){
   for(int iIdx = 0; iIdx < iBufferSize; iIdx++, pWireData++){
 		pWireData->unset(pAllocator);
 	}
-}
-/*************************************************************************/
-void *SequencedBuffer::allocatePacket(){
-	IAS_TRACER;
-  return pAllocator->allocate(iMaxPacketSize);
 }
 /*************************************************************************/
 }

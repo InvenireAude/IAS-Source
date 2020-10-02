@@ -46,7 +46,9 @@ protected:
 
 	Mutex mutex;
   Buffer buffer;
+
   IAS_DFT_FACTORY<Net::MCast::SequencedOutput>::PtrHolder ptrOutput;
+  IAS_DFT_FACTORY<Net::MCast::SequencedFailoverListener>::PtrHolder ptrListener;
 
 	friend class Factory<OutputDriver>;
 };

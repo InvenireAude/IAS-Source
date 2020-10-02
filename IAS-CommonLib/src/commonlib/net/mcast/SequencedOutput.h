@@ -14,6 +14,8 @@
 #include <commonlib/threads/Runnable.h>
 
 #include "SequencedBuffer.h"
+#include "SequencedFailoverListener.h"
+
 #include "Receiver.h"
 #include "Sender.h"
 
@@ -29,7 +31,9 @@ class WhoHasMessage;
 /** The SequencedOutput class.
  *
  */
-class SequencedOutput : public SequencedBuffer {
+class SequencedOutput :
+public SequencedBuffer,
+public SequencedFailoverListener::Callback {
 public:
 
 	virtual ~SequencedOutput() throw();
@@ -42,6 +46,8 @@ public:
 	void stopRepeater();
 
   void setMute(bool bMuted);
+
+  virtual void failover(IndexType iStartSequence);
 
 protected:
 	SequencedOutput(const EndPoint& endPoint,

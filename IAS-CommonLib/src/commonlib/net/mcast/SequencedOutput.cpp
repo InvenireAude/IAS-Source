@@ -99,6 +99,26 @@ void SequencedOutput::serveWhoHas(const WhoHasMessage& message){
 
 }
 /*************************************************************************/
+void SequencedOutput::failover(IndexType iStartSequence){
+  IAS_TRACER;
+  {
+    Mutex::Locker locker(Mutex);
+    bMuted = false;
+
+    if(iStartSequence == iNetworkSequence)
+      return;
+
+    if(iStartSequence < iNetworkSequence){
+      IAS_LOG(LogLevel::INSTANCE.isError(),"SequencedOutput will loose some data: ["<<iStartSequence<<","<<iNetworkSequence<<"]");
+      iNetworkSequence = iStartSequence;
+      return;
+    }
+  }
+
+  WhoHasMessage message(iStartSequence, iNetworkSequence);
+  serveWhoHas(message);
+}
+/*************************************************************************/
 void SequencedOutput::NetRepeater::run(){
 	IAS_TRACER;
 

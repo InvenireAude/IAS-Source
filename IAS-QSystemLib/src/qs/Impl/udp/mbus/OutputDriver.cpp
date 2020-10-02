@@ -35,15 +35,27 @@ OutputDriver::OutputDriver(const ::org::invenireaude::qsystem::workers::Connecti
 		iCount(0){
 	IAS_TRACER;
 
+  IAS::Net::MCast::EndPoint endPoint(dmConnection->getHost(),"127.0.0.1",dmConnection->getPort());
 
   ptrOutput = IAS_DFT_FACTORY<Net::MCast::SequencedOutput>::Create(
-                  IAS::Net::MCast::EndPoint(dmConnection->getHost(),"127.0.0.1",dmConnection->getPort()),
+                  endPoint,
                   100,
                   32000,
                   pAllocator);
 
+  String strValue;
+
   ptrOutput->setup();
   ptrOutput->startRepeater();
+
+  if(EnvTools::GetEnv("IAS_MBUS_FAILOVER_TIMEOUT",strValue)){
+    unsigned int iTimeout = TypeTools::StringToInt(strValue);
+    ptrListener = IAS_DFT_FACTORY<Net::MCast::SequencedFailoverListener>::Create(endPoint, ptrOutput, 100, 32000, iTimeout);
+    ptrOutput->setMute(true);
+    ptrListener->setup();
+  }
+
+
 }
 /*************************************************************************/
 OutputDriver::~OutputDriver() throw(){

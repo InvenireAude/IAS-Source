@@ -44,5 +44,6 @@
 #include "mcast/EndPoint.h"
 #include "mcast/SequencedInput.h"
 #include "mcast/SequencedOutput.h"
+#include "mcast/SequencedFailoverListener.h"
 
 #endif /* _IAS_Net_net_H_ */
