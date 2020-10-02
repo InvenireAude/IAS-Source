@@ -41,7 +41,8 @@ int main(int argc, char* argv[]) {
 
     IAS::Net::MCast::EndPoint endPoint(ptrParameters->getGroup(),
                                        ptrParameters->getInterface(),
-                                       ptrParameters->getPort());
+                                       ptrParameters->getPort(),
+                                       ptrParameters->getMaxPacketSize());
 
     IAS_DFT_FACTORY<Dump::FileSet>::PtrHolder ptrDumpFileSet;
     IAS_DFT_FACTORY<Exe::Net::MBusRepeater>::PtrHolder ptrRepeater;
@@ -61,7 +62,6 @@ int main(int argc, char* argv[]) {
               endPoint,
               ptrParameters->getInputBufferSize(),
               ptrParameters->getOutputBufferSize(),
-              ptrParameters->getMaxPacketSize(),
               ptrDumpFileSet);
       }
     }else{
@@ -69,8 +69,7 @@ int main(int argc, char* argv[]) {
       ptrRepeater = IAS_DFT_FACTORY<Exe::Net::MBusRepeater>::Create(
               endPoint,
               ptrParameters->getInputBufferSize(),
-              ptrParameters->getOutputBufferSize(),
-              ptrParameters->getMaxPacketSize());
+              ptrParameters->getOutputBufferSize());
     }
 
     if(!ptrRepeater.isNull())

@@ -41,7 +41,6 @@ protected:
 	SequencedFailoverListener( const EndPoint& endPoint,
                              Callback *pCallback,
 			 	                        IndexType       iLookAHead,
-                                PacketSizeType iMaxPacketSize,
                                 unsigned int    iTimeout);
 
   IndexType iNetworkSequence;

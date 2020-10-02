@@ -45,14 +45,13 @@ public:
 	void startRepeater();
 	void stopRepeater();
 
-  void setMute(bool bMuted);
-
+  void setMute();
+  void setAdaptSequenceOnFailover(bool bAdaptSequenceOnFailover);
   virtual void failover(IndexType iStartSequence);
 
 protected:
 	SequencedOutput(const EndPoint& endPoint,
 			 	          IndexType      iBufferSize,
-                  PacketSizeType iMaxPacketSize,
                   Allocator     *pAllocator);
 
 	class NetRepeater : public Thread, public Runnable {
@@ -76,6 +75,7 @@ protected:
 
 	Mutex mutex;
   bool bMuted;
+  bool bAdaptSequenceOnFailover;
 
 	IAS_DFT_FACTORY<Thread>::PtrHolder ptrNetRepeaterThread;
 	void serveWhoHas(const WhoHasMessage& message);

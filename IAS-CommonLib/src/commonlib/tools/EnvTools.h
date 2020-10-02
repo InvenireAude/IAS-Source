@@ -30,6 +30,7 @@ class EnvTools {
 public:
 
 	static bool GetEnv(const String& strName, String& strValue);
+  static bool GetEnv(const String& strName, int& iValue);
 	static bool GetBooleanEnv(const String& strName);
 
 	static String GetEnv(const String& strName);

@@ -1,14 +1,14 @@
 /*
  * File: IAS-CommonLib/src/commonlib/net/mcast/EndPoint.h
- * 
+ *
  * Copyright (C) 2020, Albert Krzymowski
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  * http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -32,6 +32,9 @@ namespace MCast {
 class EndPoint {
 public:
 
+  typedef unsigned int PacketSizeType;
+
+
 	inline const String&  getInterface()const{
 		return strInterface;
 	}
@@ -44,16 +47,21 @@ public:
 		return iPort;
 	}
 
+	inline PacketSizeType getMaxPacketSize()const{
+		return iMaxPacketSize;
+	}
+
 	inline EndPoint& operator=(const EndPoint& other){
         this->strInterface=other.strInterface;
         this->strGroup=other.strGroup;
         this->iPort=other.iPort;
+        this->iMaxPacketSize=other.iMaxPacketSize;
 		return *this;
 	}
 
-	EndPoint(const String& strGroup, const String& strInterface, unsigned int iPort);
-	EndPoint(const EndPoint& other);
 
+	EndPoint(const String& strGroup, const String& strInterface, unsigned int iPort, PacketSizeType iMaxPacketSize);
+	EndPoint(const EndPoint& other);
 
 	friend std::ostream& operator<<(std::ostream&, const EndPoint&);
 
@@ -61,6 +69,7 @@ protected:
 	String   strInterface;
 	String   strGroup;
 	unsigned int iPort;
+  PacketSizeType iMaxPacketSize;
 };
 /*************************************************************************/
 }

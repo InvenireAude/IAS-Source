@@ -26,6 +26,7 @@ namespace IAS {
 namespace QS {
 namespace UDP {
 
+const String DriverBase::CEnvInterface("IAS_QS_UDP_INTERFACE");
 /*************************************************************************/
 DriverBase::DriverBase(const API::Destination& destination):
   destination(destination),
@@ -38,7 +39,11 @@ DriverBase::DriverBase(const API::Destination& destination):
 DriverBase::~DriverBase() throw(){
 	IAS_TRACER;
 }
-
+/*************************************************************************/
+String DriverBase::getInterface()const{
+  IAS_TRACER;
+  return EnvTools::GetEnvWithDefault(CEnvInterface,"127.0.0.1");
+}
 /*************************************************************************/
 }
 }

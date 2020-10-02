@@ -13,17 +13,15 @@ namespace MCast {
 
 /*************************************************************************/
 SequencedBase::SequencedBase(const EndPoint& endPoint,
-                             PacketSizeType iMaxPacketSize,
                              Allocator     *pAllocator):
 	endPoint(endPoint),
-  pAllocator(pAllocator),
-  iMaxPacketSize(iMaxPacketSize){}
+  pAllocator(pAllocator){}
 /*************************************************************************/
 SequencedBase::~SequencedBase() throw(){}
 /*************************************************************************/
 void *SequencedBase::allocatePacket(){
 	IAS_TRACER;
-  return pAllocator->allocate(iMaxPacketSize);
+  return pAllocator->allocate(endPoint.getMaxPacketSize());
 }
 /*************************************************************************/
 }

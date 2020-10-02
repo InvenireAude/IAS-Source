@@ -40,13 +40,11 @@ public:
 protected:
 	MBusRepeater(const IAS::Net::MCast::EndPoint& endPoint,
                IAS::Net::MCast::SequencedBase::IndexType iInputBufferSize,
-               IAS::Net::MCast::SequencedBase::IndexType iOutputBufferSize,
-               IAS::Net::MCast::SequencedBase::PacketSizeType iMaxPacketSize);
+               IAS::Net::MCast::SequencedBase::IndexType iOutputBufferSize);
 
 	MBusRepeater(const IAS::Net::MCast::EndPoint& endPoint,
                IAS::Net::MCast::SequencedBase::IndexType iInputBufferSize,
                IAS::Net::MCast::SequencedBase::IndexType iOutputBufferSize,
-               IAS::Net::MCast::SequencedBase::PacketSizeType iMaxPacketSize,
                IAS::Storage::Dump::FileSet* pDumpFileSet);
 
   const IAS::Net::MCast::EndPoint& endPoint;
@@ -77,7 +75,6 @@ protected:
 
   IAS::Net::MCast::SequencedBase::IndexType iInputBufferSize;
   IAS::Net::MCast::SequencedBase::IndexType iOutputBufferSize;
-  IAS::Net::MCast::SequencedBase::PacketSizeType iMaxPacketSize;
 
   Allocator* pAllocator;
   IAS::Storage::Dump::FileSet* pDumpFileSet;

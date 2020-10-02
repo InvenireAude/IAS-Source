@@ -35,7 +35,6 @@ public:
 protected:
 	SequencedBuffer(const EndPoint& endPoint,
 			 	        IndexType      iBufferSize,
-                PacketSizeType iMaxPacketSize,
                 Allocator     *pAllocator);
 
 	IndexType       iBufferSize;

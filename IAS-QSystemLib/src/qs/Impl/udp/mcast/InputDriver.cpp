@@ -34,7 +34,7 @@ InputDriver::InputDriver(const ::org::invenireaude::qsystem::workers::Connection
   receiver(dmConnection->getPort()){
 	IAS_TRACER;
   receiver.bind();
-  receiver.subscribe("127.0.0.1",dmConnection->getHost());
+  receiver.subscribe(getInterface(),dmConnection->getHost());
 
 }
 /*************************************************************************/

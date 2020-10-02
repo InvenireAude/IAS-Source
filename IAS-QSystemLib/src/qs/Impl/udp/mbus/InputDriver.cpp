@@ -35,9 +35,8 @@ InputDriver::InputDriver(const ::org::invenireaude::qsystem::workers::Connection
 	IAS_TRACER;
 
   ptrInput = IAS_DFT_FACTORY<Net::MCast::SequencedInput>::Create(
-                  IAS::Net::MCast::EndPoint(dmConnection->getHost(),"127.0.0.1",dmConnection->getPort()),
+                  IAS::Net::MCast::EndPoint(dmConnection->getHost(),getInterface(),dmConnection->getPort(), 32000),
                   100,
-                  32000,
                   MemoryManager::GetAllocator());
 
   ptrInput->setup();

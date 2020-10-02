@@ -96,6 +96,10 @@ protected:
     DriverBase* pDriverBase;
   };
 
+  static const String CEnvInterface;
+
+  String getInterface()const;
+
 	friend class Factory<DriverBase>;
 };
 

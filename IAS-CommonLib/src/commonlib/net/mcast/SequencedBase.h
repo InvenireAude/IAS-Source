@@ -37,7 +37,6 @@ public:
 
 protected:
 	SequencedBase(const EndPoint& endPoint,
-                PacketSizeType iMaxPacketSize,
                 Allocator     *pAllocator);
 
 	EndPoint        endPoint;
@@ -100,7 +99,6 @@ protected:
     Allocator     *pAllocator;
   };
 
-  PacketSizeType iMaxPacketSize;
   Allocator     *pAllocator;
 
   void *allocatePacket();

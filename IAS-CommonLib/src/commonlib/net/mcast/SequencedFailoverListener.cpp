@@ -16,9 +16,8 @@ namespace MCast {
 SequencedFailoverListener::SequencedFailoverListener(const EndPoint& endPoint,
                                                       Callback *pCallback,
                                                       IndexType       iLookAHead,
-                                                      PacketSizeType iMaxPacketSize,
                                                       unsigned int    iTimeout):
-	SequencedBase(endPoint,iMaxPacketSize,MemoryManager::GetAllocator()),
+	SequencedBase(endPoint,MemoryManager::GetAllocator()),
 	receiver(endPoint.getPort()),
 	sender(endPoint.getPort() + 1),
   iLookAHead(iLookAHead),
@@ -52,8 +51,8 @@ void SequencedFailoverListener::setup(IndexType iForcedSequence){
   // TODO ? make optional method, e.g. force forceWhoHas(iRange = iBufferSize);
   // 10000 ?= buffer size ?
 
-  //WhoHasMessage message(iNetworkSequence,iNetworkSequence + 10000);
-  //message.send(sender);
+  WhoHasMessage message(iNetworkSequence,iNetworkSequence + 10000);
+  message.send(sender);
 
 	ptrNetListenerThread = IAS_DFT_FACTORY<NetListener>::Create(this);
 	ptrNetListenerThread->start();
@@ -66,11 +65,16 @@ void SequencedFailoverListener::listen(){
   WireDataHolder wd(pAllocator);
 
   wd.pPacket = allocatePacket();
-  IAS_LOG(true,"MP: "<<iMaxPacketSize);
 
-  if(!receiver.receive(wd.pPacket, iMaxPacketSize + sizeof(IndexType), wd.iSize)){
-    pCallback->failover(iNetworkSequence);
-    ptrNetListenerThread->stop();
+  if(!receiver.receive(wd.pPacket, endPoint.getMaxPacketSize() + sizeof(IndexType), wd.iSize)){
+
+      WhoHasMessage message(iNetworkSequence,iNetworkSequence + 1);
+      message.send(sender);
+
+      if(!receiver.receive(wd.pPacket, endPoint.getMaxPacketSize() + sizeof(IndexType), wd.iSize)){
+        pCallback->failover(iNetworkSequence);
+        ptrNetListenerThread->stop();
+      }
   }
 
   //We wait some time for the very first data.

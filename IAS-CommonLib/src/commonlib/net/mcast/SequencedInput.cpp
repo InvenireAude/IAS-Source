@@ -15,9 +15,8 @@ namespace MCast {
 /*************************************************************************/
 SequencedInput::SequencedInput( const EndPoint& endPoint,
 			 	                        IndexType      iBufferSize,
-                                PacketSizeType iMaxPacketSize,
                                 Allocator     *pAllocator):
-	SequencedBuffer(endPoint, iBufferSize, iMaxPacketSize, pAllocator),
+	SequencedBuffer(endPoint, iBufferSize, pAllocator),
 	receiver(endPoint.getPort()),
 	sender(endPoint.getPort() + 1),
   iNetworkSequence(0){
@@ -61,7 +60,7 @@ void SequencedInput::receiveFromNet(IndexType iMaxPrefetch){
     wd.pPacket = allocatePacket();
 
 		receiver.receive(wd.pPacket,
-						         iMaxPacketSize + sizeof(IndexType),
+						         endPoint.getMaxPacketSize() + sizeof(IndexType),
 						         wd.iSize);
 
     if(wd.iSize <= sizeof(IndexType))

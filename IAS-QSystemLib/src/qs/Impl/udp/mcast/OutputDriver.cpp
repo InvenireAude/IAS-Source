@@ -37,7 +37,7 @@ OutputDriver::OutputDriver(const ::org::invenireaude::qsystem::workers::Connecti
 		iCount(0){
 	IAS_TRACER;
 
-  sender.setup("127.0.0.1",dmConnection->getHost());
+  sender.setup(getInterface(),dmConnection->getHost());
 
 }
 /*************************************************************************/

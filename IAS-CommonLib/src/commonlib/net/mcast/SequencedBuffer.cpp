@@ -14,9 +14,8 @@ namespace MCast {
 /*************************************************************************/
 SequencedBuffer::SequencedBuffer(const EndPoint& endPoint,
 			 	                        IndexType      iBufferSize,
-                                PacketSizeType iMaxPacketSize,
                                 Allocator     *pAllocator):
-	SequencedBase(endPoint, iMaxPacketSize, pAllocator),
+	SequencedBase(endPoint, pAllocator),
   iBufferSize(iBufferSize){
 	IAS_TRACER;
 

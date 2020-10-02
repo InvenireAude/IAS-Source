@@ -52,48 +52,44 @@ class DataHolder{
 /*************************************************************************/
 MBusRepeater::MBusRepeater(const IAS::Net::MCast::EndPoint& endPoint,
                IAS::Net::MCast::SequencedBase::IndexType iInputBufferSize,
-               IAS::Net::MCast::SequencedBase::IndexType iOutputBufferSize,
-               IAS::Net::MCast::SequencedBase::PacketSizeType iMaxPacketSize):
+               IAS::Net::MCast::SequencedBase::IndexType iOutputBufferSize):
   endPoint(endPoint),
   iInputBufferSize(iInputBufferSize),
   iOutputBufferSize(iOutputBufferSize),
-  iMaxPacketSize(iMaxPacketSize),
   pAllocator(MemoryManager::GetAllocator()){
 
 	IAS_TRACER;
 
   ptrInput = IAS_DFT_FACTORY<IAS::Net::MCast::SequencedInput>::Create(
-    endPoint, iInputBufferSize, iMaxPacketSize, MemoryManager::GetAllocator());
+    endPoint, iInputBufferSize, MemoryManager::GetAllocator());
 
   ptrOutput = IAS_DFT_FACTORY<IAS::Net::MCast::SequencedOutput>::Create(
-    endPoint, iOutputBufferSize, iMaxPacketSize, pAllocator);
+    endPoint, iOutputBufferSize, pAllocator);
 
   ptrInput->setup();
   ptrOutput->setup();
-  ptrOutput->setMute(true);
+  ptrOutput->setMute();
   ptrOutput->startRepeater();
 }
 /*************************************************************************/
 MBusRepeater::MBusRepeater(const IAS::Net::MCast::EndPoint& endPoint,
                IAS::Net::MCast::SequencedBase::IndexType iInputBufferSize,
                IAS::Net::MCast::SequencedBase::IndexType iOutputBufferSize,
-               IAS::Net::MCast::SequencedBase::PacketSizeType iMaxPacketSize,
                IAS::Storage::Dump::FileSet* pDumpFileSet):
   endPoint(endPoint),
   iInputBufferSize(iInputBufferSize),
   iOutputBufferSize(iOutputBufferSize),
-  iMaxPacketSize(iMaxPacketSize),
   pAllocator(pDumpFileSet),
   pDumpFileSet(pDumpFileSet){
 
   ptrInput = IAS_DFT_FACTORY<IAS::Net::MCast::SequencedInput>::Create(
-    endPoint, iInputBufferSize, iMaxPacketSize, MemoryManager::GetAllocator());
+    endPoint, iInputBufferSize, MemoryManager::GetAllocator());
 
   ptrOutput = IAS_DFT_FACTORY<IAS::Net::MCast::SequencedOutput>::Create(
-    endPoint, iOutputBufferSize, iMaxPacketSize, pAllocator);
+    endPoint, iOutputBufferSize, pAllocator);
 
   ptrOutput->setup();
-  ptrOutput->setMute(true);
+  ptrOutput->setMute();
 
   pDumpFileSet->openBackLog();
 

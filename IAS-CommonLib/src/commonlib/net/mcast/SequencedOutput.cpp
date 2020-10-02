@@ -16,13 +16,13 @@ namespace MCast {
 /*************************************************************************/
 SequencedOutput::SequencedOutput(const EndPoint& endPoint,
 			 	                        IndexType      iBufferSize,
-                                PacketSizeType iMaxPacketSize,
                                 Allocator     *pAllocator):
-	SequencedBuffer(endPoint, iBufferSize, iMaxPacketSize, pAllocator),
+	SequencedBuffer(endPoint, iBufferSize, pAllocator),
 	receiver(endPoint.getPort() + 1),
 	sender(endPoint.getPort()),
   iNetworkSequence(0),
-  bMuted(false){
+  bMuted(false),
+  bAdaptSequenceOnFailover(true){
 	IAS_TRACER;
 
 	pNetwork = tabBuffer + (iNetworkSequence % iBufferSize);
@@ -69,6 +69,10 @@ void SequencedOutput::serveWhoHas(const WhoHasMessage& message){
 	{
 
 		Mutex::Locker locker(Mutex);
+
+    if(bMuted)
+      return;
+
     IAS_LOG(LogLevel::INSTANCE.isDetailedInfo(),"X: "<<message.iStartSequence<<" "<<iBufferSize<<" "<<iNetworkSequence);
 
 		if(message.iStartSequence + iBufferSize < iNetworkSequence )
@@ -82,19 +86,19 @@ void SequencedOutput::serveWhoHas(const WhoHasMessage& message){
 	while(iDataLeft-- > 0){
 
     IAS_LOG(LogLevel::INSTANCE.isDetailedInfo(), "Repeat: "<<iMsgSequence<<
-        ", ptr:"<<pCursor->pPacket<<", size:"<<pCursor->iSize);
+        ", ptr:"<<pCursor->pPacket<<", size:"<<pCursor->iSize<<", pCursor"<<(void*)pCursor<<", be: "<<pBufferEnd);
 
 		Mutex::Locker locker(Mutex);
 
-    if(pCursor->hasData() && pCursor->getSequence() == iMsgSequence++){
+    if(pCursor->hasData() && pCursor->getSequence() == iMsgSequence){
       sender.send(pCursor->pPacket, pCursor->iSize + sizeof(IndexType));
     }
 
-		if(++pCursor > pBufferEnd){
+		if(++pCursor >= pBufferEnd){
       pCursor = tabBuffer;
     }
 
-
+    iMsgSequence++;
 	}
 
 }
@@ -108,12 +112,21 @@ void SequencedOutput::failover(IndexType iStartSequence){
     if(iStartSequence == iNetworkSequence)
       return;
 
-    if(iStartSequence < iNetworkSequence){
-      IAS_LOG(LogLevel::INSTANCE.isError(),"SequencedOutput will loose some data: ["<<iStartSequence<<","<<iNetworkSequence<<"]");
-      iNetworkSequence = iStartSequence;
+    if(iNetworkSequence < iStartSequence){
+
+
+      if(bAdaptSequenceOnFailover){
+        iNetworkSequence = iStartSequence;
+      }else{
+        IAS_LOG(LogLevel::INSTANCE.isError(),"SequencedOutput was unable to produce some data on time: ["<<iNetworkSequence<<","<<iStartSequence<<"]");
+        IAS_LOG(LogLevel::INSTANCE.isError(),"System will hang will not happen soon !!!");
+      }
+
       return;
     }
   }
+
+  IAS_LOG(LogLevel::INSTANCE.isError(),"Send my own copies: ["<<iStartSequence<<","<<iNetworkSequence<<"]");
 
   WhoHasMessage message(iStartSequence, iNetworkSequence);
   serveWhoHas(message);
@@ -146,9 +159,15 @@ void SequencedOutput::stopRepeater(){
   ptrNetRepeaterThread = 0;
 }
 /*************************************************************************/
-void  SequencedOutput::setMute(bool bMuted){
+void SequencedOutput::setAdaptSequenceOnFailover(bool bAdaptSequenceOnFailover){
 	Mutex::Locker locker(Mutex);
-  this->bMuted = bMuted;
+  IAS_LOG(LogLevel::INSTANCE.isSystem(),"bAdaptSequenceOnFailover: "<<bAdaptSequenceOnFailover);
+  this->bAdaptSequenceOnFailover = bAdaptSequenceOnFailover;
+}
+/*************************************************************************/
+void  SequencedOutput::setMute(){
+	Mutex::Locker locker(Mutex);
+  this->bMuted = true;
 }
 /*************************************************************************/
 }

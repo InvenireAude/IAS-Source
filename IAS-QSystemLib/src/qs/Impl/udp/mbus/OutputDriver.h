@@ -50,6 +50,8 @@ protected:
   IAS_DFT_FACTORY<Net::MCast::SequencedOutput>::PtrHolder ptrOutput;
   IAS_DFT_FACTORY<Net::MCast::SequencedFailoverListener>::PtrHolder ptrListener;
 
+  static const String& CEnvTimeout;
+  static const String& CEnvKeepSequence;
 	friend class Factory<OutputDriver>;
 };
 

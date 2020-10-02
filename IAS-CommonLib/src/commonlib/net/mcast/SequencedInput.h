@@ -39,7 +39,6 @@ public:
 protected:
 	SequencedInput( const EndPoint& endPoint,
 			 	          IndexType      iBufferSize,
-                  PacketSizeType iMaxPacketSize,
                   Allocator     *pAllocator);
 
   IndexType iNetworkSequence;
