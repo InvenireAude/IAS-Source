@@ -13,7 +13,7 @@
 #include <commonlib/threads/Thread.h>
 #include <commonlib/threads/Runnable.h>
 
-#include "SequencedBase.h"
+#include "SequencedBuffer.h"
 #include "Receiver.h"
 #include "Sender.h"
 
@@ -23,11 +23,13 @@ namespace IAS {
 namespace Net {
 namespace MCast {
 
+class WhoHasMessage;
+
 /*************************************************************************/
 /** The SequencedOutput class.
  *
  */
-class SequencedOutput : public SequencedBase {
+class SequencedOutput : public SequencedBuffer {
 public:
 
 	virtual ~SequencedOutput() throw();

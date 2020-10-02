@@ -10,7 +10,7 @@
 #ifndef _IAS_Net_MCast_SequencedInput_H_
 #define _IAS_Net_MCast_SequencedInput_H_
 
-#include "SequencedBase.h"
+#include "SequencedBuffer.h"
 #include "Receiver.h"
 #include "Sender.h"
 
@@ -22,7 +22,7 @@ namespace MCast {
 /** The SequencedInput class.
  *
  */
-class SequencedInput : public SequencedBase {
+class SequencedInput : public SequencedBuffer {
 public:
 
 	virtual ~SequencedInput() throw();
@@ -49,10 +49,8 @@ protected:
 	Sender   sender;
 
 	IndexType iWhoHasMax;
-	size_t    iWhoHasCount;
 
   void receiveFromNet(IndexType iMaxPrefetch);
-	void sendWhoHas(IndexType iStartSequence, IndexType iEndSequence);
 
 	Mutex mutex;
 

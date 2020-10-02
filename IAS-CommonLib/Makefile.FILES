@@ -1,4 +1,4 @@
-#Wed 30 Sep 2020 08:21:15 AM CEST
+#Fri 02 Oct 2020 07:27:24 AM CEST
 FILES+=commonlib/configfile/Properties
 FILES+=commonlib/configfile/PropertiesProvider
 FILES+=commonlib/configfile/PropertiesProviderFromFile
@@ -64,8 +64,10 @@ FILES+=commonlib/net/mcast/EndPoint
 FILES+=commonlib/net/mcast/Receiver
 FILES+=commonlib/net/mcast/Sender
 FILES+=commonlib/net/mcast/SequencedBase
+FILES+=commonlib/net/mcast/SequencedBuffer
 FILES+=commonlib/net/mcast/SequencedInput
 FILES+=commonlib/net/mcast/SequencedOutput
+FILES+=commonlib/net/mcast/WhoHasMessage
 FILES+=commonlib/net/Peer
 FILES+=commonlib/net/PeerAddrInfo
 FILES+=commonlib/net/pollset/EventMonitor

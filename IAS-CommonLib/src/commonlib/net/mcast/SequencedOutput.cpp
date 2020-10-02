@@ -7,6 +7,8 @@
 
 #include "SequencedOutput.h"
 
+#include "WhoHasMessage.h"
+
 namespace IAS {
 namespace Net {
 namespace MCast {
@@ -16,7 +18,7 @@ SequencedOutput::SequencedOutput(const EndPoint& endPoint,
 			 	                        IndexType      iBufferSize,
                                 PacketSizeType iMaxPacketSize,
                                 Allocator     *pAllocator):
-	SequencedBase(endPoint, iBufferSize, iMaxPacketSize, pAllocator),
+	SequencedBuffer(endPoint, iBufferSize, iMaxPacketSize, pAllocator),
 	receiver(endPoint.getPort() + 1),
 	sender(endPoint.getPort()),
   iNetworkSequence(0),
@@ -103,7 +105,7 @@ void SequencedOutput::NetRepeater::run(){
 	while( !SYS::Signal::GetInstance()->isStopping() ){
 		WhoHasMessage message;
 		size_t iWritten;
-		pSequencedOutput->receiver.receive(&message, sizeof(WhoHasMessage), iWritten);
+		message.receive(pSequencedOutput->receiver);
 		pSequencedOutput->serveWhoHas(message);
 	}
 }
