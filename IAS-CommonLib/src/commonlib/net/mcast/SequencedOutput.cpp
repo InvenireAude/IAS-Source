@@ -104,7 +104,7 @@ void SequencedOutput::NetRepeater::run(){
 
 	while( !SYS::Signal::GetInstance()->isStopping() ){
 		WhoHasMessage message;
-		size_t iWritten;
+
 		message.receive(pSequencedOutput->receiver);
 		pSequencedOutput->serveWhoHas(message);
 	}
