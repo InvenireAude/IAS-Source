@@ -23,7 +23,7 @@ namespace IAS {
 
 void Version::Print(std::ostream& os){
 
-  const String CVersion ("2.4.2");
+  const String CVersion ("2.4.3");
 
   os<<"IAS CommonLib: "<<CVersion<<std::endl;
   os<<" Complied on:  "<<__DATE__<<" "<<__TIME__<<", environment: "<<__VERSION__<<std::endl;
