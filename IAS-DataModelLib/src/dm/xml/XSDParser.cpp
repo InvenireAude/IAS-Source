@@ -44,6 +44,9 @@ XSDParser::XSDParser(XSDHelper* pXSDHelper, LibXMLLexer *pLibXMLLexer){
 	ptrLibXMLLexer=pLibXMLLexer;
 	pDataFactory=pXSDHelper->getDataFactory();
 	IAS_CHECK_IF_VALID(pDataFactory);
+
+  namespaceProperties.bElementQualifiedForm=false;
+  namespaceProperties.bAttributeQualifiedForm=false;
 }
 /*************************************************************************/
 void XSDParser::PropertyInfo::init(){};
@@ -731,6 +734,15 @@ void XSDParser::parse_xsd_schemaAttribute(){
 			IAS_THROW(BadUsageException("Target namespace already set to: "+strTargetNamespace+", new: "+strValue));
 		strTargetNamespace = strValue;
 	}
+
+	if(strName.compare("elementFormDefault") == 0 && strValue.compare("qualified") == 0){
+      namespaceProperties.bElementQualifiedForm = true;
+	}
+
+	if(strName.compare("attributeFormDefault") == 0 && strValue.compare("qualified") == 0){
+      namespaceProperties.bAttributeQualifiedForm = true;
+	}
+
 }
 /*************************************************************************/
 void XSDParser::parse_xsd_schema(){
@@ -805,6 +817,8 @@ void XSDParser::define(){
 
 	defineTypes();
 	defineTargetNSElements();
+
+  *(pDataFactory->getNamespaceProperties(strTargetNamespace)) = namespaceProperties;
 }
 /*************************************************************************/
 void XSDParser::setWorkingDir(const String& strDir){

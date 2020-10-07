@@ -236,8 +236,11 @@ void XMLSerializer::serializeElement(const DataObject* pDataObject,
 				if(!pProperty->isXMLAttribute()){
 
        			String strNextURI;
-			      if(pXMLHelper->isPrefixElements())
-				        strNextURI=lstProperties.getPropertyOwnerType(i)->getURI();
+			      if(pXMLHelper->isPrefixElements()){
+                strNextURI=lstProperties.getPropertyOwnerType(i)->getURI();
+                if(!pDataFactory->getNamespaceProperties(strNextURI)->bElementQualifiedForm)
+                  strNextURI.clear();
+            }
 
 					if(! pProperty->isMulti()){
 						if(pDataObject->isSet(pProperty)){

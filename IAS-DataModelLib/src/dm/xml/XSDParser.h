@@ -21,12 +21,11 @@
 #include <commonlib/commonlib.h>
 
 #include "../Type.h"
+#include "../DataFactory.h"
 
 namespace IAS {
 namespace DM {
 class ComplexType;
-class DataFactory;
-
 
 namespace XML {
 
@@ -78,6 +77,8 @@ protected:
 	IAS_DFT_FACTORY< ::IAS::DM::XML::LibXMLLexer >::PtrHolder ptrLibXMLLexer;
 
 	String strTargetNamespace;
+
+  DataFactory::NamespaceProperties namespaceProperties;
 
 	XSDHelper*   pXSDHelper;
 	DataFactory* pDataFactory;

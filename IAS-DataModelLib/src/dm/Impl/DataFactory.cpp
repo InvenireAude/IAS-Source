@@ -157,6 +157,11 @@ void DataFactory::storeType(const HashMapKey& aKey,
 	hmTypes[aKey]=pType;
 	ptrTypeList->insert(pType);
 
+  if(hmNamespaceProperties.count(pType->getURI()) == 0){
+    NamespaceProperties& np(hmNamespaceProperties[pType->getURI()]);
+    np.bAttributeQualifiedForm = false;
+    np.bElementQualifiedForm = false;
+  }
 }
 /*************************************************************************/
 ::IAS::DM::Type* DataFactory::getDefaultType(IAS::DM::Type::Types iType) const{
@@ -202,6 +207,24 @@ void DataFactory::declareBuiltInType(::IAS::DM::Type* pType){
    IAS_TRACER;
    HashMapKey aKey(pType->getURI(), pType->getName());
    storeType(aKey, pType);
+}
+/*************************************************************************/
+const DM::DataFactory::NamespaceProperties* DataFactory::getNamespaceProperties(const String&strURI)const{
+
+  NamespacePropertiesMap::const_iterator it = hmNamespaceProperties.find(strURI);
+
+  if(it == hmNamespaceProperties.end()){
+    if(!pParentFactory)
+      IAS_THROW(ItemNotFoundException(strURI)<<" : no namespace properties found.");
+
+    return pParentFactory->getNamespaceProperties(strURI);
+  }
+  return &it->second;
+}
+/*************************************************************************/
+DM::DataFactory::NamespaceProperties* DataFactory::getNamespaceProperties(const String&strURI){
+  return const_cast<DM::DataFactory::NamespaceProperties*>(
+        const_cast<const DataFactory*>(this)->getNamespaceProperties(strURI));
 }
 /*************************************************************************/
 }
