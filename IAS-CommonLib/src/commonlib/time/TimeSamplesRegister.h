@@ -1,14 +1,14 @@
 /*
  * File: IAS-CommonLib/src/commonlib/time/TimeSamplesRegister.h
- * 
+ *
  * Copyright (C) 2015, Albert Krzymowski
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  * http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -27,7 +27,7 @@ namespace IAS{
 class TimeSample {
 public:
 
-	TimeSample(bool bStart){
+	TimeSample(bool bStart = false){
 		if(bStart)
 			start();
 		else
@@ -48,7 +48,7 @@ struct TimeSamplesResults{
 	static const int COF_MicroSec = 1;
 	static const int COF_MiliSec = 1000;
 	static const int COF_Seconds = 1000000;
-	
+
 	TimeSamplesResults(int iOutputFactor = 1000):
 		iTotal(0L),iMin(0),iMax(0L),iNumSamples(0L),
 		iOutputFactor(iOutputFactor){};
@@ -61,7 +61,7 @@ struct TimeSamplesResults{
 	int iOutputFactor;
 
 	TimeSamplesResults(const TimeSamplesResults& other):
-		iTotal(other.iTotal),iMin(other.iMin),iMax(other.iMax),iNumSamples(other.iOutputFactor),
+		iTotal(other.iTotal),iMin(other.iMin),iMax(other.iMax),iNumSamples(other.iNumSamples),
 		iOutputFactor(other.iOutputFactor){};
 
 	void reset(){
@@ -71,7 +71,7 @@ struct TimeSamplesResults{
 		iNumSamples=0;
 	}
 
-	
+
 	inline TimeSamplesResults& operator=(const TimeSamplesResults& other){
 		this->iMin=other.iMin;
 		this->iMax=other.iMax;
