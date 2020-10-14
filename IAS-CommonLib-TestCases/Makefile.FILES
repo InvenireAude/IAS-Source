@@ -1,4 +1,8 @@
-#Wed 09 Sep 2020 07:33:02 PM CEST
+#Fri 09 Oct 2020 01:47:05 PM CEST
+FILES+=prefcases/MemoryCopy
+FILES+=prefcases/ProducerConsumer
+FILES+=prefcases/ThreadSpinlocks
+FILES+=prefcases/ThreadSynchronization
 FILES+=testcases/TCBackgroundJobs
 FILES+=testcases/TCBitMap
 FILES+=testcases/TCBlockIOBuffer
@@ -32,4 +36,5 @@ FILES+=testcases/TCTemplates
 FILES+=testcases/TCThreads
 FILES+=testcases/TCTime
 FILES+=testcases/TCUrl
+MAINFILES+=commonlib-perfcases
 MAINFILES+=commonlib-testcases

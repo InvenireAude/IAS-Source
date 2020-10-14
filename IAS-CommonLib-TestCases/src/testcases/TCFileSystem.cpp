@@ -1,14 +1,14 @@
 /*
  * File: IAS-CommonLib-TestCases/src/testcases/TCFileSystem.cpp
- * 
+ *
  * Copyright (C) 2015, Albert Krzymowski
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  * http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -50,9 +50,8 @@ void TCFileSystem::caseALL(){
 
 	ptrReader->read();
 
-	const DirectoryReader::EntriesList& lstEntries = ptrReader->getEntries();
 
-	for (DirectoryReader::EntriesList::const_iterator it = lstEntries.begin(); it != lstEntries.end(); it++) {
+	for (DirectoryReader::EntriesList::const_iterator it = ptrReader->begin(); it != ptrReader->end(); it++) {
 
 		std::cout << (unsigned char) (*it)->iType << ":" << (*it)->strFile << std::endl;
 	}
