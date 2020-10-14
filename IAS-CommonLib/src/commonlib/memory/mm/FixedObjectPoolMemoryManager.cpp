@@ -92,6 +92,7 @@ void* FixedObjectPoolMemoryManager::allocate(size_t n){
 
   if(refTop() == CUnusedIndex){
     IAS_LOG(LogLevel::INSTANCE.bIsError,"FixedObjectPoolMemoryManager is out of memory.");
+     PrintTrace(std::cerr);
     throw std::bad_alloc();
   }
 
