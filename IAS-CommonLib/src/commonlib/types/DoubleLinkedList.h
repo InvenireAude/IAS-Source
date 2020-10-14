@@ -85,8 +85,7 @@ operator const C&()const { return *pValue;}
 class iterator {
    public:
     iterator(const iterator& other):
-      pCurrent(other.pCurrent),
-      pLast(other.pLast){};
+      pCurrent(other.pCurrent){}
 
     bool operator==(const iterator& other){
       return pCurrent == other.pCurrent;
@@ -98,44 +97,49 @@ class iterator {
 
     iterator& operator=(const iterator& other){
       pCurrent = other.pCurrent;
-      pLast    = other.pLast;
       return *this;
     };
 
   iterator& operator++(){
-    pCurrent = pCurrent != pLast ? pCurrent->pNext : NULL; 
+
+    pCurrent = pCurrent->pNext;
+
+    if(!pCurrent->pValue)
+      pCurrent = NULL;
+
     return *this;
   }
-    C* operator*() const{
+
+  C* operator*() const{
       IAS_CHECK_IF_NULL(pCurrent);
       return pCurrent->pValue;
     }
-  
+
   protected:
 
-   iterator(DoubleLinkedList<C> *pCurrent, DoubleLinkedList<C> *pLast):
-    pCurrent(pCurrent),
-    pLast(pLast){}
+   iterator(DoubleLinkedList<C> *pCurrent):
+    pCurrent(pCurrent){}
 
     DoubleLinkedList<C> *pCurrent;
-    DoubleLinkedList<C> *pLast;
 
     friend class  DoubleLinkedList<C>;
   };
 
   iterator begin(){
-    return iterator(this,this->pPrev);
+    return iterator(this->pValue ? this : NULL);
   }
 
   iterator end(){
-    return iterator(NULL, NULL);
+    return iterator(NULL);
   }
 
- 
+
  protected:
- 
-  iterator begin(DoubleLinkedList<C> *pCurrent, DoubleLinkedList<C> *pLast){
-    return iterator(pCurrent, pLast);
+
+  iterator begin(DoubleLinkedList<C> *pCurrent){
+    if(!pCurrent->pValue)
+      pCurrent = NULL;
+    return iterator(pCurrent);
   }
 
  private:
@@ -156,10 +160,7 @@ class DoubleLinkedListOwner : public DoubleLinkedList<C> {
     typedef typename IAS::DoubleLinkedList<C>::iterator iterator;
 
     iterator begin(){
-      if(DoubleLinkedList<C>::getNext() == this)
-        return DoubleLinkedList<C>::end();
-    
-      return IAS::DoubleLinkedList<C>::begin(DoubleLinkedList<C>::getNext(), DoubleLinkedList<C>::getPrev());
+      return IAS::DoubleLinkedList<C>::begin(DoubleLinkedList<C>::getNext());
     };
 
     iterator remove(iterator& it){
@@ -167,13 +168,10 @@ class DoubleLinkedListOwner : public DoubleLinkedList<C> {
         return it;
 
       DoubleLinkedList<C> *pNext = (*it)->getNext();
- 
+
       (*it)->detach();
- 
-      if(pNext == this)
-        return DoubleLinkedList<C>::end();
- 
-      return IAS::DoubleLinkedList<C>::begin(pNext, IAS::DoubleLinkedList<C>::getPrev());  
+
+      return IAS::DoubleLinkedList<C>::begin(pNext);
     }
 
  };
