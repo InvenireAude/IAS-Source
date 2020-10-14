@@ -48,6 +48,8 @@ void  SequencedOutput::send(void* pPacket, PacketSizeType iSize){
 
 	Mutex::Locker locker(Mutex);
 
+  pNetwork->unset(pAllocator);
+
   pNetwork->pPacket = pPacket;
 	pNetwork->iSize   = iSize;
 	pNetwork->setSequence(iNetworkSequence);
