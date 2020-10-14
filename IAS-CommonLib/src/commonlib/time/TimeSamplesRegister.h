@@ -87,7 +87,7 @@ struct TimeSamplesResults{
 		if(iValue >iMax)
 			iMax=iValue;
 
-		if(iValue < iMin || iMin==0)
+		if(iValue < iMin || iNumSamples==0)
 			iMin=iValue;
 
 		iTotal+=iValue;
@@ -101,7 +101,7 @@ struct TimeSamplesResults{
 		if(iTimeElapsed >iMax)
 			iMax=iTimeElapsed;
 
-		if(iTimeElapsed < iMin || iMin==0)
+		if(iTimeElapsed < iMin || iNumSamples==0)
 			iMin=iTimeElapsed;
 
 		iTotal+=iTimeElapsed;
