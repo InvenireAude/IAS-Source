@@ -1,12 +1,12 @@
 PROGRAM com::examples::basic::tabs01(
             VAR p1 AS Integer : "IAS/DM/Default",
-            VAR input AS Customer : "http://www.examples.org/akc",
-            VAR output AS Customer : "http://www.examples.org/akc")  BEGIN
+            VAR input AS Customer : "http://www.invenireaude.org/example",
+            VAR output AS Customer : "http://www.invenireaude.org/example")  BEGIN
 
     VAR tab1 AS ARRAY OF Integer : "IAS/DM/Default";
     VAR tab2 AS ARRAY OF String : "IAS/DM/Default";
-    VAR list AS ARRAY OF Address : "http://www.examples.org/akc";
-    VAR a AS Address : "http://www.examples.org/akc";
+    VAR list AS ARRAY OF Address : "http://www.invenireaude.org/example";
+    VAR a AS Address : "http://www.invenireaude.org/example";
 
     tab1=1;
     tab1=1;
@@ -21,7 +21,7 @@ PROGRAM com::examples::basic::tabs01(
 
     output.address=com::examples::utilitytabresult(12,"Pierwsza tura.");
     list=com::examples::utilitytabresult(16,"Druga tura.");
-    a=NEW Address : "http://www.examples.org/akcf";
+    a=NEW Address : "http://www.invenireaude.org/examplef";
     output.address[3]=a;
     a.street="testowa";
     a.block=111;

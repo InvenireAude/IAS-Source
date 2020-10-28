@@ -8,7 +8,7 @@
       "street" : "Sunset",
       "block" : 1009,
       "country" : "USA",
-      "_dmType" : "http://www.examples.org/akcf#Address"
+      "_dmType" : "http://www.invenireaude.org/examplef#Address"
       }],
-   "_dmType" : "http://www.examples.org/akc#Customer"
+   "_dmType" : "http://www.invenireaude.org/example#Customer"
    }

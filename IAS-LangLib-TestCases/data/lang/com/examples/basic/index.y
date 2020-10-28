@@ -1,14 +1,14 @@
 /*
  * File: IAS-LangLib-TestCases/data/lang/com/examples/basic/cast.y
- * 
+ *
  * Copyright (C) 2015, Albert Krzymowski
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  * http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -17,14 +17,14 @@
  */
 IMPORT std::default;
 
-				  				 
-PROGRAM com::examples::basic::index(VAR p1     AS Integer, 
-			 			    	   VAR input  AS Customer : "http://www.examples.org/akc", 
-			 			    	   VAR output AS Customer : "http://www.examples.org/akc")
+
+PROGRAM com::examples::basic::index(VAR p1     AS Integer,
+			 			    	   VAR input  AS Customer : "http://www.invenireaude.org/example",
+			 			    	   VAR output AS Customer : "http://www.invenireaude.org/example")
 BEGIN
 
  INDEX input.address USING street;
- 
+
  CREATE input.address BEGIN
    block = 9991;
    street = "Nowacka9991";
@@ -39,13 +39,13 @@ BEGIN
    block = 9993;
    street = "Nowacka9993";
  END;
-   
+
  VAR a AS AnyType;
-  
- a = input.address [[ "Miodowa" ]];  
+
+ a = input.address [[ "Miodowa" ]];
  output.address = COPYOF(a);
- 
- a = input.address [[ "Nowacka9993" ]];  
+
+ a = input.address [[ "Nowacka9993" ]];
  output.address = COPYOF(a);
 
  IF ISSET(input.address [[ "Miodowa" ]]) THEN
@@ -56,5 +56,5 @@ BEGIN
  IF NOT ISSET(input.address[["Miodowa2"]]) THEN
   CREATE output.address BEGIN
    street = "NOT ISSET";
-  END;  
+  END;
 END;

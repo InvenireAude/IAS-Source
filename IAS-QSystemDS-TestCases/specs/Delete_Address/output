@@ -4,5 +4,5 @@
    "middlename" : "Junior",
    "lastname" : "Smith",
    "age" : 14,
-   "_dmType" : "http://www.examples.org/akc#Customer"
+   "_dmType" : "http://www.invenireaude.org/example#Customer"
    }

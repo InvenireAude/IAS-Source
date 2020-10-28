@@ -2,7 +2,7 @@ IMPORT std::default;
 IMPORT std::qs;
 IMPORT tc::helpers;
 
-DEFINE MyArray : "http://www.examples.org/akc" AS BEGIN
+DEFINE MyArray : "http://www.invenireaude.org/example" AS BEGIN
  values AS ARRAY OF String;
 END;
 
@@ -16,7 +16,7 @@ BEGIN
   ctx.FMT = "String";
 
   VAR s AS String;
-  VAR list AS MyArray : "http://www.examples.org/akc";
+  VAR list AS MyArray : "http://www.invenireaude.org/example";
 
   s = "BĄK|PAŁKA|ZAPAŁKA|ĄĆŹŻ";
   list.values = std::split(s,"|");

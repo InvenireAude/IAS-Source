@@ -1,14 +1,14 @@
 /*
  * File: IAS-DataModelLib-TestCases/src/tc/dm/CustomerXML.cpp
- * 
+ *
  * Copyright (C) 2015, Albert Krzymowski
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  * http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -46,7 +46,7 @@ void CustomerXML::caseALL(){
 	ptrXSDHelper->defineTypesFromFile("testdata/customer.xsd");
 	//ptrXMLHelper->defineTypesFromFile("/home/albert/Workspaces/REB2-SVN-Galileo/REB-Catalog-XML/XML/operations.XML");
 
-	Type* pCustomerType = ptrDataFactory->getType("http://www.examples.org/akc","Customer");
+	Type* pCustomerType = ptrDataFactory->getType("http://www.invenireaude.org/example","Customer");
 
 	DataObjectPtr ptrCustomer(pCustomerType->createDataObject());
 
@@ -59,7 +59,7 @@ void CustomerXML::caseALL(){
 	ptrCustomer->createDataObject("address");
 	ptrCustomer->createDataObject("address");
 
-	const Type* pTypeF = ptrDataFactory->getType("http://www.examples.org/akcf","Address");
+	const Type* pTypeF = ptrDataFactory->getType("http://www.invenireaude.org/examplef","Address");
 
 	DataObjectPtr ptrForeignAddress(pTypeF->createDataObject());
 	ptrForeignAddress->setString("country","Laponia");
@@ -84,9 +84,9 @@ void CustomerXML::caseALL(){
 
 	IAS_DFT_FACTORY< XML::XMLHelper >::PtrHolder ptrXMLHelper(IAS_DFT_FACTORY< XML::XMLHelper >::Create(ptrDataFactory.getPointer()));
 
-	//ptrXMLHelper->save(strOutput,ptrCustomer,"a","http://www.examples.org/akc");
+	//ptrXMLHelper->save(strOutput,ptrCustomer,"a","http://www.invenireaude.org/example");
 	StringStream ssTmp;
-	ptrXMLHelper->save(ssTmp,ptrCustomer,"a","http://www.examples.org/akc");
+	ptrXMLHelper->save(ssTmp,ptrCustomer,"a","http://www.invenireaude.org/example");
 	//std::cout<<XML::XMLHelper::Stringify(ptrDataFactory,ptrCustomer);
 
 	String strOutput(ssTmp.str());

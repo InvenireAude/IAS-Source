@@ -18,5 +18,5 @@
       "lastname" : "Smith",
       "age" : 14
       }],
-   "_dmType" : "http://www.examples.org/akc#GetCustomerList"
+   "_dmType" : "http://www.invenireaude.org/example#GetCustomerList"
    }

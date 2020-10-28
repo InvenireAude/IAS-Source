@@ -1,4 +1,4 @@
-<customer xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ns1="http://www.examples.org/akcf" xmlns:ns0="http://www.examples.org/akc" xsi:type="ns0:Customer">
+<customer xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ns1="http://www.invenireaude.org/examplef" xmlns:ns0="http://www.invenireaude.org/example" xsi:type="ns0:Customer">
  <mailingAddress/>
  <lastname>Kowalski Miodowa Miodowa Miodowa Miodowa Miodowa Miodowa</lastname>
  <firstname>Jan</firstname>

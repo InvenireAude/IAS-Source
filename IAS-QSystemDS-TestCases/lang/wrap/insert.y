@@ -1,7 +1,7 @@
 
 
 PROGRAM wrap::insertCustomer(VAR ctx      AS Context  : "http://www.invenireaude.org/qsystem/workers",
-				             VAR data    AS Customer : "http://www.examples.org/akc")
+				             VAR data    AS Customer : "http://www.invenireaude.org/example")
 EXTERNAL "libIASQSystemLib:ias_qs_lang_db_proxy:WrappedStatement"
 (
 "db",
@@ -19,10 +19,10 @@ EXTERNAL "libIASQSystemLib:ias_qs_lang_db_proxy:WrappedStatement"
 ");
 
 //   ? data            => rawdata
-PROGRAM getCode(VAR a AS Address:"http://www.examples.org/akc")
+PROGRAM getCode(VAR a AS Address:"http://www.invenireaude.org/example")
 RETURNS String
 BEGIN
-   IF a ISTYPE(Address:"http://www.examples.org/akcf") THEN BEGIN
+   IF a ISTYPE(Address:"http://www.invenireaude.org/examplef") THEN BEGIN
        RETURN "F";
  	 END ELSE BEGIN
        RETURN "C";
@@ -32,7 +32,7 @@ END;
 
 PROGRAM wrap::insertAddress(VAR ctx       AS Context  : "http://www.invenireaude.org/qsystem/workers",
 							VAR cid       AS String,
-				            VAR address   AS Address  : "http://www.examples.org/akc",
+				            VAR address   AS Address  : "http://www.invenireaude.org/example",
 				            VAR type       AS String)
 EXTERNAL "libIASQSystemLib:ias_qs_lang_db_proxy:WrappedStatement"
 (

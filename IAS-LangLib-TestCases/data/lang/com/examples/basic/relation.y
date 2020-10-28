@@ -274,8 +274,8 @@ END;
 
 
 PROGRAM com::examples::basic::relation(VAR p1     AS Integer,
-			 			    	   VAR input  AS Customer : "http://www.examples.org/akc",
-			 			    	   VAR output AS Customer : "http://www.examples.org/akc")
+			 			    	   VAR input  AS Customer : "http://www.invenireaude.org/example",
+			 			    	   VAR output AS Customer : "http://www.invenireaude.org/example")
 BEGIN
 
   com::examples::basic::relation::testString("String");

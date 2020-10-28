@@ -1,58 +1,58 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<ns0:customer xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ns0="http://www.examples.org/akc" xmlns:ns1="http://www.examples.org/akcf">
+<ns0:customer xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ns0="http://www.invenireaude.org/example" xmlns:ns1="http://www.invenireaude.org/examplef">
  <firstname>Jan</firstname>
  <middlename>Johny</middlename>
  <lastname>Kowalski</lastname>
  <age>102</age>
  <age1 xsi:nil="true"/>
  <address>
-  <street>Address:http://www.examples.org/akc</street>
-  <block>35</block>
+  <street>Address:http://www.invenireaude.org/example</street>
+  <block>43</block>
  </address>
  <address>
-  <street>Address:http://www.examples.org/akc</street>
-  <block>36</block>
+  <street>Address:http://www.invenireaude.org/example</street>
+  <block>44</block>
  </address>
  <address xsi:nil="true"/>
  <address>
-  <street>Address:http://www.examples.org/akc</street>
-  <block>38</block>
- </address>
- <address xsi:type="ns1:Address">
-  <street>Address:http://www.examples.org/akcf</street>
-  <block>40</block>
- </address>
- <address>
-  <street>Address:http://www.examples.org/akc</street>
-  <block>40</block>
- </address>
- <address xsi:type="ns1:Address">
-  <street>Address:http://www.examples.org/akcf</street>
-  <block>42</block>
- </address>
- <address>
-  <street>Address:http://www.examples.org/akc</street>
-  <block>42</block>
- </address>
- <address xsi:type="ns1:Address">
-  <street>Address:http://www.examples.org/akcf</street>
-  <block>44</block>
- </address>
- <address>
-  <street>Address:http://www.examples.org/akc</street>
-  <block>44</block>
- </address>
- <address xsi:type="ns1:Address">
-  <street>Address:http://www.examples.org/akcf</street>
-  <block>46</block>
- </address>
- <address>
-  <street>Address:http://www.examples.org/akc</street>
+  <street>Address:http://www.invenireaude.org/example</street>
   <block>46</block>
  </address>
  <address xsi:type="ns1:Address">
-  <street>Address:http://www.examples.org/akcf</street>
+  <street>Address:http://www.invenireaude.org/examplef</street>
   <block>48</block>
+ </address>
+ <address>
+  <street>Address:http://www.invenireaude.org/example</street>
+  <block>48</block>
+ </address>
+ <address xsi:type="ns1:Address">
+  <street>Address:http://www.invenireaude.org/examplef</street>
+  <block>50</block>
+ </address>
+ <address>
+  <street>Address:http://www.invenireaude.org/example</street>
+  <block>50</block>
+ </address>
+ <address xsi:type="ns1:Address">
+  <street>Address:http://www.invenireaude.org/examplef</street>
+  <block>52</block>
+ </address>
+ <address>
+  <street>Address:http://www.invenireaude.org/example</street>
+  <block>52</block>
+ </address>
+ <address xsi:type="ns1:Address">
+  <street>Address:http://www.invenireaude.org/examplef</street>
+  <block>54</block>
+ </address>
+ <address>
+  <street>Address:http://www.invenireaude.org/example</street>
+  <block>54</block>
+ </address>
+ <address xsi:type="ns1:Address">
+  <street>Address:http://www.invenireaude.org/examplef</street>
+  <block>56</block>
  </address>
  <mailingAddress/>
 </ns0:customer>

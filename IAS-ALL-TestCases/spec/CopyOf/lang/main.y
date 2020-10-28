@@ -2,9 +2,9 @@ IMPORT std::default;
 IMPORT std::qs;
 
 PROGRAM testf(
- VAR v AS Customer : "http://www.examples.org/akc"
+ VAR v AS Customer : "http://www.invenireaude.org/example"
 )
-RETURNS Customer : "http://www.examples.org/akc"
+RETURNS Customer : "http://www.invenireaude.org/example"
 BEGIN
  v.firstname="John";
  RETURN v;
@@ -17,7 +17,7 @@ PROGRAM main(
 RETURNS AnyType
 BEGIN
 
- VAR v AS Customer : "http://www.examples.org/akc";
+ VAR v AS Customer : "http://www.invenireaude.org/example";
  v.lastname="Wayne";
 
  ctx.MID = "Message.json";

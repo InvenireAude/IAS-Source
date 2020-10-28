@@ -4,16 +4,16 @@ IMPORT wrap::fetch;
 IMPORT wrap::delete;
 
 PROGRAM main(VAR ctx    AS Context  : "http://www.invenireaude.org/qsystem/workers",
-		   	 VAR data  AS Customer : "http://www.examples.org/akc")
-RETURNS Customer : "http://www.examples.org/akc"	 			    	  			 			    	  			 			    	 
+		   	 VAR data  AS Customer : "http://www.invenireaude.org/example")
+RETURNS Customer : "http://www.invenireaude.org/example"
 BEGIN
 
-  
+
   wrap::deleteAddresses(ctx,data);
 
   wrap::fetchCustomer(ctx,data);
   wrap::fetchAddresses(ctx,data);
-     	
-  RETURN data; 
-  
+
+  RETURN data;
+
 END;

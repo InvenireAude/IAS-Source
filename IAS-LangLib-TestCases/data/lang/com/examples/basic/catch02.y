@@ -1,14 +1,14 @@
 /*
  * File: IAS-LangLib-TestCases/data/lang/com/examples/basic/catch02.y
- * 
+ *
  * Copyright (C) 2015, Albert Krzymowski
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  * http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -17,30 +17,30 @@
  */
 IMPORT std::default;
 
-PROGRAM com::examples::basic::catch02(VAR p1 AS Integer, 
-			 			    		 VAR input AS Customer : "http://www.examples.org/akc", 
-			 			    		 VAR output AS Customer : "http://www.examples.org/akc")
+PROGRAM com::examples::basic::catch02(VAR p1 AS Integer,
+			 			    		 VAR input AS Customer : "http://www.invenireaude.org/example",
+			 			    		 VAR output AS Customer : "http://www.invenireaude.org/example")
 BEGIN
 
  output=COPYOF(input);
- 
+
  TRY BEGIN
-    VAR a AS Address: "http://www.examples.org/akcf";
-    a =  NEW Address:"http://www.examples.org/akcf";
+    VAR a AS Address: "http://www.invenireaude.org/examplef";
+    a =  NEW Address:"http://www.invenireaude.org/examplef";
     a.street="Wyjatkowa";
     a.block=999;
  	THROW a;
- END 
+ END
    CATCH (VAR e AS Integer )BEGIN
    	output.lastname="Failure";
    END
-   CATCH (VAR c AS Customer:"http://www.examples.org/akc" ) BEGIN
+   CATCH (VAR c AS Customer:"http://www.invenireaude.org/example" ) BEGIN
    	output.lastname="Failure";
-   END 
-   CATCH (VAR a AS Address:"http://www.examples.org/akc" ) BEGIN
+   END
+   CATCH (VAR a AS Address:"http://www.invenireaude.org/example" ) BEGIN
    	output.lastname="Success";
    	output.address[0]=a;
    END;
 
-   
+
 END;

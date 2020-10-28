@@ -1,7 +1,7 @@
 PROGRAM com::examples::basic::datetime(
             VAR p1 AS Integer : "IAS/DM/Default",
-            VAR input AS Customer : "http://www.examples.org/akc",
-            VAR output AS Customer : "http://www.examples.org/akc")  BEGIN
+            VAR input AS Customer : "http://www.invenireaude.org/example",
+            VAR output AS Customer : "http://www.invenireaude.org/example")  BEGIN
 
     VAR i AS Integer : "IAS/DM/Default";
 
@@ -11,16 +11,16 @@ PROGRAM com::examples::basic::datetime(
     FOR i = 1 TO 10 DO
       BEGIN
 
-        VAR a AS Address : "http://www.examples.org/akc";
+        VAR a AS Address : "http://www.invenireaude.org/example";
 
-        a=NEW Address : "http://www.examples.org/akcf";
+        a=NEW Address : "http://www.invenireaude.org/examplef";
         a.street=(output.birth + i);
         a.block=i;
         output.address=a;
       END;
 
     output.address[1].street=(output.birth + (((10 * 365) * 24) * 3600));
-    output.address[2]=NEW Address : "http://www.examples.org/akc";
+    output.address[2]=NEW Address : "http://www.invenireaude.org/example";
     output.address[2].street=std::modifytime(output.birth,10,10,10);
     output.address[3].street=std::modifydate(output.birth,10,10,10);
     output.address[4].street=(output.birth - (((10 * 365) * 24) * 3600));

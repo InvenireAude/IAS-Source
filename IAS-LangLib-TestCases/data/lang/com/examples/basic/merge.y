@@ -43,26 +43,26 @@ BEGIN
 END;
 
 PROGRAM com::examples::basic::merge(VAR p1     AS Integer,
-			 			    	    VAR input  AS Customer : "http://www.examples.org/akc",
-			 			    	    VAR output AS Customer : "http://www.examples.org/akc")
+			 			    	    VAR input  AS Customer : "http://www.invenireaude.org/example",
+			 			    	    VAR output AS Customer : "http://www.invenireaude.org/example")
 BEGIN
 
   VAR i AS Integer;
 
   FOR i = 1 TO 5 DO
-   output.address = NEW Address:"http://www.examples.org/akc" BEGIN
+   output.address = NEW Address:"http://www.invenireaude.org/example" BEGIN
        street="Nowa"+(100-i);
        block=100-i;
   END;
 
   FOR i = 0 TO 20 DO
-   output.address = NEW Address:"http://www.examples.org/akc" BEGIN
+   output.address = NEW Address:"http://www.invenireaude.org/example" BEGIN
        street="Nowab"+(50-i);
        block=50-i;
   END;
 
   FOR i = 0 TO 20 DO
-   output.address = NEW Address:"http://www.examples.org/akc" BEGIN
+   output.address = NEW Address:"http://www.invenireaude.org/example" BEGIN
        street="Nowaa"+(21-i);
        block=21-i;
   END;

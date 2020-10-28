@@ -7,7 +7,7 @@ PROGRAM sendmultipart(
 	VAR ctx   AS Context  : "http://www.invenireaude.org/qsystem/workers",
 	VAR data  AS AnyType
 )
-RETURNS Customer : "http://www.examples.org/akc"
+RETURNS Customer : "http://www.invenireaude.org/example"
 BEGIN
 
   CREATE result BEGIN

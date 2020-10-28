@@ -19,7 +19,7 @@ IMPORT std::default;
 
 
 PROGRAM createList(VAR street_ AS String)
-RETURNS ARRAY OF Address : "http://www.examples.org/akc"
+RETURNS ARRAY OF Address : "http://www.invenireaude.org/example"
 BEGIN
 
  CREATE result BEGIN
@@ -36,8 +36,8 @@ BEGIN
 END;
 
 PROGRAM com::examples::basic::listconcat(VAR p1 AS Integer,
-			 			    		 	  VAR input AS Customer : "http://www.examples.org/akc",
-		 			    		      VAR output AS Customer : "http://www.examples.org/akc")
+			 			    		 	  VAR input AS Customer : "http://www.invenireaude.org/example",
+		 			    		      VAR output AS Customer : "http://www.invenireaude.org/example")
 BEGIN
 
   VAR ls1 AS ARRAY OF String;
@@ -69,11 +69,11 @@ BEGIN
   output.address[1].street = "Check";
   output.address =  COPYOF(input.address) + COPYOF(input.address);
 
-   output.address = output.address + NEW Address : "http://www.examples.org/akc" BEGIN
+   output.address = output.address + NEW Address : "http://www.invenireaude.org/example" BEGIN
      street = "Novacky";
    END;
 
-   output.address = output.address  + NEW Address : "http://www.examples.org/akc" BEGIN
+   output.address = output.address  + NEW Address : "http://www.invenireaude.org/example" BEGIN
      street = "Mazacky";
    END;
 

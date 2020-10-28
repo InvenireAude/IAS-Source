@@ -18,15 +18,15 @@
 IMPORT std::default;
 
 PROGRAM com::examples::basic::catch03(VAR p1 AS Integer,
-			 			    		 VAR input AS Customer : "http://www.examples.org/akc",
-			 			    		 VAR output AS Customer : "http://www.examples.org/akc")
+			 			    		 VAR input AS Customer : "http://www.invenireaude.org/example",
+			 			    		 VAR output AS Customer : "http://www.invenireaude.org/example")
 BEGIN
 
  output=COPYOF(input);
 
  TRY BEGIN
-    VAR a AS Address: "http://www.examples.org/akcf";
-    a =  NEW Address:"http://www.examples.org/akcf";
+    VAR a AS Address: "http://www.invenireaude.org/examplef";
+    a =  NEW Address:"http://www.invenireaude.org/examplef";
     a.street=a.street + "abc";
  END
    CATCH (VAR e AS PropertyNotSetException:"http://www.invenireaude.org/lang/builtin" ) BEGIN

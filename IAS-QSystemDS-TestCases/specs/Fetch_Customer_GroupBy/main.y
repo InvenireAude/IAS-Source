@@ -4,14 +4,14 @@ IMPORT wrap::fetch;
 IMPORT wrap::insert;
 
 PROGRAM main(VAR ctx   AS Context  : "http://www.invenireaude.org/qsystem/workers",
-		   	 VAR data  AS  GetCustomerList : "http://www.examples.org/akc")
-RETURNS GetCustomerList : "http://www.examples.org/akc"
+		   	 VAR data  AS  GetCustomerList : "http://www.invenireaude.org/example")
+RETURNS GetCustomerList : "http://www.invenireaude.org/example"
 BEGIN
 
   VAR i AS Integer;
 
   FOR i = 0 TO 100 DO BEGIN
-    VAR customer AS Customer : "http://www.examples.org/akc";
+    VAR customer AS Customer : "http://www.invenireaude.org/example";
 
     WITH customer DO BEGIN
       customer.id = 1000 +  i;

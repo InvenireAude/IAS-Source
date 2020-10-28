@@ -18,8 +18,8 @@
 IMPORT std::default;
 
 
- PROGRAM testfun(VAR n AS Name : "http://www.examples.org/akc")
- RETURNS Name : "http://www.examples.org/akc"
+ PROGRAM testfun(VAR n AS Name : "http://www.invenireaude.org/example")
+ RETURNS Name : "http://www.invenireaude.org/example"
  BEGIN
   RETURN (n AS String);
  END;
@@ -28,13 +28,13 @@ IMPORT std::default;
 
 
 PROGRAM com::examples::basic::upcastargs(VAR p1 AS Integer,
-			 			    		 	   VAR input AS Customer : "http://www.examples.org/akc",
-			 			    		     VAR output AS Customer : "http://www.examples.org/akc")
+			 			    		 	   VAR input AS Customer : "http://www.invenireaude.org/example",
+			 			    		     VAR output AS Customer : "http://www.invenireaude.org/example")
 BEGIN
 
 
  VAR s AS String;
- VAR n AS Name : "http://www.examples.org/akc";
+ VAR n AS Name : "http://www.invenireaude.org/example";
  s = "string1";
  n = s;
 

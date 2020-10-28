@@ -4,5 +4,5 @@
    "value" : "1000",
    "value2" : "12345",
    "tab" : [ "8589934592" ,"18" ,"1001234567890100" ,"10012345678901"],
-   "_dmType" : "http://www.examples.org/akc#TestLong"
+   "_dmType" : "http://www.invenireaude.org/example#TestLong"
    }

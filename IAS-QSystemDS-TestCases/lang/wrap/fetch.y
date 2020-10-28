@@ -1,5 +1,5 @@
 PROGRAM wrap::fetchCustomer(VAR ctx      AS Context  : "http://www.invenireaude.org/qsystem/workers",
-				             VAR data    AS Customer : "http://www.examples.org/akc")
+				             VAR data    AS Customer : "http://www.invenireaude.org/example")
 EXTERNAL "libIASQSystemLib:ias_qs_lang_db_proxy:WrappedStatement"
 (
 "db",
@@ -19,7 +19,7 @@ EXTERNAL "libIASQSystemLib:ias_qs_lang_db_proxy:WrappedStatement"
 ");
 
 PROGRAM wrap::fetchCustomerForUpdate(VAR ctx      AS Context  : "http://www.invenireaude.org/qsystem/workers",
-				             VAR data    AS Customer : "http://www.examples.org/akc")
+				             VAR data    AS Customer : "http://www.invenireaude.org/example")
 EXTERNAL "libIASQSystemLib:ias_qs_lang_db_proxy:WrappedStatement"
 (
 "db",
@@ -42,7 +42,7 @@ EXTERNAL "libIASQSystemLib:ias_qs_lang_db_proxy:WrappedStatement"
 // ? rawdata    => data.misc
 
 PROGRAM wrap::fetchCustomerList(VAR ctx        AS Context  : "http://www.invenireaude.org/qsystem/workers")
-RETURNS ARRAY OF Customer : "http://www.examples.org/akc"
+RETURNS ARRAY OF Customer : "http://www.invenireaude.org/example"
 EXTERNAL "libIASQSystemLib:ias_qs_lang_db_proxy:WrappedStatement"
 (
 "db",
@@ -62,7 +62,7 @@ EXTERNAL "libIASQSystemLib:ias_qs_lang_db_proxy:WrappedStatement"
 PROGRAM wrap::fetchCustomerList(VAR ctx        AS Context  : "http://www.invenireaude.org/qsystem/workers",
                                 VAR offset     AS Integer,
                                 VAR page       AS Integer)
-RETURNS ARRAY OF Customer : "http://www.examples.org/akc"
+RETURNS ARRAY OF Customer : "http://www.invenireaude.org/example"
 EXTERNAL "libIASQSystemLib:ias_qs_lang_db_proxy:WrappedStatement"
 (
 "db",
@@ -80,7 +80,7 @@ EXTERNAL "libIASQSystemLib:ias_qs_lang_db_proxy:WrappedStatement"
 ");
 
 PROGRAM wrap::fetchCustomerOrderByAgeAndName()
-RETURNS ARRAY OF Customer : "http://www.examples.org/akc"
+RETURNS ARRAY OF Customer : "http://www.invenireaude.org/example"
 EXTERNAL "libIASQSystemLib:ias_qs_lang_db_proxy:WrappedStatement"
 (
 "db",
@@ -101,7 +101,7 @@ ORDER BY age,lastname, firstname DESC
 PROGRAM wrap::fetchCustomerOrderByMap(
   VAR order AS String
 )
-RETURNS ARRAY OF Customer : "http://www.examples.org/akc"
+RETURNS ARRAY OF Customer : "http://www.invenireaude.org/example"
 EXTERNAL "libIASQSystemLib:ias_qs_lang_db_proxy:WrappedStatement"
 (
 "db",
@@ -127,7 +127,7 @@ ORDER BY MAP order (
 
 
 PROGRAM wrap::fetchCustomerGroupBy()
-RETURNS ARRAY OF Customer : "http://www.examples.org/akc"
+RETURNS ARRAY OF Customer : "http://www.invenireaude.org/example"
 EXTERNAL "libIASQSystemLib:ias_qs_lang_db_proxy:WrappedStatement"
 (
 "db",
@@ -142,16 +142,16 @@ ORDER BY lastname
 ");
 
 PROGRAM wrap::fetchAddresses(VAR ctx      AS Context  : "http://www.invenireaude.org/qsystem/workers",
-				              VAR data    AS Customer : "http://www.examples.org/akc")
+				              VAR data    AS Customer : "http://www.invenireaude.org/example")
 EXTERNAL "libIASQSystemLib:ias_qs_lang_db_proxy:WrappedStatement"
 (
 "db",
 "SELECT ARRAY INTO data.address
 	MAP type (
-		F     => Address : 'http://www.examples.org/akcf'(
+		F     => Address : 'http://www.invenireaude.org/examplef'(
            ? country => country
 		),
-	    _     => Address : 'http://www.examples.org/akc'
+	    _     => Address : 'http://www.invenireaude.org/example'
    )
    street => street,
    block  => block

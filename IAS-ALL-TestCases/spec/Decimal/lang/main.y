@@ -13,7 +13,7 @@ BEGIN
 
   VAR d1 AS Decimal;
   VAR d2 AS Decimal;
-  VAR c AS Customer : "http://www.examples.org/akc";
+  VAR c AS Customer : "http://www.invenireaude.org/example";
 
   d1="+98.765";
   d2="-123.432";

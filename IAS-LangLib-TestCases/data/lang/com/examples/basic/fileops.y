@@ -19,12 +19,12 @@ IMPORT std::default;
 
 
 PROGRAM com::examples::basic::fileops(VAR p1 AS Integer,
-			 			    		  VAR input AS Customer : "http://www.examples.org/akc",
-			 			    		  VAR output AS Customer : "http://www.examples.org/akc")
+			 			    		  VAR input AS Customer : "http://www.invenireaude.org/example",
+			 			    		  VAR output AS Customer : "http://www.invenireaude.org/example")
 BEGIN
 
-   VAR a AS Address:"http://www.examples.org/akc";
-   VAR c AS Customer : "http://www.examples.org/akc";
+   VAR a AS Address:"http://www.invenireaude.org/example";
+   VAR c AS Customer : "http://www.invenireaude.org/example";
    VAR o AS AnyType;
 
    //std::save("stdout",1);

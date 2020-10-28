@@ -1,4 +1,4 @@
-Main part is: http://www.examples.org/akc#Customer
+Main part is: http://www.invenireaude.org/example#Customer
 Attachment [1] :: [first] IAS/DM/Default#Raw
   File: [first.txt]
 Attachment [2] :: [second.txt] IAS/DM/Default#Raw

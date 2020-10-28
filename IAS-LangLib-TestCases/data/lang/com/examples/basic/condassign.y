@@ -1,14 +1,14 @@
 /*
  * File: IAS-LangLib-TestCases/data/lang/com/examples/basic/cast.y
- * 
+ *
  * Copyright (C) 2015, Albert Krzymowski
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  * http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -16,25 +16,25 @@
  * limitations under the License.
  */
 IMPORT std::default;
-				  				 
-PROGRAM com::examples::basic::condassign(VAR p1     AS Integer, 
-			 			    	         VAR input  AS Customer : "http://www.examples.org/akc", 
-			 			    	         VAR output AS Customer : "http://www.examples.org/akc")
+
+PROGRAM com::examples::basic::condassign(VAR p1     AS Integer,
+			 			    	         VAR input  AS Customer : "http://www.invenireaude.org/example",
+			 			    	         VAR output AS Customer : "http://www.invenireaude.org/example")
 BEGIN
- 
- VAR tmp AS Customer : "http://www.examples.org/akc";
- 
+
+ VAR tmp AS Customer : "http://www.invenireaude.org/example";
+
  tmp = COPYOF(input);
- 
+
  DELETE tmp.lastname;
  DELETE tmp.address[0].street;
- 
+
  output.firstname ?= tmp.firstname;
  output.lastname ?= tmp.lastname;
- 
- output.address = NEW Address : "http://www.examples.org/akc" BEGIN  
+
+ output.address = NEW Address : "http://www.invenireaude.org/example" BEGIN
    block  ?= tmp.address[0].block;
    street ?= tmp.address[0].street;
  END;
- 
+
 END;

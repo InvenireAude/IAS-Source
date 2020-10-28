@@ -1,14 +1,14 @@
 /*
  * File: IAS-DataModelLib-TestCases/src/tc/dm/CustomerJSON.cpp
- * 
+ *
  * Copyright (C) 2015, Albert Krzymowski
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  * http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -47,7 +47,7 @@ void CustomerJSON::caseALL(){
 	ptrXSDHelper->defineTypesFromFile("testdata/customer.xsd");
 	//ptrJSONHelper->defineTypesFromFile("/home/albert/Workspaces/REB2-SVN-Galileo/REB-Catalog-JSON/JSON/operations.JSON");
 
-	Type* pCustomerType = ptrDataFactory->getType("http://www.examples.org/akc","Customer");
+	Type* pCustomerType = ptrDataFactory->getType("http://www.invenireaude.org/example","Customer");
 
 	DataObjectPtr ptrCustomer(pCustomerType->createDataObject());
 
@@ -60,7 +60,7 @@ void CustomerJSON::caseALL(){
 	ptrCustomer->createDataObject("address");
 	ptrCustomer->createDataObject("address");
 
-	const Type* pTypeF = ptrDataFactory->getType("http://www.examples.org/akcf","Address");
+	const Type* pTypeF = ptrDataFactory->getType("http://www.invenireaude.org/examplef","Address");
 
 	DataObjectPtr ptrForeignAddress(pTypeF->createDataObject());
 	ptrForeignAddress->setString("country","Laponia");

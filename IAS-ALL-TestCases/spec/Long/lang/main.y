@@ -12,7 +12,7 @@ PROGRAM main(
 	VAR ctx   AS Context  : "http://www.invenireaude.org/qsystem/workers",
 	VAR data  AS AnyType
 )
-RETURNS TestLong : "http://www.examples.org/akc"
+RETURNS TestLong : "http://www.invenireaude.org/example"
 BEGIN
 
   VAR l AS Long;

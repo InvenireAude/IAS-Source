@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xsd:schema 
- xmlns:akc="http://www.examples.org/akc" 
- xmlns:akcf="http://www.examples.org/akcf"
+ xmlns:akc="http://www.invenireaude.org/example" 
+ xmlns:akcf="http://www.invenireaude.org/examplef"
  xmlns:xsd="http://www.w3.org/2001/XMLSchema" 
- targetNamespace="http://www.examples.org/akc">
+ targetNamespace="http://www.invenireaude.org/example">
 
   <xsd:include schemaLocation="address.xsd"/>
-  <xsd:import  schemaLocation="addressf.xsd" namespace="http://www.examples.org/akcf"/>
+  <xsd:import  schemaLocation="addressf.xsd" namespace="http://www.invenireaude.org/examplef"/>
   
   <xsd:complexType name="Customer">
       <xsd:sequence>

@@ -1,6 +1,6 @@
 
 
-PROGRAM wrap::keyvalue::insertCustomer(VAR data    AS Customer : "http://www.examples.org/akc")
+PROGRAM wrap::keyvalue::insertCustomer(VAR data    AS Customer : "http://www.invenireaude.org/example")
 EXTERNAL "libIASQSystemLib:ias_qs_lang_db_proxy:WrappedStatement"
 (
 "db",
@@ -10,7 +10,7 @@ EXTERNAL "libIASQSystemLib:ias_qs_lang_db_proxy:WrappedStatement"
 ");
 
 
-PROGRAM wrap::keyvalue::updateCustomer(VAR data    AS Customer : "http://www.examples.org/akc")
+PROGRAM wrap::keyvalue::updateCustomer(VAR data    AS Customer : "http://www.invenireaude.org/example")
 EXTERNAL "libIASQSystemLib:ias_qs_lang_db_proxy:WrappedStatement"
 (
 "db",
@@ -22,7 +22,7 @@ WHERE key = data.id
 
 
 PROGRAM wrap::keyvalue::fetchCustomer(VAR id AS String)
-RETURNS Customer : "http://www.examples.org/akc"
+RETURNS Customer : "http://www.invenireaude.org/example"
 EXTERNAL "libIASQSystemLib:ias_qs_lang_db_proxy:WrappedStatement"
 (
 "db",
@@ -45,7 +45,7 @@ WHERE key = id
 
 
 PROGRAM wrap::keyvalue::fetchCustomerList()
-RETURNS ARRAY OF Customer : "http://www.examples.org/akc"
+RETURNS ARRAY OF Customer : "http://www.invenireaude.org/example"
 EXTERNAL "libIASQSystemLib:ias_qs_lang_db_proxy:WrappedStatement"
 (
 "db",
