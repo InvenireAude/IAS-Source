@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ns0:customer xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ns0="http://www.invenireaude.org/example" xmlns:ns1="http://www.invenireaude.org/examplef" xmlns:ns2="http://www.invenireaude.org/qsystem/workers" attr="attribute" extra="extra data">
+ <id>ID123</id>
+ <firstname>John</firstname>
+ <middlename>Middle</middlename>
+ <lastname>Doe</lastname>
+ <age>66</age>
+ <age1>99</age1>
+ <birth>1954-01-02T10:20:30</birth>
+ <count>99</count>
+ <money>12.345</money>
+ <bigMoney>12.34</bigMoney>
+ <wakeup>05:06:07</wakeup>
+ <birthDate>1954-01-02</birthDate>
+ <updated>2019-12-24T10:20:30</updated>
+ <address>
+  <street>Long St.</street>
+  <block>101</block>
+  <city>New York</city>
+ </address>
+ <address xsi:type="ns1:Address">
+  <street>Dark St.</street>
+  <block>666</block>
+  <city>San Sebastian</city>
+  <country>San Marino</country>
+  <backup>
+   <info>no backup</info>
+  </backup>
+ </address>
+ <mailingAddress>
+  <street>Nearby St.</street>
+  <block>105</block>
+  <city>New York</city>
+ </mailingAddress>
+ <photo>SGVsbG9Xb3JsZAo=</photo>
+ <misc xsi:type="ns2:Context"/>
+ <info>some info</info>
+</ns0:customer>

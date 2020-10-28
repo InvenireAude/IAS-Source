@@ -1,0 +1,43 @@
+{
+   "id" : "ID123",
+   "firstname" : "John",
+   "middlename" : "Middle",
+   "lastname" : "Doe",
+   "age" : 66,
+   "age1" : 99,
+   "birth" : "1954-01-02T10:20:30",
+   "count" : 99,
+   "money" : "12.345",
+   "bigMoney" : "12.34",
+   "wakeup" : "05:06:07",
+   "birthDate" : "1954-01-02",
+   "updated" : "2019-12-24T10:20:30",
+   "address" : [ {
+      "street" : "Long St.",
+      "block" : 101,
+      "city" : "New York"
+      } ,{
+      "street" : "Dark St.",
+      "block" : 666,
+      "city" : "San Sebastian",
+      "country" : "San Marino",
+      "backup" : {
+         "info" : "no backup"
+         },
+      "_dmType" : "http://www.invenireaude.org/examplef#Address"
+      }],
+   "mailingAddress" : {
+      "street" : "Nearby St.",
+      "block" : 105,
+      "city" : "New York"
+      },
+   "photo" : "SGVsbG9Xb3JsZAo=",
+   "misc" : {
+      
+      "_dmType" : "http://www.invenireaude.org/qsystem/workers#Context"
+      },
+   "info" : "some info",
+   "attr" : "attribute",
+   "extra" : "extra data",
+   "_dmType" : "http://www.invenireaude.org/example#Customer"
+   }

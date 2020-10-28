@@ -35,7 +35,7 @@ function run_test {
     cp ${_out_dir}/output/* output
   fi
 
-  diff -bw ${_out_dir?}/output output 2> ${_out_dir}/output.diff 1>&2
+  diff -abw ${_out_dir?}/output output 2> ${_out_dir}/output.diff 1>&2
 
   if [ $? == 0 ]
   then
