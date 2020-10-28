@@ -25,9 +25,12 @@
 
 #include <commonlib/net/http/Response.h>
 
+#include <qs/tools/FormatMapper.h>
+
 namespace IAS {
 namespace QS {
 namespace FCGI {
+using namespace IAS::QS::Tools;
 
 /*************************************************************************/
 Message::Message(){
@@ -101,19 +104,9 @@ void Message::write(FCGX_Stream* pFCGXStream){
 
 	const String& strFormat(ptrAttributes->getFormat());
 
-	if(strFormat[0] == 'J'){
-		FCGX_FPrintF(pFCGXStream, "Content-Type: application/json\r\n\r\n");
-	}else if(strFormat[0] == 'X'){
-		FCGX_FPrintF(pFCGXStream, "Content-Type: application/xml\r\n\r\n");
-	}else{
+  String strContentType(FormatMapper::MapFormatToContentType(ptrAttributes));
 
-		if(ptrAttributes->isSet("IAS_HTTP_CONTENT_TYPE"))
-    //TODO remove hardcoded string 'application/'
-			FCGX_FPrintF(pFCGXStream,
-						(String("Content-Type: application/")+ptrAttributes->getValue("IAS_HTTP_CONTENT_TYPE")+"\r\n\r\n").c_str());
-		else
-			FCGX_FPrintF(pFCGXStream, "Content-Type: plain/text\r\n\r\n");
-	}
+	FCGX_FPrintF(pFCGXStream, "Content-Type: %s\r\n\r\n", strContentType.c_str());
 
 	while((*ptrContent).good()){
 		(*ptrContent).read(sBuffer, iBufSize);

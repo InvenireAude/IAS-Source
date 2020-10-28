@@ -1,14 +1,14 @@
 /*
  * File: IAS-QSystemLib/src/qs/fmt/FmtFactory.cpp
- * 
+ *
  * Copyright (C) 2015, Albert Krzymowski
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  * http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -28,6 +28,7 @@
 #include "RawFormatter.h"
 #include "TemplateFormatter.h"
 #include "DelimitedFormatter.h"
+#include "MultiPartFormatter.h"
 
 using namespace ::org::invenireaude::qsystem;
 
@@ -48,6 +49,7 @@ FmtFactory::FmtFactory(const DM::DataFactory* pDataFactory):pDataFactory(pDataFa
 	hmFormatters["Raw"]=IAS_DFT_FACTORY<RawFormatter>::Create(pDataFactory);
 	hmFormatters["Template"]=IAS_DFT_FACTORY<TemplateFormatter>::Create(pDataFactory);
 	hmFormatters["DEL"]=IAS_DFT_FACTORY<DelimitedFormatter>::Create(pDataFactory);
+  hmFormatters["MultiPart"]=IAS_DFT_FACTORY<MultiPartFormatter>::Create(pDataFactory);
 }
 /*************************************************************************/
 FmtFactory::~FmtFactory(){

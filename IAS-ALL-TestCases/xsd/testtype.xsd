@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsd:schema xmlns:akc="http://www.examples.org/akc"
+ xmlns:xsd="http://www.w3.org/2001/XMLSchema" targetNamespace="http://www.examples.org/akc">
+ <xsd:complexType name="TestType">
+     <xsd:choice>
+      <xsd:element name="street" type="xsd:string"/>
+        <xsd:choice>
+          <xsd:choice>
+            <xsd:element name="city1" type="xsd:string"/>
+            <xsd:element name="city2" type="xsd:string"/>
+          </xsd:choice>
+          <xsd:element name="block" type="xsd:integer"/>
+          <xsd:element name="city" type="xsd:string"/>
+        </xsd:choice>
+          <xsd:element name="scity1" type="xsd:string"/>
+          <xsd:element name="scity2" type="xsd:long"/>
+    </xsd:choice>
+  </xsd:complexType>
+
+  <xsd:complexType name="TestLong">
+     <xsd:sequence>
+      <xsd:element name="ii"    type="xsd:integer"/>
+      <xsd:element name="dd"    type="xsd:decimal"/>
+      <xsd:element name="value" type="xsd:long"/>
+      <xsd:element name="value2" type="xsd:long"/>
+      <xsd:element name="tab" type="xsd:long" minOccurs="0" maxOccurs="unbounded"/>
+    </xsd:sequence>
+  </xsd:complexType>
+
+</xsd:schema>

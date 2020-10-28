@@ -156,39 +156,6 @@ void JSONPureFormatter::write(const DM::DataObject* dmData,
 
 }
 /*************************************************************************/
-String JSONPureFormatter::substitute(const String& strPattern, const QS::API::Attributes *pAttributes)const{
-	IAS_TRACER;
-
-	StringStream ssResult;
-
-	for(String::const_iterator it=strPattern.begin(); it != strPattern.end(); it++){
-
-		if(*it == '$'){
-
-			if(++it != strPattern.end() && *it == '{'){
-
-				String strName;
-
-				while(++it != strPattern.end() && *it != '}')
-					strName+=(*it);
-
-				if(*it != '}')
-					IAS_THROW(BadUsageException("Missing '}' in environment pattern."))
-
-				ssResult<<pAttributes->getValue(strName);
-
-			}
-
-		}else{
-			ssResult<<*it;
-		}
-
-
-	}
-
-	return ssResult.str();
-}
-/*************************************************************************/
 }
 }
 }

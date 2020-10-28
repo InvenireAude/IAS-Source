@@ -63,8 +63,6 @@ protected:
 	TimeSamplesResults tsrParsing;
 	TimeSamplesResults tsrSerialization;
 
-	String substitute(const String& strPattern, const QS::API::Attributes *pAttributes)const;
-
 	friend class Factory<JSONPureFormatter>;
 };
 

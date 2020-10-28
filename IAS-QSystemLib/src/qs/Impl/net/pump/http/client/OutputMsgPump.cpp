@@ -1,14 +1,14 @@
 /*
  * File: IAS-QSystemLib/src/qs/Impl/net/pump/http/client/OutputMsgPump.cpp
- * 
+ *
  * Copyright (C) 2015, Albert Krzymowski
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  * http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -18,6 +18,7 @@
 #include "OutputMsgPump.h"
 
 #include <qs/Impl/net/Message.h>
+#include <qs/tools/FormatMapper.h>
 
 namespace IAS {
 namespace QS {
@@ -25,7 +26,7 @@ namespace Net {
 namespace Pump {
 namespace HTTP {
 namespace Client {
-
+using namespace IAS::QS::Tools;
 /*************************************************************************/
 OutputMsgPump::OutputMsgPump(::IAS::Net::IBlockIO* pBlockIO, Message* pMessage):
 	HTTP::OutputMsgPump(pBlockIO,pMessage){
@@ -68,20 +69,7 @@ OutputMsgPump::OutputMsgPump(::IAS::Net::IBlockIO* pBlockIO, Message* pMessage):
 	size_t iDataLength = pMessage->getContent()->tellp();
 	ptrRequest->setContentLength(iDataLength);
 
-
-	const String& strFormat(pAttributes->getFormat());
-
-	if(strFormat[0] == 'J'){
-		ptrRequest->setContentType("application/json; charset=UTF-8");
-	}else if(strFormat[0] == 'X'){
-		ptrRequest->setContentType("application/xml; charset=UTF-8");
-	}else{
-
-		if(pAttributes->isSet("IAS_HTTP_CONTENT_TYPE"))
-			ptrRequest->setContentType(pAttributes->getValue("IAS_HTTP_CONTENT_TYPE"));
-		else
-			ptrRequest->setContentType("application/text; charset=UTF-8");
-	}
+  ptrRequest->setContentType(FormatMapper::MapFormatToContentType(pAttributes));
 
 	if(pAttributes->isSet("IAS_HTTP_AUTH_USER")){
 

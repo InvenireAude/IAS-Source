@@ -20,11 +20,13 @@
 #include <qs/Impl/net/Message.h>
 #include <unistd.h>
 
+
 namespace IAS {
 namespace QS {
 namespace Net {
 namespace Pump {
 namespace HTTP {
+
 /*************************************************************************/
 class MessageIDGenerator{
 public:
@@ -34,13 +36,12 @@ public:
     bzero(hostname,17);
     gethostname(hostname,16);
 
-		ssTmp<<"N"<<hostname<<getpid()%1000<<"T"<<((long)(Timestamp(true))%10000)<<"S";
-		strPrefix=ssTmp.str();
+		strPrefix=MiscTools::GetUUID();
 	}
 
 	String getNextMID(){
 		StringStream ssTmp;
-		ssTmp<<strPrefix<<iSequence;
+		ssTmp<<strPrefix<<"_"<<iSequence;
 		return ssTmp.str();
 	}
 

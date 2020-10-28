@@ -39,6 +39,8 @@ public:
 	static unsigned char HexValue(char cValue);
 
 	static void   CopyStreams(std::istream& is, std::ostream& os, size_t iLimit = SIZE_MAX);
+	static void   CopyStreamsUntilBoundary(std::istream& is, std::ostream& os, const String& strBoundary);
+
 	static String StreamToString(std::istream& is);
 
 	static void   BinaryToBase64(const unsigned  char *sData, size_t iDataLen, String& strOutput);

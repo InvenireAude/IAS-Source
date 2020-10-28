@@ -1,4 +1,4 @@
-#Mon 28 Sep 2020 03:59:45 PM CEST
+#Wed 28 Oct 2020 07:52:32 AM CET
 FILES+=ds/api/Environment
 FILES+=ds/api/exception/ConstraintViolationException
 FILES+=ds/api/exception/ParseErrorException
@@ -44,8 +44,10 @@ FILES+=qs/api/exception/ConnectionLostException
 FILES+=qs/api/exception/EndOfDataException
 FILES+=qs/fmt/DelimitedFormatter
 FILES+=qs/fmt/FmtFactory
+FILES+=qs/fmt/Formatter
 FILES+=qs/fmt/JSONFormatter
 FILES+=qs/fmt/JSONPureFormatter
+FILES+=qs/fmt/MultiPartFormatter
 FILES+=qs/fmt/RawFormatter
 FILES+=qs/fmt/StringFormatter
 FILES+=qs/fmt/TemplateFormatter
@@ -266,6 +268,7 @@ FILES+=qs/lang/tools/regexp/RegExpMatchContainer
 FILES+=qs/log/LogLevel
 FILES+=qs/net/StateMachineWorker
 FILES+=qs/net/StateMachineWorkManager
+FILES+=qs/tools/FormatMapper
 FILES+=qs/tools/Template
 FILES+=qs/ui/Messages
 FILES+=qs/version/Version

@@ -1,14 +1,14 @@
 /*
  * File: IAS-QSystemMod-FCGI/src/qs/Impl/fcgi/Receiver.cpp
- * 
+ *
  * Copyright (C) 2015, Albert Krzymowski
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  * http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -27,9 +27,13 @@
 #include <set>
 #include <commonlib/commonlib.h>
 #include <unistd.h>
+
+#include <qs/tools/FormatMapper.h>
+
 namespace IAS {
 namespace QS {
 namespace FCGI {
+using namespace IAS::QS::Tools;
 /*************************************************************************/
 class EligibleAttributesMap : public std::set<String>,
 			public IAS::InstanceFeature<EligibleAttributesMap>{
@@ -148,13 +152,8 @@ API::Message* Receiver::receive(int iTimeWait, API::Attributes* pSelector){
     try{
 
     	const String& strContentType(pAttributes->getValue("CONTENT_TYPE"));
+    	FormatMapper::MapContentTypeToFormat(strContentType, pAttributes);
 
-    	if(strContentType.substr(0,16).compare("application/json")==0)
-    		pAttributes->setFormat("JSONPure");
-    	else if(strContentType.substr(0,15).compare("application/xml")==0)
-    		pAttributes->setFormat("XML");
-    	else
-    		pAttributes->setFormat("String");
     }catch(...){
     	pAttributes->setFormat("String");
     }

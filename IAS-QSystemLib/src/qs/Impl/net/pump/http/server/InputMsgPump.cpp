@@ -1,14 +1,14 @@
 /*
  * File: IAS-QSystemLib/src/qs/Impl/net/pump/http/server/InputMsgPump.cpp
- * 
+ *
  * Copyright (C) 2015, Albert Krzymowski
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  * http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -18,13 +18,14 @@
 #include "InputMsgPump.h"
 
 #include <qs/Impl/net/Message.h>
-
+#include <qs/tools/FormatMapper.h>
 namespace IAS {
 namespace QS {
 namespace Net {
 namespace Pump {
 namespace HTTP {
 namespace Server {
+using namespace IAS::QS::Tools;
 /*************************************************************************/
 InputMsgPump::InputMsgPump(::IAS::Net::IBlockIO* pBlockIO, Message* pMessage):
 			HTTP::InputMsgPump(pBlockIO,pMessage){
@@ -67,14 +68,9 @@ void InputMsgPump::onHeaderReady(){
 
 	try{
 
-		const String& strContentType(ptrRequest->getContentType());
+    String strContentType(ptrRequest->getContentType());
+  	FormatMapper::MapContentTypeToFormat(strContentType, pAttributes);
 
-		if(strContentType.substr(0,16).compare("application/json")==0)
-			pAttributes->setFormat("JSON");
-		else if(strContentType.substr(0,15).compare("application/xml")==0)
-			pAttributes->setFormat("XML");
-		else
-			pAttributes->setFormat("String");
 	}catch(...){
 		pAttributes->setFormat("String");
 	}
@@ -103,6 +99,12 @@ void InputMsgPump::onHeaderReady(){
 		}
 
 	}
+
+ // TODO
+ // const char *s = "HTTP/1.1 100 Continue\r\n";
+ // size_t iWritten;
+ // pBlockIO->write(s,strlen(s), iWritten);
+
 }
 /*************************************************************************/
 }

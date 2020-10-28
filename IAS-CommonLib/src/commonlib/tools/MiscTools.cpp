@@ -198,6 +198,31 @@ void MiscTools::CopyStreams(std::istream& is, std::ostream& os, size_t iLimit){
 
 }
 /*************************************************************************/
+void MiscTools::CopyStreamsUntilBoundary(std::istream& is, std::ostream& os, const String& strBoundary){
+	IAS_TRACER;
+
+	String::size_type iBoundaryIdx = 0;
+
+	while(is.good() && iBoundaryIdx != strBoundary.length()){
+
+		int c = is.get();
+		if(strBoundary[iBoundaryIdx] ==  c){
+
+			iBoundaryIdx++;
+		}else{
+
+			if(iBoundaryIdx){
+				os.write(strBoundary.c_str(), iBoundaryIdx);
+				iBoundaryIdx = 0;
+			}
+			os.put(c);
+		}
+    String s(" ");
+    s[0]=(char)c;
+    //IAS_LOG(true,iBoundaryIdx<<" ["<<s<<"]");
+	};
+}
+/*************************************************************************/
 String MiscTools::StreamToString(std::istream& is){
 	IAS_TRACER;
 
