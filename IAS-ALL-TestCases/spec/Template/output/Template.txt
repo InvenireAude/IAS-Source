@@ -1,0 +1,16 @@
+START
+a1:v1	 F1={
+   "name" : "a1",
+   "value" : "v1",
+   "_dmType" : "http://www.invenireaude.org/qsystem/workers#Attribute"
+   }
+	 F2=ID: a1
+
+a2:v2	 F1={
+   "name" : "a2",
+   "value" : "v2",
+   "_dmType" : "http://www.invenireaude.org/qsystem/workers#Attribute"
+   }
+	 F2=ID: a2
+
+END

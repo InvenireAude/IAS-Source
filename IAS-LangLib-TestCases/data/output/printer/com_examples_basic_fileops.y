@@ -7,12 +7,7 @@ PROGRAM com::examples::basic::fileops(
     VAR c AS Customer : "http://www.examples.org/akc";
     VAR o AS AnyType : "IAS/DM/Default";
 
-    std::save("stdout",1);
-
-    std::save("stdout",input);
-
     std::save("/tmp/sdo.out",input);
-
     c=std::load("/tmp/sdo.out");
     output=COPYOF(input);
     output.misc=c;

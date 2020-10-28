@@ -1,14 +1,14 @@
 /*
  * File: IAS-QSystemLib/src/qs/workers/proc/logic/RunExecute.cpp
- * 
+ *
  * Copyright (C) 2015, Albert Krzymowski
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
- * 
+ *
  * http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -30,7 +30,8 @@
 
 #include <org/invenireaude/qsystem/workers/logic/ExeName.h>
 #include <org/invenireaude/qsystem/workers/DataFactory.h>
-
+#include <org/invenireaude/qsystem/workers/Context.h>
+#include <org/invenireaude/qsystem/workers/Attribute.h>
 #include <unistd.h>
 
 using namespace ::org::invenireaude::qsystem::workers;
@@ -93,6 +94,7 @@ void RunExecute::compute(){
 
 	workers::Ext::ContextPtr dmContext;
 	dmContext = workers::DataFactory::GetInstance()->getContextType()->createContext();
+  dmContext->setMID("MID"+MiscTools::GetUUID());
 
 	DM::DataObjectPtr dmValue(dmRunParameters);
 

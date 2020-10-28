@@ -109,12 +109,10 @@ fi
 diff -bw ${_in_dir}/output ${_out_dir}/output 2> ${_out_dir}/output.diff 1>&2
 if [ $? == 0 ]
 then
-_result=OK
+_result=1
 else
-_result=Failure
+_result=0
 fi
 
-
-printf " %20s %10s - %s \n" ${_test} ${_db} ${_result}
-
+printf "TestCase: %48s : %30s | %d : %ld : %6ld : %s \n" ${_db} ${_test} ${_result} 0 0 ""
 

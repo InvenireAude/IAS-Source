@@ -6,7 +6,6 @@
 
  <xsd:complexType name="ProductNumber">
 		<xsd:simpleContent>
-		<!-- TODO czy tu byl jakis blad w parserze XSD ? -->
 			<xsd:extension base="xsd:string">
 			</xsd:extension>
 		</xsd:simpleContent>
@@ -14,7 +13,6 @@
   
  <xsd:complexType name="ProductNumber2">
 		<xsd:simpleContent>
-		<!-- TODO czy tu byl jakis blad w parserze XSD ? -->
 			<xsd:extension base="xsd:string">
 			</xsd:extension>
 		</xsd:simpleContent>

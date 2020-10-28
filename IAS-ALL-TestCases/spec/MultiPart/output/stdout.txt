@@ -1,0 +1,20 @@
+Main part is: http://www.examples.org/akc#Customer
+Attachment [1] :: [first] IAS/DM/Default#Raw
+  File: [first.txt]
+Attachment [2] :: [second.txt] IAS/DM/Default#Raw
+Attachment [3] :: [ctx] http://www.invenireaude.org/qsystem/workers#Context
+Attachment [4] :: [text] IAS/DM/Default#String
+  File: [text.txt]
+  Data: [Ala ma kota ]
+<?xml version="1.0" encoding="UTF-8"?>
+<Context xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:ns0="http://www.invenireaude.org/qsystem/workers" xsi:type="ns0:Context">
+ <MID>Message.multipart.txt</MID>
+ <FMT>MultiPart</FMT>
+ <attributes name=".IAS_MPF_DATA_NAME" value="my_data"/>
+ <attributes name=".IAS_MPF_ATTACHMENT_NAME_1" value="first"/>
+ <attributes name=".IAS_MPF_ATTACHMENT_FILE_1" value="first.txt"/>
+ <attributes name=".IAS_MPF_ATTACHMENT_NAME_2" value="second.txt"/>
+ <attributes name=".IAS_MPF_ATTACHMENT_NAME_3" value="ctx"/>
+ <attributes name=".IAS_MPF_ATTACHMENT_NAME_4" value="text"/>
+ <attributes name=".IAS_MPF_ATTACHMENT_FILE_4" value="text.txt"/>
+</Context>
