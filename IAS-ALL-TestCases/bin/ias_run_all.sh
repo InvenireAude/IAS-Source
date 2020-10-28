@@ -1,4 +1,5 @@
 #!/bin/bash
+trap "kill 0" EXIT
 
 script_dir=$(dirname $(readlink -f ${0}))
 
@@ -10,6 +11,12 @@ _dir=/tmp/ias_all_tests/
 rm -rf ${_dir}
 mkdir -p ${_dir}
 
+(
+  while true ; do
+  sleep 1
+  printf "\r\033[0K Cases : %d" $(grep ^TestCase ${_dir}/*.out.txt |wc -l)
+  done
+)&
 ##############################################################################
 # Common Lib
 printf "Testing: %20s" CommonLib
