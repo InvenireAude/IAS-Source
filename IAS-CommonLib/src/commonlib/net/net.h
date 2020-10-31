@@ -46,4 +46,8 @@
 #include "mcast/SequencedOutput.h"
 #include "mcast/SequencedFailoverListener.h"
 
+#include "udp/Receiver.h"
+#include "udp/Sender.h"
+#include "udp/EndPoint.h"
+
 #endif /* _IAS_Net_net_H_ */

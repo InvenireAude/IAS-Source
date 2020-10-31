@@ -63,6 +63,8 @@ void TestSuite::addTestUnit(TestUnit *pTestUnit) {
 void TestSuite::run(const String& strCaseName) {
 	IAS_TRACER;
 
+  IAS_LOG(IAS::LogLevel::INSTANCE.isInfo(), "Testing : "<<strCaseName);
+
 	for (TestCasesList::iterator it = lstTestCases.begin(); it != lstTestCases.end(); it++) {
 
 		if(!strCaseName.empty() && strCaseName.compare((*it).pTestUnit->getName())!=0)
@@ -108,8 +110,8 @@ void TestSuite::printResults(std::ostream& os) {
 
 	for (TestCasesList::iterator it = lstTestCases.begin(); it != lstTestCases.end(); it++) {
 
-		char sBuffer[1024];
-		snprintf(sBuffer, 1024, "TestCase: %48s : %30s | %d : %ld : %6ld : %s \n", (*it).pTestUnit->getName().c_str(),
+		char sBuffer[2024];
+		snprintf(sBuffer, 2024, "TestCase: %48s : %30s | %d : %ld : %6ld : %s \n", (*it).pTestUnit->getName().c_str(),
 				(*it).strName.c_str(), (*it).iResult, (*it).iNewMemoryEntries, (*it).iTimeMS,(*it).strInfo.c_str());
 
 		os << sBuffer;

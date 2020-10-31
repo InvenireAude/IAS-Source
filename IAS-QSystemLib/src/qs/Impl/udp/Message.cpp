@@ -59,7 +59,7 @@ void Message::write(Buffer& buffer, size_t &iDataLen, const String& strTopic){
     StringStream ssTmp;
     ptrAttributes->write(ssTmp);
     const String strTmp(ssTmp.str());
-    strncpy(buffer.getBuffer<char>() + iDataLen, strTmp.c_str(), strTmp.length());
+    strncpy(buffer.getBuffer<char>() + iDataLen, strTmp.c_str(), strTmp.length() + 1);
     iDataLen += strTmp.length() + 1;
   }
 

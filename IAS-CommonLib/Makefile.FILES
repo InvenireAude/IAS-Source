@@ -1,4 +1,4 @@
-#Fri 02 Oct 2020 08:02:03 AM CEST
+#Sat 31 Oct 2020 02:04:16 PM CET
 FILES+=commonlib/configfile/Properties
 FILES+=commonlib/configfile/PropertiesProvider
 FILES+=commonlib/configfile/PropertiesProviderFromFile
@@ -83,6 +83,10 @@ FILES+=commonlib/net/ssl/SecureLayer
 FILES+=commonlib/net/ssl/SSLException
 FILES+=commonlib/net/ssl/Tools
 FILES+=commonlib/net/TCPConnectionBase
+FILES+=commonlib/net/udp/Base
+FILES+=commonlib/net/udp/EndPoint
+FILES+=commonlib/net/udp/Receiver
+FILES+=commonlib/net/udp/Sender
 FILES+=commonlib/net/URI
 FILES+=commonlib/storage/AsynchronousLogger
 FILES+=commonlib/storage/dump/File

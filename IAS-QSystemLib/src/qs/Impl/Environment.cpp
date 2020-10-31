@@ -40,6 +40,7 @@
 
 #include <qs/Impl/udp/mcast/System.h>
 #include <qs/Impl/udp/mbus/System.h>
+#include <qs/Impl/udp/mudp/System.h>
 
 #include <algorithm>
 #include <unistd.h>
@@ -100,6 +101,8 @@ API::Connection* Environment::connect(const ::org::invenireaude::qsystem::worker
 			hmSystems[strProtocol]=IAS_DFT_FACTORY<QS::UDP::MCast::System>::Create();
 		}else if(strProtocol.compare("mbus") == 0){
 			hmSystems[strProtocol]=IAS_DFT_FACTORY<QS::UDP::MBus::System>::Create();
+		}else if(strProtocol.compare("udp") == 0){
+			hmSystems[strProtocol]=IAS_DFT_FACTORY<QS::UDP::MUDP::System>::Create();
 		}else{
 			try{
 				hmSystems[strProtocol]=(*(getFactory(strProtocol)))();
