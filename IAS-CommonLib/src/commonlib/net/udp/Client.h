@@ -1,5 +1,5 @@
 /*
- * File: IAS-CommonLib/src/commonlib/net/mcast/Sender.h
+ * File: IAS-CommonLib/src/commonlib/net/mcast/Client.h
  *
  * Copyright (C) 2020, Albert Krzymowski
  *
@@ -17,8 +17,8 @@
  */
 
 
-#ifndef _IAS_Net_UDP_Sender_H_
-#define _IAS_Net_UDP_Sender_H_
+#ifndef _IAS_Net_UDP_Client_H_
+#define _IAS_Net_UDP_Client_H_
 
 #include <commonlib/types.h>
 #include "Socket.h"
@@ -28,19 +28,19 @@ namespace Net {
 namespace UDP {
 
 /*************************************************************************/
-/** The Sender class.
+/** The Client class.
  *
  */
-class Sender : public virtual Socket {
+class Client : public virtual Socket {
 public:
 
-	Sender(unsigned int iDestinationPort);
-	virtual ~Sender() throw();
+	Client(unsigned int iDestinationPort);
+	virtual ~Client() throw();
 
 	void setup(const String& strSourceIP, const String& strDestinationIP);
 
+	bool receive(void *pData, size_t iBufferLen, size_t& iDataSize);
 	void send(const void *pData, size_t iDataSize);
-	void send(const void *pData, size_t iDataSize, size_t& iWritten);
 
 protected:
 
@@ -52,4 +52,4 @@ protected:
 }
 }
 
-#endif /* _IAS_Net_UDP_Sender_H_ */
+#endif /* _IAS_Net_UDP_Client_H_ */

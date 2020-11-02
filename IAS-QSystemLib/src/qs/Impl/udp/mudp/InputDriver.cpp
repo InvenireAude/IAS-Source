@@ -33,7 +33,6 @@ InputDriver::InputDriver(const ::org::invenireaude::qsystem::workers::Connection
   UDP::InputDriver(destination),
   receiver(dmConnection->getPort()){
 	IAS_TRACER;
-  receiver.bind();
 }
 /*************************************************************************/
 InputDriver::~InputDriver() throw(){

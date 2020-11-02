@@ -1,5 +1,5 @@
 /*
- * File: IAS-CommonLib/src/commonlib/net/mcast/Receiver.h
+ * File: IAS-CommonLib/src/commonlib/net/mcast/Socket.h
  *
  * Copyright (C) 2020, Albert Krzymowski
  *
@@ -17,33 +17,51 @@
  */
 
 
-#ifndef _IAS_Net_UDP_Receiver_H_
-#define _IAS_Net_UDP_Receiver_H_
+#ifndef _IAS_Net_UDP_Socket_H_
+#define _IAS_Net_UDP_Socket_H_
 
 #include <commonlib/types.h>
-#include "Socket.h"
+#include "../Peer.h"
 
 namespace IAS {
 namespace Net {
 namespace UDP {
 
 /*************************************************************************/
-/** The Receiver class.
+/** The Socket class.
  *
  */
-class Receiver : public virtual Socket {
+class Socket {
 public:
 
-	Receiver(unsigned int iDestinationPort);
-	virtual ~Receiver() throw();
+	virtual ~Socket() throw();
 
-	bool receive(void *pData, size_t iBufferLen, size_t& iDataSize);
-	bool receive(void *pData, size_t iBufferLen, size_t& iDataSize, String& strSrcIP, int &iSrcPort);
+	void setTimeout(int iTimeout);
+	static const int  C_UnLimited = -1;
+
+protected:
+	Socket(unsigned int iDestinationPort);
+
+	int iTimeout;
+
+	enum WaitMode{
+		WM_Read,
+		WM_Write
+	};
+
+	bool waitForData(WaitMode iMode);
+	unsigned int iDestinationPort;
+	int iSocket;
+
+	void bind(unsigned int iPort = 0);
+
 	bool receive(void *pData, size_t iBufferLen, size_t& iDataSize,
                    struct sockaddr_storage* pSrcAddress, socklen_t* pAddressLen);
 
-protected:
+  bool receive(void *pData, size_t iBufferLen, size_t& iDataSize, String& strSrcIP, int &iSrcPort);
+  bool receive(void *pData, size_t iBufferLen, size_t& iDataSize);
 
+	void send(struct sockaddr_in& destSockAddr, const void *pData, size_t iDataSize, size_t& iWritten);
 
 };
 /*************************************************************************/
@@ -51,4 +69,4 @@ protected:
 }
 }
 
-#endif /* _IAS_Net_UDP_Receiver_H_ */
+#endif /* _IAS_Net_UDP_Socket_H_ */

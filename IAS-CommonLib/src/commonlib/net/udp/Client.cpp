@@ -1,5 +1,5 @@
 /*
- * File: IAS-CommonLib/src/commonlib/net/mcast/Sender.cpp
+ * File: IAS-CommonLib/src/commonlib/net/mcast/Client.cpp
  *
  * Copyright (C) 2020, Albert Krzymowski
  *
@@ -16,7 +16,7 @@
  * limitations under the License.
  */
 
-#include "Sender.h"
+#include "Client.h"
 
 #include <commonlib/commonlib.h>
 
@@ -34,16 +34,34 @@ namespace Net {
 namespace UDP {
 
 /*************************************************************************/
-Sender::Sender(unsigned int iDestinationPort):
+Client::Client(unsigned int iDestinationPort):
 	Socket(iDestinationPort){
 	IAS_TRACER;
+
+	// int size = 1000 * 1024 * 1024;
+
+	// if (setsockopt(iSocket, SOL_SOCKET, SO_RCVBUF, &size, (socklen_t)sizeof(int)) < 0)
+  // 	IAS_THROW(SystemException()<<"UDP mulitcast socket (SO_RCVBUF), port: "<<(int)iDestinationPort);
+
+	int reuse = 1;
+
+  if (setsockopt(iSocket, SOL_SOCKET, SO_REUSEADDR, (char *)&reuse, sizeof(reuse)) < 0)
+   	IAS_THROW(SystemException()<<"UDP socket (SO_REUSEADDR), port: "<<(int)iDestinationPort);
+
+  Socket::bind();
 }
 /*************************************************************************/
-Sender::~Sender() throw(){
+Client::~Client() throw(){
 	IAS_TRACER;
 }
 /*************************************************************************/
-void Sender::setup(const String& strSourceIP, const String& strDestinationIP){
+bool Client::receive(void *pData, size_t iBufferLen, size_t& iDataSize){
+  String strSrcIP;
+  int    iSrcPort;
+  return Socket::receive(pData, iBufferLen, iDataSize, strSrcIP, iSrcPort);
+}
+/*************************************************************************/
+void Client::setup(const String& strSourceIP, const String& strDestinationIP){
 	IAS_TRACER;
 
 	struct in_addr localSourceIP;
@@ -55,20 +73,14 @@ void Sender::setup(const String& strSourceIP, const String& strDestinationIP){
 
 }
 /*************************************************************************/
-void Sender::send(const void *pData, size_t iDataSize, size_t& iWritten){
-	IAS_TRACER;
-
-  return Socket::send(destSockAddr, pData, iDataSize, iWritten);
-}
-/*************************************************************************/
-void Sender::send(const void *pData, size_t iDataSize){
+void Client::send(const void *pData, size_t iDataSize){
 	IAS_TRACER;
 	size_t iWritten;
 
   Socket::send(destSockAddr, pData, iDataSize, iWritten);
 
 	if(iWritten != iDataSize){
-		IAS_THROW(SystemException("Sender::send(), iWritten != iDataSize"));
+		IAS_THROW(SystemException("Client::send(), iWritten != iDataSize"));
 	}
 }
 /*************************************************************************/

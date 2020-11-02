@@ -48,6 +48,8 @@
 
 #include "udp/Receiver.h"
 #include "udp/Sender.h"
+#include "udp/Client.h"
+#include "udp/Server.h"
 #include "udp/EndPoint.h"
 
 #endif /* _IAS_Net_net_H_ */
