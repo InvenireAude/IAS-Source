@@ -113,6 +113,7 @@ bool Socket::receive(void *pData, size_t iBufferLen, size_t& iDataSize,
 
 	{
 		Thread::Cancellation ca(true);
+    IAS_LOG(LogLevel::INSTANCE.isInfo(),"Timeout: "<<iTimeout);
 		if(iTimeout != 0)
 			if(!waitForData(WM_Read)){
 				iDataSize = 0;

@@ -118,4 +118,20 @@ int ProgramParameters::getIntValue(char cOption, int iDefault)const{
 	return TypeTools::StringToInt(it->second);
 }
 /*************************************************************************/
+long ProgramParameters::getLongValue(char cOption, int iDefault)const{
+
+  ArgValuesMap::const_iterator it = hmValues.find(cOption);
+
+  if(it == hmValues.end()){
+
+      if(iDefault == -999999){
+  		  IAS_THROW(ConfigException(String("Missing -") + cOption + " option."));
+      }else{
+        return iDefault;
+      }
+
+  }
+	return TypeTools::StringToInt(it->second);
+}
+/*************************************************************************/
 }
