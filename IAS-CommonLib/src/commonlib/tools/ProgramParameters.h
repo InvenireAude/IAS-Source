@@ -45,7 +45,7 @@ protected:
 	typedef std::map<char, bool>  IndicatorsMap;
 
   const String& getStringValue(char cOption, const String& strDefault = "__none__")const;
-  Long  getLongValue(char cOption, int iDefault = -999999 )const;
+  Long  getLongValue(char cOption, long iDefault = -999999 )const;
   int  getIntValue(char cOption, int iDefault = -999999 )const;
 
 	ArgValuesMap   hmValues;

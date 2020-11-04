@@ -161,6 +161,9 @@ void  MiscTools::HexToBinary(const String& strInput, unsigned char *sData, size_
 
 	const char *s=strInput.c_str();
 
+  if(strInput.length() & 1 != 0)
+    IAS_THROW(BadUsageException("Hex text is not even length:")<<strInput);
+
 	while(*s && *(s+1) && iBufLen--)
 		*sData++ = (HexValue(*s++)<<4) + HexValue(*s++);
 

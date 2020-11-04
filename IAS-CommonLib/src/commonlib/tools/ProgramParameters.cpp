@@ -118,7 +118,7 @@ int ProgramParameters::getIntValue(char cOption, int iDefault)const{
 	return TypeTools::StringToInt(it->second);
 }
 /*************************************************************************/
-long ProgramParameters::getLongValue(char cOption, int iDefault)const{
+long ProgramParameters::getLongValue(char cOption, long iDefault)const{
 
   ArgValuesMap::const_iterator it = hmValues.find(cOption);
 
