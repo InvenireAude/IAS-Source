@@ -34,9 +34,11 @@ namespace Net {
 namespace UDP {
 
 /*************************************************************************/
-Sender::Sender(unsigned int iDestinationPort):
+Sender::Sender(unsigned int iDestinationPort, unsigned int iSourcePort):
 	Socket(iDestinationPort){
 	IAS_TRACER;
+
+  bind(iSourcePort);
 }
 /*************************************************************************/
 Sender::~Sender() throw(){

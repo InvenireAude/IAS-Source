@@ -34,7 +34,7 @@ namespace UDP {
 class Sender : public virtual Socket {
 public:
 
-	Sender(unsigned int iDestinationPort);
+	Sender(unsigned int iDestinationPort, unsigned int iSourcePort = 0);
 	virtual ~Sender() throw();
 
 	void setup(const String& strSourceIP, const String& strDestinationIP);

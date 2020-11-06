@@ -34,7 +34,7 @@ namespace Net {
 namespace UDP {
 
 /*************************************************************************/
-Client::Client(unsigned int iDestinationPort):
+Client::Client(unsigned int iDestinationPort, unsigned int iSourcePort):
 	Socket(iDestinationPort){
 	IAS_TRACER;
 
@@ -48,7 +48,7 @@ Client::Client(unsigned int iDestinationPort):
   if (setsockopt(iSocket, SOL_SOCKET, SO_REUSEADDR, (char *)&reuse, sizeof(reuse)) < 0)
    	IAS_THROW(SystemException()<<"UDP socket (SO_REUSEADDR), port: "<<(int)iDestinationPort);
 
-  Socket::bind();
+  Socket::bind(iSourcePort);
 }
 /*************************************************************************/
 Client::~Client() throw(){
