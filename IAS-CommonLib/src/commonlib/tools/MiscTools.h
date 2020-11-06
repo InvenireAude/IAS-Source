@@ -27,6 +27,7 @@ namespace IAS {
 public:
 
 	static void   BinarytoHex(unsigned  char *sData, size_t iDataLen, String& strOutput);
+  static String BinarytoHex(unsigned  char *sData, size_t iDataLen);
 	static void   HexToBinary(const String& strInput,unsigned char *sData, size_t iBufLen);
 
 	static String StrToHex(const String& strData);

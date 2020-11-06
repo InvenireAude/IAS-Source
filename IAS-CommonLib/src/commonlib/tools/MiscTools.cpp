@@ -156,6 +156,15 @@ void  MiscTools::BinarytoHex(unsigned char *sData, size_t iDataLen, String& strO
 
 }
 /*************************************************************************/
+String  MiscTools::BinarytoHex(unsigned char *sData, size_t iDataLen){
+	IAS_TRACER;
+
+  String strValue;
+	BinarytoHex(sData, iDataLen, strValue);
+  return strValue;
+
+}
+/*************************************************************************/
 void  MiscTools::HexToBinary(const String& strInput, unsigned char *sData, size_t iBufLen){
 	IAS_TRACER;
 
